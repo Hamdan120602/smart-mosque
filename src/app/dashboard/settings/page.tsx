@@ -1,11 +1,7 @@
 "use client";
 
 
-import {
-useEffect,
-useState
-} from "react";
-
+import { useEffect, useState } from "react";
 
 import {
 getSettings,
@@ -14,27 +10,20 @@ Settings
 } from "@/lib/settings";
 
 
-import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
+import ThemeSelector from "@/components/settings/ThemeSelector";
 
 
 
 export default function SettingsPage(){
 
 
-const [loading,setLoading]
-=
-useState(true);
+const [loading,setLoading]=useState(true);
 
-
-const [saving,setSaving]
-=
-useState(false);
+const [saving,setSaving]=useState(false);
 
 
 
-const [form,setForm]
-=
-useState<Settings>({
+const [form,setForm]=useState<Settings>({
 
 id:1,
 
@@ -48,7 +37,7 @@ email:"",
 
 logo:"",
 
-tema:"Hijau",
+tema:"emerald",
 
 bahasa:"Indonesia",
 
@@ -78,8 +67,7 @@ async function loadData(){
 setLoading(true);
 
 
-const data =
-await getSettings();
+const data=await getSettings();
 
 
 
@@ -88,6 +76,7 @@ if(data){
 setForm(data);
 
 }
+
 
 
 setLoading(false);
@@ -99,26 +88,27 @@ setLoading(false);
 
 
 
+
 async function simpan(){
 
 
 setSaving(true);
 
 
-const err =
-await updateSettings(form);
+
+const error=await updateSettings(form);
 
 
 
-if(err){
+if(error){
 
-alert(err.message);
+alert(error.message);
 
-}else{
+}
 
-alert(
-"Pengaturan berhasil disimpan."
-);
+else{
+
+alert("Pengaturan berhasil disimpan");
 
 }
 
@@ -134,22 +124,22 @@ setSaving(false);
 
 
 
+
 if(loading){
 
 return (
 
-<div
-className="
+<div className="
 p-10
-text-slate-500
-"
->
+text-lg
+font-semibold
+">
 
-Memuat Pengaturan...
+Memuat pengaturan...
 
 </div>
 
-);
+)
 
 }
 
@@ -157,49 +147,35 @@ Memuat Pengaturan...
 
 
 
+
 return (
 
-
-<div
-
-className="
+<div className="
 max-w-6xl
 mx-auto
-p-6
+p-8
 space-y-8
-"
-
->
-
+">
 
 
 <div>
 
 
-<h1
-
-className="
+<h1 className="
 text-4xl
-font-bold
+font-black
 text-gradient
-"
-
->
+">
 
 Pengaturan Sistem
 
 </h1>
 
 
-
-<p
-
-className="
+<p className="
 text-slate-500
 mt-2
-"
-
->
+">
 
 Kelola identitas masjid dan tampilan aplikasi
 
@@ -212,37 +188,11 @@ Kelola identitas masjid dan tampilan aplikasi
 
 
 
-<ThemeSwitcher />
-
-
-
-
-
-<div
-
-className="
+<div className="
 premium-card
 p-8
 space-y-8
-"
-
->
-
-
-
-<h2
-
-className="
-text-2xl
-font-bold
-"
-
->
-
-Identitas Masjid
-
-</h2>
-
+">
 
 
 
@@ -250,8 +200,11 @@ Identitas Masjid
 
 <div>
 
-
-<label className="font-semibold block mb-2">
+<label className="
+font-bold
+block
+mb-2
+">
 
 Nama Masjid
 
@@ -274,10 +227,14 @@ nama_masjid:e.target.value
 
 }
 
-className="input-premium"
+className="
+w-full
+rounded-2xl
+border
+p-4
+"
 
 />
-
 
 </div>
 
@@ -287,8 +244,11 @@ className="input-premium"
 
 <div>
 
-
-<label className="font-semibold block mb-2">
+<label className="
+font-bold
+block
+mb-2
+">
 
 Alamat
 
@@ -313,10 +273,14 @@ alamat:e.target.value
 
 }
 
-className="input-premium"
+className="
+w-full
+rounded-2xl
+border
+p-4
+"
 
 />
-
 
 </div>
 
@@ -324,27 +288,17 @@ className="input-premium"
 
 
 
-<div
 
-className="
+<div className="
 grid
 md:grid-cols-2
-gap-6
-"
-
->
-
-
-<div>
-
-<label className="font-semibold block mb-2">
-
-Telepon
-
-</label>
+gap-5
+">
 
 
 <input
+
+placeholder="Telepon"
 
 value={form.telepon}
 
@@ -360,27 +314,20 @@ telepon:e.target.value
 
 }
 
-className="input-premium"
+className="
+rounded-2xl
+border
+p-4
+"
 
 />
 
 
-</div>
-
-
-
-
-
-<div>
-
-<label className="font-semibold block mb-2">
-
-Email
-
-</label>
 
 
 <input
+
+placeholder="Email"
 
 value={form.email}
 
@@ -396,204 +343,54 @@ email:e.target.value
 
 }
 
-className="input-premium"
-
-/>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-<div>
-
-
-<label className="font-semibold block mb-2">
-
-Logo URL
-
-</label>
-
-
-<input
-
-value={form.logo}
-
-onChange={(e)=>
-
-setForm({
-
-...form,
-
-logo:e.target.value
-
-})
-
-}
-
-className="input-premium"
-
-/>
-
-
-</div>
-
-
-
-
-
-
-
-<div
-
 className="
-grid
-md:grid-cols-3
-gap-6
+rounded-2xl
+border
+p-4
 "
 
->
+/>
+
+
+</div>
+
+
+
+
+
 
 
 <div>
 
-<label className="font-semibold block mb-2">
+<label className="
+font-bold
+block
+mb-4
+">
 
-Tema Database
+Tema Tampilan
 
 </label>
 
 
-<select
+<ThemeSelector
+
 
 value={form.tema}
 
-onChange={(e)=>
+
+onChange={(value)=>
 
 setForm({
 
 ...form,
 
-tema:e.target.value
+tema:value
 
 })
 
 }
 
-className="input-premium"
-
->
-
-
-<option>
-Hijau
-</option>
-
-
-<option>
-Biru
-</option>
-
-
-<option>
-Gelap
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div>
-
-
-<label className="font-semibold block mb-2">
-
-Bahasa
-
-</label>
-
-
-<select
-
-value={form.bahasa}
-
-onChange={(e)=>
-
-setForm({
-
-...form,
-
-bahasa:e.target.value
-
-})
-
-}
-
-className="input-premium"
-
->
-
-
-<option>
-Indonesia
-</option>
-
-
-<option>
-English
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div>
-
-
-<label className="font-semibold block mb-2">
-
-Timezone
-
-</label>
-
-
-<input
-
-value={form.timezone}
-
-onChange={(e)=>
-
-setForm({
-
-...form,
-
-timezone:e.target.value
-
-})
-
-}
-
-className="input-premium"
 
 />
 
@@ -601,23 +398,17 @@ className="input-premium"
 </div>
 
 
-</div>
 
 
 
 
 
 
-
-<div
-
-className="
+<div className="
 flex
 items-center
 gap-3
-"
-
->
+">
 
 
 <input
@@ -637,6 +428,7 @@ notifikasi:e.target.checked
 })
 
 }
+
 
 />
 
@@ -664,12 +456,9 @@ disabled={saving}
 
 className="
 btn-premium
-w-full
-md:w-auto
 "
 
 >
-
 
 {
 
@@ -698,7 +487,7 @@ saving
 </div>
 
 
-);
+)
 
 
 }
