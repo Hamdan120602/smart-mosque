@@ -1,214 +1,704 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getSettings, updateSettings, Settings } from "@/lib/settings";
 
-export default function SettingsPage() {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+import {
+useEffect,
+useState
+} from "react";
 
-  const [form, setForm] = useState<Settings>({
-    id: 1,
-    nama_masjid: "",
-    alamat: "",
-    telepon: "",
-    email: "",
-    logo: "",
-    tema: "Hijau",
-    bahasa: "Indonesia",
-    notifikasi: true,
-    timezone: "Asia/Jakarta",
-  });
 
-  useEffect(() => {
-    loadData();
-  }, []);
+import {
+getSettings,
+updateSettings,
+Settings
+} from "@/lib/settings";
 
-  async function loadData() {
-    setLoading(true);
 
-    const data = await getSettings();
+import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
 
-    if (data) {
-      setForm(data);
-    }
 
-    setLoading(false);
-  }
 
-  async function simpan() {
-    setSaving(true);
+export default function SettingsPage(){
 
-    const err = await updateSettings(form);
 
-    if (err) {
-      alert(err.message);
-    } else {
-      alert("Pengaturan berhasil disimpan.");
-    }
+const [loading,setLoading]
+=
+useState(true);
 
-    setSaving(false);
-  }
 
-  if (loading) {
-    return (
-      <div className="p-8">
-        Memuat Pengaturan...
-      </div>
-    );
-  }
+const [saving,setSaving]
+=
+useState(false);
 
-  return (
-    <div className="max-w-5xl mx-auto p-8">
 
-      <h1 className="text-3xl font-bold mb-8">
-        Pengaturan Sistem
-      </h1>
 
-      <div className="bg-white rounded-xl shadow border p-8 space-y-6">
+const [form,setForm]
+=
+useState<Settings>({
 
-        <div>
-          <label className="font-semibold block mb-2">
-            Nama Masjid
-          </label>
+id:1,
 
-          <input
-            value={form.nama_masjid}
-            onChange={(e)=>setForm({...form,nama_masjid:e.target.value})}
-            className="w-full border rounded-lg p-3"
-          />
-        </div>
+nama_masjid:"",
 
-        <div>
-          <label className="font-semibold block mb-2">
-            Alamat
-          </label>
+alamat:"",
 
-          <textarea
-            rows={3}
-            value={form.alamat}
-            onChange={(e)=>setForm({...form,alamat:e.target.value})}
-            className="w-full border rounded-lg p-3"
-          />
-        </div>
+telepon:"",
 
-        <div className="grid md:grid-cols-2 gap-5">
+email:"",
 
-          <div>
-            <label className="font-semibold block mb-2">
-              Telepon
-            </label>
+logo:"",
 
-            <input
-              value={form.telepon}
-              onChange={(e)=>setForm({...form,telepon:e.target.value})}
-              className="w-full border rounded-lg p-3"
-            />
-          </div>
+tema:"Hijau",
 
-          <div>
-            <label className="font-semibold block mb-2">
-              Email
-            </label>
+bahasa:"Indonesia",
 
-            <input
-              value={form.email}
-              onChange={(e)=>setForm({...form,email:e.target.value})}
-              className="w-full border rounded-lg p-3"
-            />
-          </div>
+notifikasi:true,
 
-        </div>
+timezone:"Asia/Jakarta"
 
-        <div>
+});
 
-          <label className="font-semibold block mb-2">
-            Logo URL
-          </label>
 
-          <input
-            value={form.logo}
-            onChange={(e)=>setForm({...form,logo:e.target.value})}
-            className="w-full border rounded-lg p-3"
-          />
 
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
 
-          <div>
+useEffect(()=>{
 
-            <label className="font-semibold block mb-2">
-              Tema
-            </label>
+loadData();
 
-            <select
-              value={form.tema}
-              onChange={(e)=>setForm({...form,tema:e.target.value})}
-              className="w-full border rounded-lg p-3"
-            >
-              <option>Hijau</option>
-              <option>Biru</option>
-              <option>Gelap</option>
-            </select>
+},[]);
 
-          </div>
 
-          <div>
 
-            <label className="font-semibold block mb-2">
-              Bahasa
-            </label>
 
-            <select
-              value={form.bahasa}
-              onChange={(e)=>setForm({...form,bahasa:e.target.value})}
-              className="w-full border rounded-lg p-3"
-            >
-              <option>Indonesia</option>
-              <option>English</option>
-            </select>
 
-          </div>
+async function loadData(){
 
-          <div>
 
-            <label className="font-semibold block mb-2">
-              Timezone
-            </label>
+setLoading(true);
 
-            <input
-              value={form.timezone}
-              onChange={(e)=>setForm({...form,timezone:e.target.value})}
-              className="w-full border rounded-lg p-3"
-            />
 
-          </div>
+const data =
+await getSettings();
 
-        </div>
 
-        <div className="flex items-center gap-3">
 
-          <input
-            type="checkbox"
-            checked={form.notifikasi}
-            onChange={(e)=>setForm({...form,notifikasi:e.target.checked})}
-          />
+if(data){
 
-          <span>Aktifkan Notifikasi</span>
+setForm(data);
 
-        </div>
+}
 
-        <button
-          onClick={simpan}
-          disabled={saving}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
-        >
-          {saving ? "Menyimpan..." : "Simpan Pengaturan"}
-        </button>
 
-      </div>
+setLoading(false);
 
-    </div>
-  );
+
+}
+
+
+
+
+
+async function simpan(){
+
+
+setSaving(true);
+
+
+const err =
+await updateSettings(form);
+
+
+
+if(err){
+
+alert(err.message);
+
+}else{
+
+alert(
+"Pengaturan berhasil disimpan."
+);
+
+}
+
+
+
+setSaving(false);
+
+
+}
+
+
+
+
+
+
+if(loading){
+
+return (
+
+<div
+className="
+p-10
+text-slate-500
+"
+>
+
+Memuat Pengaturan...
+
+</div>
+
+);
+
+}
+
+
+
+
+
+return (
+
+
+<div
+
+className="
+max-w-6xl
+mx-auto
+p-6
+space-y-8
+"
+
+>
+
+
+
+<div>
+
+
+<h1
+
+className="
+text-4xl
+font-bold
+text-gradient
+"
+
+>
+
+Pengaturan Sistem
+
+</h1>
+
+
+
+<p
+
+className="
+text-slate-500
+mt-2
+"
+
+>
+
+Kelola identitas masjid dan tampilan aplikasi
+
+</p>
+
+
+</div>
+
+
+
+
+
+<ThemeSwitcher />
+
+
+
+
+
+<div
+
+className="
+premium-card
+p-8
+space-y-8
+"
+
+>
+
+
+
+<h2
+
+className="
+text-2xl
+font-bold
+"
+
+>
+
+Identitas Masjid
+
+</h2>
+
+
+
+
+
+
+<div>
+
+
+<label className="font-semibold block mb-2">
+
+Nama Masjid
+
+</label>
+
+
+<input
+
+value={form.nama_masjid}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+nama_masjid:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<label className="font-semibold block mb-2">
+
+Alamat
+
+</label>
+
+
+<textarea
+
+rows={3}
+
+value={form.alamat}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+alamat:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+
+
+
+<div
+
+className="
+grid
+md:grid-cols-2
+gap-6
+"
+
+>
+
+
+<div>
+
+<label className="font-semibold block mb-2">
+
+Telepon
+
+</label>
+
+
+<input
+
+value={form.telepon}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+telepon:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<label className="font-semibold block mb-2">
+
+Email
+
+</label>
+
+
+<input
+
+value={form.email}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+email:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+
+<label className="font-semibold block mb-2">
+
+Logo URL
+
+</label>
+
+
+<input
+
+value={form.logo}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+logo:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+
+
+
+
+
+<div
+
+className="
+grid
+md:grid-cols-3
+gap-6
+"
+
+>
+
+
+<div>
+
+<label className="font-semibold block mb-2">
+
+Tema Database
+
+</label>
+
+
+<select
+
+value={form.tema}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+tema:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+>
+
+
+<option>
+Hijau
+</option>
+
+
+<option>
+Biru
+</option>
+
+
+<option>
+Gelap
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<label className="font-semibold block mb-2">
+
+Bahasa
+
+</label>
+
+
+<select
+
+value={form.bahasa}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+bahasa:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+>
+
+
+<option>
+Indonesia
+</option>
+
+
+<option>
+English
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<label className="font-semibold block mb-2">
+
+Timezone
+
+</label>
+
+
+<input
+
+value={form.timezone}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+timezone:e.target.value
+
+})
+
+}
+
+className="input-premium"
+
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div
+
+className="
+flex
+items-center
+gap-3
+"
+
+>
+
+
+<input
+
+type="checkbox"
+
+checked={form.notifikasi}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+notifikasi:e.target.checked
+
+})
+
+}
+
+/>
+
+
+<span>
+
+Aktifkan Notifikasi
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+onClick={simpan}
+
+disabled={saving}
+
+className="
+btn-premium
+w-full
+md:w-auto
+"
+
+>
+
+
+{
+
+saving
+
+?
+
+"Menyimpan..."
+
+:
+
+"Simpan Pengaturan"
+
+}
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+);
+
+
 }
