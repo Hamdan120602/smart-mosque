@@ -1,65 +1,176 @@
-import Card from '@/components/ui/Card';
+"use client";
 
-const activities = [
-  {
-    title: 'Kas Masuk',
-    time: '5 menit lalu',
-  },
-  {
-    title: 'Tambah Jamaah',
-    time: '18 menit lalu',
-  },
-  {
-    title: 'Agenda Jumat',
-    time: '1 jam lalu',
-  },
-  {
-    title: 'Update Inventaris',
-    time: '3 jam lalu',
-  },
-];
 
-export default function ActivityCard() {
-  return (
-    <Card className="p-6 h-[360px]">
+import {
 
-      <h2 className="text-lg font-semibold text-slate-900">
-        Aktivitas Terbaru
-      </h2>
+Activity,
 
-      <div className="mt-8 space-y-6">
+Clock
 
-        {activities.map((item) => (
+} from "lucide-react";
 
-          <div
-            key={item.title}
-            className="flex gap-4"
-          >
 
-            <div className="mt-1 h-3 w-3 rounded-full bg-emerald-500"/>
 
-            <div>
+interface Props{
 
-              <p className="font-medium text-slate-800">
+title:string;
 
-                {item.title}
+description:string;
 
-              </p>
+time:string;
 
-              <p className="text-sm text-slate-500">
+}
 
-                {item.time}
 
-              </p>
 
-            </div>
+export default function ActivityCard({
 
-          </div>
+title,
 
-        ))}
+description,
 
-      </div>
+time
 
-    </Card>
-  );
+}:Props){
+
+
+
+return (
+
+
+<div
+
+className="premium-card p-5"
+
+>
+
+
+<div
+
+className="flex items-start gap-4"
+
+>
+
+
+<div
+
+className="
+
+h-11
+
+w-11
+
+rounded-2xl
+
+flex
+
+items-center
+
+justify-center
+
+text-white
+
+"
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}}
+
+>
+
+<Activity size={20}/>
+
+
+</div>
+
+
+
+
+<div className="flex-1">
+
+
+<h3
+
+className="
+
+font-bold
+
+"
+
+>
+
+{title}
+
+</h3>
+
+
+
+<p
+
+className="
+
+text-sm
+
+opacity-60
+
+mt-1
+
+"
+
+>
+
+{description}
+
+</p>
+
+
+
+<div
+
+className="
+
+flex
+
+items-center
+
+gap-2
+
+text-xs
+
+opacity-50
+
+mt-3
+
+"
+
+>
+
+
+<Clock size={14}/>
+
+
+{time}
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+)
+
 }

@@ -1,35 +1,47 @@
 "use client";
 
 
-import {
+import DashboardHeader 
+from "@/components/dashboard/DashboardHeader";
 
-Wallet,
-Landmark,
-Users,
-CalendarDays
 
-} from "lucide-react";
+import WelcomeBanner
+from "@/components/dashboard/WelcomeBanner";
+
+
+import RevenueChart
+from "@/components/dashboard/RevenueChart";
+
+
+import ExpenseChart
+from "@/components/dashboard/ExpenseChart";
 
 
 import StatsCard
 from "@/components/dashboard/StatsCard";
 
 
-import SectionTitle
-from "@/components/ui/SectionTitle";
+import RecentTransactions
+from "@/components/dashboard/RecentTransactions";
 
 
-import CashFlowCard
-from "@/components/dashboard/CashFlowCard";
+import AgendaCard
+from "@/components/dashboard/AgendaCard";
 
 
-import ActivityCard
-from "@/components/dashboard/ActivityCard";
+import ActivityTimeline
+from "@/components/dashboard/ActivityTimeline";
+
 
 
 import {
-useDashboard
-} from "./hooks/useDashboard";
+
+WalletCards,
+Users,
+CalendarDays,
+TrendingUp
+
+} from "lucide-react";
 
 
 
@@ -39,88 +51,71 @@ export default function DashboardPage(){
 
 
 
-const data =
-useDashboard();
-
-
-
-
-
 return (
 
-<div className="space-y-8">
+
+<div
+
+className="
+
+space-y-8
+
+p-6
+
+lg:p-10
+
+"
+
+>
 
 
 
-<SectionTitle
+<DashboardHeader/>
 
-title="Dashboard"
 
-subtitle="Pusat kontrol operasional masjid."
 
-/>
 
+<WelcomeBanner/>
 
 
 
 
 
-<section className="
+
+<div
+
+className="
+
 grid
+
 gap-6
+
+md:grid-cols-2
+
 xl:grid-cols-4
-">
 
+"
 
-
+>
 
 
 <StatsCard
 
-title="Saldo Kas"
+title="Total Saldo"
 
-value={
-`Rp ${data.saldo.toLocaleString("id-ID")}`
-}
+value="Rp 25.400.000"
 
-change="Realtime"
-
-icon={Wallet}
+icon={WalletCards}
 
 />
 
 
 
-
-
 <StatsCard
 
-title="Pemasukan"
+title="Jumlah Jamaah"
 
-value={
-`Rp ${data.pemasukan.toLocaleString("id-ID")}`
-}
-
-change="Data Kas"
-
-icon={Landmark}
-
-/>
-
-
-
-
-
-
-<StatsCard
-
-title="Jamaah"
-
-value={
-String(data.jamaah)
-}
-
-change="Anggota"
+value="1.240"
 
 icon={Users}
 
@@ -129,17 +124,11 @@ icon={Users}
 
 
 
-
-
 <StatsCard
 
-title="Agenda"
+title="Agenda Aktif"
 
-value={
-String(data.agenda)
-}
-
-change="Kegiatan"
+value="12"
 
 icon={CalendarDays}
 
@@ -148,8 +137,19 @@ icon={CalendarDays}
 
 
 
+<StatsCard
 
-</section>
+title="Pertumbuhan"
+
+value="+18%"
+
+icon={TrendingUp}
+
+/>
+
+
+
+</div>
 
 
 
@@ -157,38 +157,110 @@ icon={CalendarDays}
 
 
 
-<section className="
+<div
+
+className="
+
 grid
+
 gap-6
-xl:grid-cols-3
-">
+
+xl:grid-cols-2
+
+"
+
+>
 
 
-
-<div className="xl:col-span-2">
-
-<CashFlowCard/>
-
-</div>
+<RevenueChart/>
 
 
-
-<ActivityCard/>
-
-
-
-
-</section>
-
-
-
-
+<ExpenseChart/>
 
 
 </div>
 
 
-);
+
+
+
+
+
+
+<div
+
+className="
+
+grid
+
+gap-6
+
+xl:grid-cols-2
+
+"
+
+>
+
+
+<RecentTransactions/>
+
+
+<AgendaCard/>
+
+
+</div>
+
+
+
+
+
+
+
+<ActivityTimeline
+
+items={[
+
+
+{
+
+id:1,
+
+title:"Transaksi baru",
+
+description:"Donasi jamaah berhasil dicatat",
+
+time:"Hari ini"
+
+},
+
+
+{
+
+id:2,
+
+title:"Agenda dibuat",
+
+description:"Kajian malam Jumat ditambahkan",
+
+time:"Kemarin"
+
+}
+
+
+
+]}
+
+/>
+
+
+
+
+
+
+</div>
+
+
+)
 
 
 }

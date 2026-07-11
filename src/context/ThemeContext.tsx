@@ -13,20 +13,21 @@ ThemeName
 } from "@/themes/themes";
 
 
-type ThemeContextType = {
+
+type Context={
 
 theme:ThemeName;
 
-setTheme:(theme:ThemeName)=>void;
+setTheme:(v:ThemeName)=>void;
 
 themes:typeof themes;
 
-};
+}
 
 
 
 const ThemeContext =
-createContext<ThemeContextType | null>(null);
+createContext<Context|null>(null);
 
 
 
@@ -36,20 +37,24 @@ children
 
 }:{
 
-children:React.ReactNode;
+children:React.ReactNode
 
 }){
 
 
-const [theme,setTheme] =
+const [theme,setTheme]=
+
 useState<ThemeName>("emerald");
+
+
 
 
 
 useEffect(()=>{
 
 
-const saved =
+const saved=
+
 localStorage.getItem("theme");
 
 
@@ -66,62 +71,44 @@ setTheme(saved as ThemeName);
 
 
 
+
 useEffect(()=>{
 
 
-const current =
+const current=
+
 themes[theme];
 
 
-const root =
-document.documentElement;
+
+Object.entries(current.colors)
+
+.forEach(([key,value])=>{
 
 
+document.documentElement
 
-root.style.setProperty(
-"--primary",
-current.colors.primary
+.style
+
+.setProperty(
+
+`--${key}`,
+
+value
+
 );
 
 
-root.style.setProperty(
-"--secondary",
-current.colors.secondary
-);
-
-
-root.style.setProperty(
-"--accent",
-current.colors.accent
-);
-
-
-root.style.setProperty(
-"--background",
-current.colors.background
-);
-
-
-root.style.setProperty(
-"--card",
-current.colors.card
-);
-
-
-root.style.setProperty(
-"--foreground",
-theme==="royal" || theme==="gold"
-?
-"#f8fafc"
-:
-"#0f172a"
-);
+});
 
 
 
 localStorage.setItem(
+
 "theme",
+
 theme
+
 );
 
 
@@ -148,13 +135,17 @@ themes
 
 >
 
+
 {children}
+
 
 </ThemeContext.Provider>
 
 )
 
+
 }
+
 
 
 
@@ -162,21 +153,21 @@ themes
 export function useTheme(){
 
 
-const context =
+const ctx=
+
 useContext(ThemeContext);
 
 
 
-if(!context){
+if(!ctx)
 
 throw new Error(
-"useTheme must be inside ThemeProvider"
+"ThemeProvider missing"
 );
 
-}
 
 
-return context;
+return ctx;
 
 
 }

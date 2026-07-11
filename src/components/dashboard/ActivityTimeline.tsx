@@ -1,63 +1,277 @@
-'use client';
+"use client";
 
-import Card from '@/components/ui/Card';
 
-const activities = [
-  {
-    title: 'Donasi diterima',
-    time: '5 menit lalu',
-  },
-  {
-    title: 'Kas keluar dicatat',
-    time: '25 menit lalu',
-  },
-  {
-    title: 'Agenda kajian ditambahkan',
-    time: '1 jam lalu',
-  },
-  {
-    title: 'Inventaris diperbarui',
-    time: '3 jam lalu',
-  },
-];
+import {
 
-export default function ActivityTimeline() {
-  return (
-    <Card className="p-6">
+CircleDot
 
-      <h2 className="text-lg font-semibold text-slate-900">
-        Aktivitas Terbaru
-      </h2>
+} from "lucide-react";
 
-      <div className="mt-6 space-y-6">
 
-        {activities.map((item) => (
 
-          <div
-            key={item.title}
-            className="flex gap-4"
-          >
+interface Item{
 
-            <div className="mt-1 h-3 w-3 rounded-full bg-emerald-500" />
+id:number;
 
-            <div>
+title:string;
 
-              <p className="font-medium text-slate-800">
-                {item.title}
-              </p>
+description:string;
 
-              <p className="text-sm text-slate-500">
-                {item.time}
-              </p>
+time:string;
 
-            </div>
+}
 
-          </div>
 
-        ))}
 
-      </div>
 
-    </Card>
-  );
+export default function ActivityTimeline({
+
+items=[]
+
+}:{
+
+items?:Item[]
+
+}){
+
+
+
+return (
+
+
+<div className="premium-card p-6">
+
+
+
+<h2
+
+className="
+
+text-xl
+
+font-bold
+
+mb-6
+
+"
+
+>
+
+Aktivitas Sistem
+
+</h2>
+
+
+
+
+
+{
+
+items.length===0
+
+?
+
+<div
+
+className="
+
+text-center
+
+py-10
+
+opacity-60
+
+"
+
+>
+
+Belum ada aktivitas
+
+</div>
+
+
+:
+
+
+<div className="space-y-6">
+
+
+{
+
+items.map((item,index)=>(
+
+
+<div
+
+key={item.id}
+
+className="flex gap-4"
+
+>
+
+
+<div
+
+className="
+
+flex
+
+flex-col
+
+items-center
+
+"
+
+>
+
+
+<div
+
+className="
+
+h-9
+
+w-9
+
+rounded-full
+
+flex
+
+items-center
+
+justify-center
+
+text-white
+
+"
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--accent))"
+
+}}
+
+>
+
+<CircleDot size={16}/>
+
+</div>
+
+
+
+{
+
+index !== items.length-1 &&
+
+<div
+
+className="
+
+h-full
+
+w-px
+
+bg-black/10
+
+mt-2
+
+"
+
+/>
+
+}
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<h3
+
+className="
+
+font-semibold
+
+"
+
+>
+
+{item.title}
+
+</h3>
+
+
+<p
+
+className="
+
+text-sm
+
+opacity-60
+
+mt-1
+
+"
+
+>
+
+{item.description}
+
+</p>
+
+
+<p
+
+className="
+
+text-xs
+
+opacity-40
+
+mt-2
+
+"
+
+>
+
+{item.time}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+
+}
+
+
+
+
+</div>
+
+
+)
+
 }

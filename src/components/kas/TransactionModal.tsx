@@ -1,128 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus, X } from "lucide-react";
+import { X, Plus } from "lucide-react";
 import { addTransaction } from "@/app/dashboard/kas/actions";
-
 
 export default function TransactionModal(){
 
-const [open,setOpen] = useState(false);
-
-
-const [form,setForm] = useState({
-
-title:"",
-category:"PEMASUKAN",
-amount:"",
-description:""
-
-});
-
-
-
-function handleChange(
-e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-){
-
-setForm({
-...form,
-[e.target.name]:e.target.value
-});
-
-}
-
-
-
-async function save(){
-
-if(!form.title || !form.amount){
-return;
-}
-
-
-const data = new FormData();
-
-data.append("title",form.title);
-data.append("category",form.category);
-data.append("amount",form.amount);
-data.append("description",form.description);
-
-
-await addTransaction(data);
-
-
-
-setForm({
-
-title:"",
-category:"PEMASUKAN",
-amount:"",
-description:""
-
-});
-
-
-setOpen(false);
-
-}
-
-
+const [open,setOpen]=useState(false);
 
 return (
 
 <>
 
 <button
-
 onClick={()=>setOpen(true)}
-
 className="
+btn-premium
 flex
 items-center
 gap-2
-rounded-2xl
-bg-slate-900
-px-6
-py-4
-text-white
-font-semibold
-shadow-xl
-hover:scale-105
-transition
 "
-
 >
-
-<Plus size={20}/>
-
+<Plus size={18}/>
 Tambah Transaksi
-
 </button>
 
 
-
-
-<AnimatePresence>
-
 {
-open && (
+open &&
 
-<motion.div
-
-initial={{
-opacity:0
-}}
-
-animate={{
-opacity:1
-}}
-
-exit={{
-opacity:0
-}}
-
+<div
 className="
 fixed
 inset-0
@@ -130,103 +37,134 @@ z-50
 flex
 items-center
 justify-center
-bg-black/50
+bg-black/40
+backdrop-blur-sm
+p-5
 "
-
 >
 
 
-<motion.div
-
-initial={{
-scale:0.9
-}}
-
-animate={{
-scale:1
-}}
-
+<div
 className="
-bg-white
-rounded-3xl
-p-6
 w-full
-max-w-md
-space-y-4
+max-w-xl
+rounded-3xl
+bg-white
+p-8
+shadow-2xl
 "
-
 >
 
 
-<div className="flex justify-between items-center">
+<div
+className="
+flex
+justify-between
+items-center
+mb-6
+"
+>
 
-<h2 className="text-xl font-bold">
-Tambah Transaksi
+<h2 className="text-2xl font-black">
+Transaksi Baru
 </h2>
 
 
 <button
 onClick={()=>setOpen(false)}
 >
-
 <X/>
-
 </button>
+
 
 </div>
 
+
+
+<form
+
+action={async(formData)=>{
+
+await addTransaction(formData);
+
+setOpen(false);
+
+}}
+
+className="space-y-5"
+
+>
 
 
 <input
 
 name="title"
 
-value={form.title}
-
-onChange={handleChange}
-
-placeholder="Judul transaksi"
+placeholder="Nama transaksi"
 
 className="
-border
-rounded-xl
-p-3
 w-full
+rounded-2xl
+border
+p-4
+outline-none
+focus:ring-2
 "
+
+required
 
 />
 
 
 
 
-<select
+<div className="grid md:grid-cols-2 gap-4">
+
+
+<input
 
 name="category"
 
-value={form.category}
-
-onChange={handleChange}
+placeholder="Kategori"
 
 className="
+rounded-2xl
 border
-rounded-xl
-p-3
-w-full
+p-4
+"
+
+required
+
+/>
+
+
+
+<select
+
+name="type"
+
+className="
+rounded-2xl
+border
+p-4
 "
 
 >
 
-<option value="PEMASUKAN">
+<option value="income">
 Pemasukan
 </option>
 
 
-<option value="PENGELUARAN">
+<option value="expense">
 Pengeluaran
 </option>
 
 
 </select>
+
+
+</div>
 
 
 
@@ -235,20 +173,18 @@ Pengeluaran
 
 name="amount"
 
-value={form.amount}
-
-onChange={handleChange}
-
-placeholder="Jumlah"
-
 type="number"
 
+placeholder="Jumlah Rupiah"
+
 className="
-border
-rounded-xl
-p-3
 w-full
+rounded-2xl
+border
+p-4
 "
+
+required
 
 />
 
@@ -259,17 +195,15 @@ w-full
 
 name="description"
 
-value={form.description}
-
-onChange={handleChange}
-
 placeholder="Keterangan"
 
+rows={4}
+
 className="
-border
-rounded-xl
-p-3
 w-full
+rounded-2xl
+border
+p-4
 "
 
 />
@@ -277,41 +211,41 @@ w-full
 
 
 
+
 <button
 
-onClick={save}
-
 className="
-bg-blue-600
-text-white
-rounded-xl
-px-5
-py-3
-w-full
+btn-premium
+flex
+items-center
+gap-2
 "
 
 >
 
-Simpan
+<Plus size={18}/>
+
+Simpan Transaksi
 
 </button>
 
 
 
-</motion.div>
+</form>
 
 
-</motion.div>
 
-)
+</div>
+
+
+</div>
+
 
 }
-
-</AnimatePresence>
 
 
 </>
 
-);
+)
 
 }

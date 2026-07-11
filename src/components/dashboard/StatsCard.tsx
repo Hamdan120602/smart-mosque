@@ -1,91 +1,286 @@
-import { LucideIcon, TrendingDown, TrendingUp } from 'lucide-react';
+"use client";
 
-interface StatsCardProps {
-  title: string;
-  value: string;
-  change: string;
-  positive?: boolean;
-  icon: LucideIcon;
+import {
+LucideIcon,
+TrendingUp
+} from "lucide-react";
+
+
+interface Props{
+
+title:string;
+
+value:string | number;
+
+icon:LucideIcon;
+
+description?:string;
+
 }
 
+
+
 export default function StatsCard({
-  title,
-  value,
-  change,
-  positive = true,
-  icon: Icon,
-}: StatsCardProps) {
-  return (
-    <div
-      className="
-      group
-      rounded-xl
-      border
-      border-slate-200
-      bg-white
-      p-6
-      shadow-sm
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      hover:shadow-lg
-    "
-    >
-      <div className="flex items-start justify-between">
 
-        <div>
+title,
 
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-            {title}
-          </p>
+value,
 
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
-            {value}
-          </h2>
+icon:Icon,
 
-        </div>
+description
 
-        <div
-          className="
-          flex
-          h-12
-          w-12
-          items-center
-          justify-center
-          rounded-lg
-          bg-emerald-50
-          text-emerald-600
-        "
-        >
-          <Icon size={24} />
-        </div>
+}:Props){
 
-      </div>
 
-      <div className="mt-6 flex items-center gap-2">
 
-        {positive ? (
-          <TrendingUp size={16} className="text-emerald-600" />
-        ) : (
-          <TrendingDown size={16} className="text-red-600" />
-        )}
+return (
 
-        <span
-          className={
-            positive
-              ? 'text-sm font-medium text-emerald-600'
-              : 'text-sm font-medium text-red-600'
-          }
-        >
-          {change}
-        </span>
+<div
 
-        <span className="text-sm text-slate-400">
-          dibanding bulan lalu
-        </span>
+className="
 
-      </div>
+premium-card
 
-    </div>
-  );
+relative
+
+overflow-hidden
+
+p-6
+
+"
+
+>
+
+
+
+{/* glow */}
+
+<div
+
+className="
+
+absolute
+
+right-0
+
+top-0
+
+h-32
+
+w-32
+
+rounded-full
+
+blur-3xl
+
+opacity-20
+
+"
+
+style={{
+
+background:"var(--primary)"
+
+}}
+
+/>
+
+
+
+
+
+<div
+
+className="
+
+relative
+
+flex
+
+items-start
+
+justify-between
+
+"
+
+>
+
+
+
+<div>
+
+
+<div
+
+className="
+
+flex
+
+items-center
+
+gap-3
+
+mb-5
+
+"
+
+>
+
+
+<div
+
+className="
+
+h-12
+
+w-12
+
+rounded-2xl
+
+flex
+
+items-center
+
+justify-center
+
+text-white
+
+shadow-lg
+
+"
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}}
+
+>
+
+
+<Icon size={24}/>
+
+
+</div>
+
+
+
+<div>
+
+
+<p
+
+className="
+
+text-sm
+
+font-medium
+
+opacity-60
+
+"
+
+>
+
+{title}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<h2
+
+className="
+
+text-3xl
+
+font-black
+
+tracking-tight
+
+"
+
+>
+
+{value}
+
+</h2>
+
+
+
+
+{description && (
+
+<div
+
+className="
+
+mt-4
+
+flex
+
+items-center
+
+gap-2
+
+text-sm
+
+opacity-70
+
+"
+
+>
+
+
+<TrendingUp
+
+size={16}
+
+style={{
+
+color:"var(--primary)"
+
+}}
+
+/>
+
+
+<span>
+
+{description}
+
+</span>
+
+
+</div>
+
+
+)}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+)
+
 }

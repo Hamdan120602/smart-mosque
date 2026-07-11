@@ -4,134 +4,107 @@
 import {
 Bell,
 Search,
-CalendarDays,
 Sparkles
 } from "lucide-react";
-
-
-import { useEffect, useState } from "react";
 
 
 
 export default function DashboardHeader(){
 
 
-const [date,setDate]=useState("");
-
-
-
-useEffect(()=>{
-
-
-setDate(
-
-new Intl.DateTimeFormat(
-"id-ID",
-{
-weekday:"long",
-day:"numeric",
-month:"long",
-year:"numeric"
-}
-).format(new Date())
-
-);
-
-
-},[]);
-
-
-
-
-
 return (
 
-<div className="space-y-6">
-
-
-
-
-
-{/* HERO HEADER */}
-
-
 <div
 
 className="
-theme-header
-relative
-overflow-hidden
-p-8
+
 flex
+
 flex-col
+
+gap-5
+
 lg:flex-row
+
 lg:items-center
+
 lg:justify-between
-gap-6
-"
 
+"
 
 >
 
 
-{/* decoration */}
+<div>
 
 
 <div
 
 className="
-absolute
--right-10
--top-10
-text-[160px]
-opacity-10
-"
 
->
-
-🕌
-
-</div>
-
-
-
-
-<div className="relative z-10">
-
-
-<div
-
-className="
 flex
+
 items-center
-gap-2
-mb-3
-opacity-90
+
+gap-3
+
 "
 
 >
 
-<Sparkles size={18}/>
 
-<span className="text-sm font-semibold">
+<div
 
-Smart Mosque Management
+className="
 
-</span>
+h-12
 
+w-12
+
+rounded-2xl
+
+flex
+
+items-center
+
+justify-center
+
+text-white
+
+shadow-lg
+
+"
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}}
+
+>
+
+<Sparkles size={22}/>
 
 </div>
 
 
 
+
+<div>
 
 
 <h1
 
 className="
-text-4xl
+
+text-3xl
+
 font-black
+
 tracking-tight
+
 "
 
 >
@@ -141,43 +114,27 @@ Dashboard
 </h1>
 
 
-
-
 <p
 
 className="
-mt-3
-max-w-xl
-opacity-90
+
+mt-1
+
+text-sm
+
+opacity-60
+
 "
 
 >
 
-Pantau aktivitas masjid,
-keuangan, jamaah dan agenda
-dalam satu pusat kendali modern.
+Pusat kontrol Smart Mosque Management System
 
 </p>
 
 
 
-<div
-
-className="
-flex
-items-center
-gap-2
-mt-5
-text-sm
-opacity-90
-"
-
->
-
-
-<CalendarDays size={18}/>
-
-{date}
+</div>
 
 
 </div>
@@ -192,18 +149,16 @@ opacity-90
 
 
 
-{/* ACTION AREA */}
-
-
-
 <div
 
 className="
-relative
-z-10
+
 flex
+
 items-center
+
 gap-3
+
 "
 
 >
@@ -213,45 +168,73 @@ gap-3
 <div
 
 className="
-hidden
-md:flex
-items-center
-bg-white/20
-backdrop-blur-xl
-rounded-2xl
-px-4
-h-12
-border
-border-white/20
+
+relative
+
 "
 
 >
 
 
 <Search
+
+className="
+
+absolute
+
+left-4
+
+top-1/2
+
+-translate-y-1/2
+
+opacity-40
+
+"
+
 size={18}
+
 />
 
 
 <input
 
-placeholder="Cari menu..."
+placeholder="Cari data..."
 
 className="
-ml-3
-bg-transparent
+
+h-12
+
+w-full
+
+lg:w-72
+
+rounded-2xl
+
+border
+
+bg-white/50
+
+pl-11
+
+pr-4
+
 outline-none
-placeholder:text-white/70
-w-56
-text-sm
+
+focus:ring-2
+
 "
+
+style={{
+
+borderColor:"var(--primary)"
+
+}}
 
 />
 
 
 </div>
-
-
 
 
 
@@ -259,85 +242,45 @@ text-sm
 <button
 
 className="
+
 h-12
+
 w-12
+
 rounded-2xl
-bg-white/20
-backdrop-blur-xl
+
 border
-border-white/20
+
 flex
+
 items-center
+
 justify-center
-hover:bg-white/30
+
+bg-white/50
+
+hover:shadow-lg
+
 transition
+
 "
 
 >
 
 
-<Bell
-size={20}
-/>
+<Bell size={20}/>
 
 
 </button>
 
 
 
-
 </div>
 
 
 
 
-
 </div>
-
-
-
-
-
-{/* MOBILE SEARCH */}
-
-
-<div
-
-className="
-md:hidden
-theme-card
-flex
-items-center
-gap-3
-px-4
-h-12
-"
-
->
-
-
-<Search size={18}/>
-
-
-<input
-
-placeholder="Cari..."
-
-className="
-bg-transparent
-outline-none
-w-full
-"
-
-/>
-
-
-</div>
-
-
-
-</div>
-
 
 )
 

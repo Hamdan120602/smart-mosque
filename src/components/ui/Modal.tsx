@@ -1,146 +1,96 @@
-'use client';
+"use client";
 
-import {
-  X
-} from 'lucide-react';
+import { ReactNode } from "react";
+import { X } from "lucide-react";
 
-import {
-  ReactNode
-} from 'react';
-
-
-interface ModalProps {
-
+interface Props{
 open:boolean;
-
-onClose:()=>void;
-
 title:string;
-
 children:ReactNode;
-
+onClose:()=>void;
 }
-
-
 
 export default function Modal({
 open,
-onClose,
 title,
-children
-}:ModalProps){
-
+children,
+onClose
+}:Props){
 
 if(!open) return null;
 
-
-
-return (
+return(
 
 <div
-
 className="
 fixed
 inset-0
-z-50
+z-[100]
 flex
 items-center
 justify-center
 bg-black/40
-backdrop-blur-sm
-p-4
+backdrop-blur-md
+p-6
 "
-
 >
 
-
 <div
-
 className="
 w-full
-max-w-lg
-rounded-3xl
+max-w-2xl
+overflow-hidden
+rounded-[32px]
 bg-white
 shadow-2xl
 animate-in
 fade-in
-zoom-in
-duration-200
+zoom-in-95
 "
-
 >
 
-
-{/* HEADER */}
-
 <div
-
 className="
 flex
 items-center
 justify-between
 border-b
-px-6
-py-4
+px-8
+py-6
 "
-
 >
 
-<h2
-
-className="
-text-lg
-font-bold
-text-slate-900
-"
-
->
+<h2 className="text-2xl font-black">
 {title}
 </h2>
 
-
-
 <button
-
 onClick={onClose}
-
 className="
+flex
+h-11
+w-11
+items-center
+justify-center
 rounded-xl
-p-2
 hover:bg-slate-100
 "
-
 >
-
 <X size={20}/>
-
 </button>
-
 
 </div>
 
-
-
-
-{/* BODY */}
-
-<div
-className="
-p-6
-"
->
+<div className="p-8">
 
 {children}
 
 </div>
 
-
+</div>
 
 </div>
 
-
-</div>
-
-)
+);
 
 }

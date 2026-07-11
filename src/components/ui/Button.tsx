@@ -1,45 +1,113 @@
-'use client';
+"use client";
 
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes } from "react";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement>{
+
+  variant?:
+    |"primary"
+    |"secondary"
+    |"danger"
+    |"ghost";
+
+  size?:
+    |"sm"
+    |"md"
+    |"lg";
+
 }
 
 export default function Button({
-  children,
-  className='',
-  ...props
-}:ButtonProps){
+
+children,
+
+variant="primary",
+
+size="md",
+
+className="",
+
+...props
+
+}:Props){
+
+const variants={
+
+primary:
+`
+text-white
+shadow-lg
+hover:scale-[1.02]
+`,
+secondary:
+`
+bg-slate-100
+text-slate-700
+hover:bg-slate-200
+`,
+danger:
+`
+bg-red-600
+text-white
+hover:bg-red-700
+`,
+ghost:
+`
+bg-transparent
+hover:bg-slate-100
+`
+
+};
+
+const sizes={
+
+sm:"h-10 px-4 text-sm",
+
+md:"h-12 px-6 text-base",
+
+lg:"h-14 px-8 text-lg"
+
+};
 
 return(
 
 <button
+
 {...props}
+
+style={
+variant==="primary"
+?
+{
+background:
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+}
+:
+undefined
+}
+
 className={`
 inline-flex
 items-center
 justify-center
-rounded-lg
-bg-emerald-600
-px-4
-py-2.5
-text-sm
+gap-2
+rounded-2xl
 font-semibold
-text-white
 transition-all
-duration-200
-hover:bg-emerald-700
-active:scale-[0.98]
+duration-300
 disabled:opacity-50
+disabled:pointer-events-none
+${variants[variant]}
+${sizes[size]}
 ${className}
 `}
+
 >
 
 {children}
 
 </button>
 
-)
+);
 
 }
