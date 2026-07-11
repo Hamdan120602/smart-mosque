@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   BarChart3
@@ -51,6 +51,77 @@ saldo,
 loading
 
 }=useLaporan();
+
+
+
+const [month,setMonth]=useState("");
+
+const [type,setType]=useState("");
+
+const [category,setCategory]=useState("");
+
+
+
+const filteredData = useMemo(()=>{
+
+
+return dataKas.filter(item=>{
+
+
+const matchType =
+
+type === ""
+
+||
+
+item.type === type;
+
+
+
+const matchCategory =
+
+category === ""
+
+||
+
+item.category
+.toLowerCase()
+.includes(
+category.toLowerCase()
+);
+
+
+
+const matchMonth =
+
+month === ""
+
+||
+
+item.created_at?.startsWith(month);
+
+
+
+return (
+
+matchType &&
+
+matchCategory &&
+
+matchMonth
+
+);
+
+
+});
+
+
+},[
+dataKas,
+month,
+type,
+category
+]);
 
 
 
@@ -171,11 +242,39 @@ return (
 <div className="space-y-8 p-6 lg:p-10">
 
 
-<ReportHeader />
+<ReportHeader
+
+data={filteredData}
+
+/>
 
 
 
-<FilterBar />
+<FilterBar
+
+month={month}
+
+type={type}
+
+category={category}
+
+setMonth={setMonth}
+
+setType={setType}
+
+setCategory={setCategory}
+
+onReset={()=>{
+
+setMonth("");
+
+setType("");
+
+setCategory("");
+
+}}
+
+/>
 
 
 

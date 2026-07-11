@@ -6,25 +6,26 @@ import { supabase } from "@/lib/supabase";
 
 export interface LaporanTransaction {
 
-  id:number;
+id:number;
 
-  title:string;
+title:string;
 
-  category:string;
+category:string;
 
-  type:"income"|"expense";
+type:"income"|"expense";
 
-  amount:number;
+amount:number;
 
-  description?:string;
+description?:string;
 
-  created_at:string;
+created_at:string;
 
 }
 
 
 
 export function useLaporan(){
+
 
 const [dataKas,setDataKas]=useState<LaporanTransaction[]>([]);
 
@@ -38,7 +39,13 @@ async function loadData(){
 setLoading(true);
 
 
-const {data,error}=await supabase
+const {
+
+data,
+
+error
+
+}=await supabase
 
 .from("transactions")
 
@@ -55,10 +62,9 @@ ascending:false
 
 if(error){
 
-console.error(
-"Error laporan:",
-error
-);
+console.error(error);
+
+setLoading(false);
 
 return;
 
@@ -89,6 +95,7 @@ loadData();
 
 
 
+
 const pemasukan = useMemo(()=>{
 
 
@@ -99,13 +106,12 @@ item=>item.type==="income"
 )
 
 .reduce(
-(total,item)=>total+Number(item.amount),
+(total,item)=>total+item.amount,
 0
 );
 
 
 },[dataKas]);
-
 
 
 
@@ -122,7 +128,7 @@ item=>item.type==="expense"
 )
 
 .reduce(
-(total,item)=>total+Number(item.amount),
+(total,item)=>total+item.amount,
 0
 );
 
@@ -134,9 +140,8 @@ item=>item.type==="expense"
 
 
 
-const saldo =
-pemasukan - pengeluaran;
 
+const saldo = pemasukan - pengeluaran;
 
 
 

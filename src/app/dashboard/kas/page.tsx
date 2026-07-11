@@ -11,7 +11,7 @@ removeTransaction
 import BalanceCard
 from "@/components/kas/BalanceCard";
 
-import TransactionModal from "@/components/kas/TransactionModal";
+import TransactionForm from "@/components/kas/TransactionForm";
 
 
 import {
@@ -251,7 +251,7 @@ type="expense"
 
 <div
 
-className="premium-card p-8"
+className="premium-card p-8 space-y-6"
 
 >
 
@@ -307,7 +307,7 @@ Tambah Transaksi
 
 
 
-<TransactionModal />
+<TransactionForm />
 
 
 
@@ -321,7 +321,7 @@ Tambah Transaksi
 
 
 
-<div className="premium-card p-8">
+<div className="premium-card p-8 space-y-6">
 
 
 <h2 className="text-2xl font-bold mb-6">
