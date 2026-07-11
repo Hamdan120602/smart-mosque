@@ -1,6 +1,5 @@
 "use client";
 
-
 import {
 createContext,
 useContext,
@@ -16,22 +15,19 @@ ThemeName
 
 
 
-type ThemeContextType = {
+type ContextType={
 
-theme: ThemeName;
+theme:ThemeName;
 
-setTheme:
-(theme:ThemeName)=>void;
+setTheme:(theme:ThemeName)=>void;
 
-themes:
-typeof themes;
+themes:typeof themes;
 
 };
 
 
 
-const ThemeContext =
-createContext<ThemeContextType | null>(null);
+const ThemeContext=createContext<ContextType|null>(null);
 
 
 
@@ -41,29 +37,24 @@ children
 
 }:{
 
-children:React.ReactNode;
+children:React.ReactNode
 
 }){
 
 
-const [theme,setTheme] =
-useState<ThemeName>("emerald");
+const [theme,setTheme]=useState<ThemeName>("emerald");
 
 
 
 useEffect(()=>{
 
 
-const saved =
+const saved=
 localStorage.getItem("theme");
-
-
 
 if(saved && saved in themes){
 
-setTheme(
-saved as ThemeName
-);
+setTheme(saved as ThemeName);
 
 }
 
@@ -73,32 +64,49 @@ saved as ThemeName
 
 
 
-
 useEffect(()=>{
 
 
-const current =
-themes[theme];
+const data=themes[theme];
 
 
 
-Object.entries(
-current.colors
-
-).forEach(
-([key,value])=>{
+const root=document.documentElement;
 
 
-document.documentElement.style.setProperty(
 
-`--${key}`,
-
-value
-
+root.style.setProperty(
+"--primary",
+data.colors.primary
 );
 
 
-});
+root.style.setProperty(
+"--secondary",
+data.colors.secondary
+);
+
+
+
+root.style.setProperty(
+"--accent",
+data.colors.accent
+);
+
+
+
+root.style.setProperty(
+"--background",
+data.colors.background
+);
+
+
+
+root.style.setProperty(
+"--surface",
+data.colors.card
+);
+
 
 
 localStorage.setItem(
@@ -109,8 +117,6 @@ theme
 
 
 },[theme]);
-
-
 
 
 
@@ -141,26 +147,20 @@ themes
 
 
 
-
-
 export function useTheme(){
 
 
-const context =
-useContext(ThemeContext);
+const ctx=useContext(ThemeContext);
 
 
-
-if(!context){
+if(!ctx)
 
 throw new Error(
-"useTheme must be used inside ThemeProvider"
+"ThemeProvider missing"
 );
 
-}
 
-
-return context;
+return ctx;
 
 
 }

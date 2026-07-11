@@ -12,6 +12,19 @@ Settings
 
 import ThemeSelector from "@/components/settings/ThemeSelector";
 
+import {
+Building2,
+Mail,
+Phone,
+MapPin,
+Globe,
+Bell,
+Save,
+Palette
+} from "lucide-react";
+
+
+
 
 
 export default function SettingsPage(){
@@ -51,9 +64,10 @@ timezone:"Asia/Jakarta"
 
 
 
+
 useEffect(()=>{
 
-loadData();
+load();
 
 },[]);
 
@@ -61,14 +75,9 @@ loadData();
 
 
 
-async function loadData(){
-
-
-setLoading(true);
-
+async function load(){
 
 const data=await getSettings();
-
 
 
 if(data){
@@ -76,7 +85,6 @@ if(data){
 setForm(data);
 
 }
-
 
 
 setLoading(false);
@@ -89,15 +97,14 @@ setLoading(false);
 
 
 
-async function simpan(){
+
+async function save(){
 
 
 setSaving(true);
 
 
-
 const error=await updateSettings(form);
-
 
 
 if(error){
@@ -108,10 +115,9 @@ alert(error.message);
 
 else{
 
-alert("Pengaturan berhasil disimpan");
+alert("Pengaturan berhasil diperbarui");
 
 }
-
 
 
 setSaving(false);
@@ -125,17 +131,18 @@ setSaving(false);
 
 
 
+
 if(loading){
 
 return (
 
 <div className="
 p-10
-text-lg
+text-xl
 font-semibold
 ">
 
-Memuat pengaturan...
+Loading settings...
 
 </div>
 
@@ -148,36 +155,76 @@ Memuat pengaturan...
 
 
 
+
 return (
 
+
 <div className="
-max-w-6xl
-mx-auto
-p-8
+min-h-screen
+p-6
+lg:p-10
 space-y-8
 ">
 
 
-<div>
+
+
+
+{/* HEADER */}
+
+
+<div className="
+relative
+overflow-hidden
+rounded-3xl
+p-8
+text-white
+shadow-xl
+"
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}}
+
+>
+
+
+<div className="
+absolute
+right-10
+top-5
+text-8xl
+opacity-20
+">
+
+🕌
+
+</div>
+
 
 
 <h1 className="
 text-4xl
 font-black
-text-gradient
 ">
 
-Pengaturan Sistem
+Pengaturan Masjid
 
 </h1>
 
 
 <p className="
-text-slate-500
-mt-2
+mt-3
+opacity-90
+max-w-xl
 ">
 
-Kelola identitas masjid dan tampilan aplikasi
+Kelola identitas masjid, tampilan aplikasi,
+dan preferensi sistem Smart Mosque.
 
 </p>
 
@@ -188,22 +235,81 @@ Kelola identitas masjid dan tampilan aplikasi
 
 
 
+
+
+
+
+{/* IDENTITY */}
+
+
 <div className="
 premium-card
 p-8
-space-y-8
+space-y-6
 ">
 
 
+<div className="
+flex
+items-center
+gap-3
+">
+
+
+<div className="
+p-3
+rounded-2xl
+bg-emerald-100
+text-emerald-700
+">
+
+<Building2/>
+
+</div>
+
+
+<div>
+
+<h2 className="
+text-2xl
+font-bold
+">
+
+Identitas Masjid
+
+</h2>
+
+<p className="
+text-slate-500
+">
+
+Informasi utama masjid
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div className="
+grid
+md:grid-cols-2
+gap-6
+">
 
 
 
 <div>
 
 <label className="
-font-bold
-block
-mb-2
+font-semibold
 ">
 
 Nama Masjid
@@ -211,7 +317,30 @@ Nama Masjid
 </label>
 
 
+<div className="
+flex
+items-center
+gap-3
+mt-2
+border
+rounded-2xl
+p-3
+bg-white/70
+">
+
+
+<Building2
+size={20}
+/>
+
+
 <input
+
+className="
+w-full
+outline-none
+bg-transparent
+"
 
 value={form.nama_masjid}
 
@@ -227,14 +356,11 @@ nama_masjid:e.target.value
 
 }
 
-className="
-w-full
-rounded-2xl
-border
-p-4
-"
-
 />
+
+
+</div>
+
 
 </div>
 
@@ -244,90 +370,40 @@ p-4
 
 <div>
 
+
 <label className="
-font-bold
-block
-mb-2
+font-semibold
 ">
 
-Alamat
+Email
 
 </label>
 
 
-<textarea
-
-rows={3}
-
-value={form.alamat}
-
-onChange={(e)=>
-
-setForm({
-
-...form,
-
-alamat:e.target.value
-
-})
-
-}
-
-className="
-w-full
-rounded-2xl
-border
-p-4
-"
-
-/>
-
-</div>
-
-
-
-
-
-
 <div className="
-grid
-md:grid-cols-2
-gap-5
+flex
+items-center
+gap-3
+mt-2
+border
+rounded-2xl
+p-3
+bg-white/70
 ">
 
 
-<input
-
-placeholder="Telepon"
-
-value={form.telepon}
-
-onChange={(e)=>
-
-setForm({
-
-...form,
-
-telepon:e.target.value
-
-})
-
-}
-
-className="
-rounded-2xl
-border
-p-4
-"
-
+<Mail
+size={20}
 />
 
 
-
-
 <input
 
-placeholder="Email"
+className="
+w-full
+outline-none
+bg-transparent
+"
 
 value={form.email}
 
@@ -343,13 +419,78 @@ email:e.target.value
 
 }
 
-className="
-rounded-2xl
-border
-p-4
-"
 
 />
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<label className="
+font-semibold
+">
+
+Alamat
+
+</label>
+
+
+<div className="
+flex
+gap-3
+mt-2
+border
+rounded-2xl
+p-3
+bg-white/70
+">
+
+
+<MapPin/>
+
+<textarea
+
+rows={3}
+
+className="
+w-full
+outline-none
+bg-transparent
+"
+
+value={form.alamat}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+alamat:e.target.value
+
+})
+
+}
+
+
+/>
+
+
+</div>
 
 
 </div>
@@ -360,24 +501,206 @@ p-4
 
 
 
+<div className="
+grid
+md:grid-cols-2
+gap-6
+">
+
+
+
 <div>
 
 <label className="
-font-bold
-block
-mb-4
+font-semibold
 ">
 
-Tema Tampilan
+Telepon
 
 </label>
 
 
+<div className="
+flex
+gap-3
+mt-2
+border
+rounded-2xl
+p-3
+">
+
+
+<Phone/>
+
+
+<input
+
+className="
+w-full
+outline-none
+"
+
+value={form.telepon}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+telepon:e.target.value
+
+})
+
+}
+
+
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<label className="
+font-semibold
+">
+
+Timezone
+
+</label>
+
+
+<div className="
+flex
+gap-3
+mt-2
+border
+rounded-2xl
+p-3
+">
+
+
+<Globe/>
+
+
+<input
+
+className="
+w-full
+outline-none
+"
+
+value={form.timezone}
+
+onChange={(e)=>
+
+setForm({
+
+...form,
+
+timezone:e.target.value
+
+})
+
+}
+
+
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+{/* THEME */}
+
+
+<div className="
+premium-card
+p-8
+space-y-5
+">
+
+
+<div className="
+flex
+items-center
+gap-3
+">
+
+
+<div className="
+p-3
+rounded-2xl
+bg-yellow-100
+text-yellow-700
+">
+
+<Palette/>
+
+</div>
+
+
+<div>
+
+<h2 className="
+text-2xl
+font-bold
+">
+
+Theme Studio
+
+</h2>
+
+
+<p className="
+text-slate-500
+">
+
+Pilih identitas visual aplikasi
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
 <ThemeSelector
 
-
 value={form.tema}
-
 
 onChange={(value)=>
 
@@ -391,8 +714,8 @@ tema:value
 
 }
 
-
 />
+
 
 
 </div>
@@ -404,16 +727,67 @@ tema:value
 
 
 
+
+{/* NOTIFICATION */}
+
+
+<div className="
+premium-card
+p-8
+flex
+justify-between
+items-center
+">
+
+
 <div className="
 flex
+gap-4
 items-center
-gap-3
 ">
+
+
+<Bell/>
+
+
+<div>
+
+<h3 className="
+font-bold
+text-xl
+">
+
+Notifikasi
+
+</h3>
+
+
+<p className="
+text-slate-500
+">
+
+Aktifkan pemberitahuan sistem
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
 
 
 <input
 
 type="checkbox"
+
+className="
+w-6
+h-6
+"
 
 checked={form.notifikasi}
 
@@ -433,14 +807,9 @@ notifikasi:e.target.checked
 />
 
 
-<span>
-
-Aktifkan Notifikasi
-
-</span>
-
-
 </div>
+
+
 
 
 
@@ -450,15 +819,24 @@ Aktifkan Notifikasi
 
 <button
 
-onClick={simpan}
+onClick={save}
 
 disabled={saving}
 
 className="
 btn-premium
+flex
+items-center
+gap-3
+text-lg
 "
 
+
 >
+
+
+<Save/>
+
 
 {
 
@@ -480,14 +858,12 @@ saving
 
 
 
+
+
 </div>
 
-
-
-</div>
 
 
 )
-
 
 }
