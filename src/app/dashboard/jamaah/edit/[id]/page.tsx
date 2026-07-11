@@ -1,76 +1,98 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getJamaah, updateJamaah } from "@/lib/jamaah";
+import { useEffect, useState } from "react";
+import { useJamaah } from "../../hooks/useJamaah";
 
-export default function EditJamaahPage() {
-  const { id } = useParams();
+
+export default function EditJamaahPage(){
+
+  const params = useParams();
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
+  const id = params.id as string;
 
-  const [form, setForm] = useState({
-    name: "",
-    nik: "",
-    gender: "LAKI_LAKI",
-    birth_date: "",
-    phone: "",
-    address: "",
-    occupation: "",
-    group_name: "",
-    status: "AKTIF",
-    join_date: "",
-    notes: "",
+  const {
+    jamaah,
+    updateJamaah
+  } = useJamaah();
+
+
+  const [form,setForm] = useState({
+    name:"",
+    nik:"",
+    gender:"LAKI_LAKI",
+    birth_date:"",
+    phone:"",
+    address:"",
+    occupation:"",
+    status:"",
+    join_date:"",
+    notes:""
   });
 
-  useEffect(() => {
-    loadData();
-  }, []);
 
-  async function loadData() {
-    const data = await getJamaah();
 
-    const item = data.find((x:any)=>x.id==id);
+  useEffect(()=>{
 
-    if(item){
+    const data = jamaah.find(
+      item => item.id === Number(id)
+    );
+
+    if(data){
 
       setForm({
-        name:item.name ?? "",
-        nik:item.nik ?? "",
-        gender:item.gender ?? "LAKI_LAKI",
-        birth_date:item.birth_date ?? "",
-        phone:item.phone ?? "",
-        address:item.address ?? "",
-        occupation:item.occupation ?? "",
-        group_name:item.group_name ?? "",
-        status:item.status ?? "AKTIF",
-        join_date:item.join_date ?? "",
-        notes:item.notes ?? ""
+        name:data.name,
+        nik:data.nik,
+        gender:data.gender,
+        birth_date:data.birthDate,
+        phone:data.phone,
+        address:data.address,
+        occupation:data.occupation,
+        status:data.status,
+        join_date:data.joinDate,
+        notes:data.notes
       });
 
     }
 
-    setLoading(false);
-  }
+  },[id, jamaah]);
 
-  function change(e:any){
+
+
+
+  function handleChange(
+    e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ){
 
     setForm({
-
       ...form,
-
       [e.target.name]:e.target.value
-
     });
 
   }
 
-  async function submit(e:any){
+
+
+
+  async function handleSubmit(
+    e:React.FormEvent
+  ){
 
     e.preventDefault();
 
-    await updateJamaah(Number(id),form);
+
+    await updateJamaah(
+      Number(id),
+      {
+        ...form,
+        gender:
+          form.gender as "LAKI_LAKI" | "PEREMPUAN",
+        status:
+          form.status as any
+      }
+    );
+
 
     alert("Data berhasil diupdate");
 
@@ -78,175 +100,120 @@ export default function EditJamaahPage() {
 
   }
 
-  if(loading){
 
-    return <div>Memuat...</div>
 
-  }
 
-  return(
+return (
 
-<div className="max-w-4xl mx-auto">
+<div className="p-6 space-y-6">
 
-<div className="bg-white rounded-xl shadow p-8">
 
-<h1 className="text-3xl font-bold mb-8">
-
+<h1 className="text-3xl font-bold">
 Edit Jamaah
-
 </h1>
 
+
+
 <form
-onSubmit={submit}
-className="grid grid-cols-2 gap-6"
+onSubmit={handleSubmit}
+className="bg-white rounded-xl shadow p-6 space-y-4"
 >
 
-<div>
 
-<label>Nama</label>
 
 <input
 name="name"
 value={form.name}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+onChange={handleChange}
+placeholder="Nama"
+className="border p-3 rounded w-full"
 />
 
-</div>
 
-<div>
-
-<label>NIK</label>
 
 <input
 name="nik"
 value={form.nik}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+onChange={handleChange}
+placeholder="NIK"
+className="border p-3 rounded w-full"
 />
 
-</div>
 
-<div>
-
-<label>Jenis Kelamin</label>
 
 <select
 name="gender"
 value={form.gender}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+onChange={handleChange}
+className="border p-3 rounded w-full"
 >
 
-<option value="LAKI_LAKI">Laki-laki</option>
+<option value="LAKI_LAKI">
+Laki-laki
+</option>
 
-<option value="PEREMPUAN">Perempuan</option>
+<option value="PEREMPUAN">
+Perempuan
+</option>
 
 </select>
 
-</div>
 
-<div>
-
-<label>No HP</label>
 
 <input
 name="phone"
 value={form.phone}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+onChange={handleChange}
+placeholder="Telepon"
+className="border p-3 rounded w-full"
 />
 
-</div>
 
-<div className="col-span-2">
-
-<label>Alamat</label>
-
-<textarea
-rows={3}
-name="address"
-value={form.address}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
-/>
-
-</div>
-
-<div>
-
-<label>Pekerjaan</label>
 
 <input
 name="occupation"
 value={form.occupation}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+onChange={handleChange}
+placeholder="Pekerjaan"
+className="border p-3 rounded w-full"
 />
 
-</div>
 
-<div>
-
-<label>Status</label>
-
-<select
-name="status"
-value={form.status}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
->
-
-<option value="AKTIF">Aktif</option>
-
-<option value="NONAKTIF">Non Aktif</option>
-
-</select>
-
-</div>
-
-<div className="col-span-2">
-
-<label>Catatan</label>
 
 <textarea
-rows={4}
-name="notes"
-value={form.notes}
-onChange={change}
-className="w-full border rounded-lg p-3 mt-2"
+name="address"
+value={form.address}
+onChange={handleChange}
+placeholder="Alamat"
+className="border p-3 rounded w-full"
 />
 
-</div>
 
-<div className="col-span-2 flex justify-end gap-3">
 
-<button
-type="button"
-onClick={()=>router.back()}
-className="px-5 py-3 border rounded-lg"
->
+<textarea
+name="notes"
+value={form.notes}
+onChange={handleChange}
+placeholder="Catatan"
+className="border p-3 rounded w-full"
+/>
 
-Batal
 
-</button>
 
 <button
-className="bg-emerald-600 text-white px-6 py-3 rounded-lg"
+type="submit"
+className="bg-blue-600 text-white px-6 py-3 rounded-xl"
 >
-
-Update
-
+Simpan Perubahan
 </button>
 
-</div>
 
 </form>
 
-</div>
 
 </div>
 
 );
+
 
 }

@@ -37,7 +37,13 @@ export default function TambahJamaahPage() {
 
     try{
 
-      await createJamaah(form);
+      await createJamaah({
+        ...form,
+        gender:
+          form.gender as "LAKI_LAKI" | "PEREMPUAN",
+        status:
+          form.status as any
+      });
 
       alert("Data berhasil disimpan");
 

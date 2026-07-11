@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus } from "lucide-react";
-import { createTransaction } from "@/app/dashboard/kas/actions";
+import { Plus, X } from "lucide-react";
+import { addTransaction } from "@/app/dashboard/kas/actions";
 
 
 export default function TransactionModal(){
@@ -22,6 +22,19 @@ description:""
 
 
 
+function handleChange(
+e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+){
+
+setForm({
+...form,
+[e.target.name]:e.target.value
+});
+
+}
+
+
+
 async function save(){
 
 if(!form.title || !form.amount){
@@ -29,18 +42,16 @@ return;
 }
 
 
-await createTransaction({
+const data = new FormData();
 
-title:form.title,
+data.append("title",form.title);
+data.append("category",form.category);
+data.append("amount",form.amount);
+data.append("description",form.description);
 
-category:
-form.category as "PEMASUKAN" | "PENGELUARAN",
 
-amount:Number(form.amount),
+await addTransaction(data);
 
-description:form.description
-
-});
 
 
 setForm({
@@ -92,11 +103,10 @@ Tambah Transaksi
 
 
 
+
 <AnimatePresence>
 
-
 {
-
 open && (
 
 <motion.div
@@ -120,8 +130,7 @@ z-50
 flex
 items-center
 justify-center
-bg-black/40
-backdrop-blur-sm
+bg-black/50
 "
 
 >
@@ -130,46 +139,29 @@ backdrop-blur-sm
 <motion.div
 
 initial={{
-scale:.9,
-y:30
+scale:0.9
 }}
 
 animate={{
-scale:1,
-y:0
-}}
-
-exit={{
-scale:.9,
-y:30
+scale:1
 }}
 
 className="
-w-full
-max-w-lg
-rounded-3xl
 bg-white
-p-8
-shadow-2xl
+rounded-3xl
+p-6
+w-full
+max-w-md
+space-y-4
 "
 
 >
 
 
-<div className="
-flex
-items-center
-justify-between
-mb-6
-">
+<div className="flex justify-between items-center">
 
-<h2 className="
-text-2xl
-font-bold
-">
-
+<h2 className="text-xl font-bold">
 Tambah Transaksi
-
 </h2>
 
 
@@ -181,59 +173,46 @@ onClick={()=>setOpen(false)}
 
 </button>
 
-
 </div>
 
 
 
-<div className="
-space-y-4
-">
-
-
 <input
 
-className="
-w-full
-rounded-xl
-border
-px-4
-py-3
-"
-
-placeholder="Nama transaksi"
+name="title"
 
 value={form.title}
 
-onChange={(e)=>
-setForm({
-...form,
-title:e.target.value
-})
-}
+onChange={handleChange}
+
+placeholder="Judul transaksi"
+
+className="
+border
+rounded-xl
+p-3
+w-full
+"
 
 />
 
 
 
+
 <select
 
-className="
-w-full
-rounded-xl
-border
-px-4
-py-3
-"
+name="category"
 
 value={form.category}
 
-onChange={(e)=>
-setForm({
-...form,
-category:e.target.value
-})
-}
+onChange={handleChange}
+
+className="
+border
+rounded-xl
+p-3
+w-full
+"
 
 >
 
@@ -254,26 +233,22 @@ Pengeluaran
 
 <input
 
-type="number"
-
-className="
-w-full
-rounded-xl
-border
-px-4
-py-3
-"
-
-placeholder="Nominal"
+name="amount"
 
 value={form.amount}
 
-onChange={(e)=>
-setForm({
-...form,
-amount:e.target.value
-})
-}
+onChange={handleChange}
+
+placeholder="Jumlah"
+
+type="number"
+
+className="
+border
+rounded-xl
+p-3
+w-full
+"
 
 />
 
@@ -282,26 +257,23 @@ amount:e.target.value
 
 <textarea
 
-className="
-w-full
-rounded-xl
-border
-px-4
-py-3
-"
-
-placeholder="Keterangan"
+name="description"
 
 value={form.description}
 
-onChange={(e)=>
-setForm({
-...form,
-description:e.target.value
-})
-}
+onChange={handleChange}
+
+placeholder="Keterangan"
+
+className="
+border
+rounded-xl
+p-3
+w-full
+"
 
 />
+
 
 
 
@@ -310,25 +282,19 @@ description:e.target.value
 onClick={save}
 
 className="
-w-full
-rounded-xl
-bg-emerald-600
-py-3
-font-bold
+bg-blue-600
 text-white
-hover:bg-emerald-700
-transition
+rounded-xl
+px-5
+py-3
+w-full
 "
 
 >
 
-Simpan Transaksi
+Simpan
 
 </button>
-
-
-
-</div>
 
 
 
@@ -341,12 +307,11 @@ Simpan Transaksi
 
 }
 
-
 </AnimatePresence>
 
 
 </>
 
-)
+);
 
 }
