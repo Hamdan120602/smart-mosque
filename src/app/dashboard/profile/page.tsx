@@ -1,119 +1,551 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import {
+  useEffect,
+  useState
+} from "react";
 
-export default function ProfilePage() {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+import {
+  supabase
+} from "@/lib/supabase";
 
-  const [email, setEmail] = useState("");
-  const [nama, setNama] = useState("");
-  const [masjid, setMasjid] = useState("");
+import {
+  Camera,
+  Save,
+  LogOut
+} from "lucide-react";
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
+import {
+  useRouter
+} from "next/navigation";
 
-  async function loadProfile() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
 
-    if (user) {
-      setEmail(user.email || "");
-      setNama(user.user_metadata?.full_name || "");
-      setMasjid(user.user_metadata?.nama_masjid || "");
-    }
+export default function ProfilePage(){
 
-    setLoading(false);
-  }
+const router = useRouter();
 
-  async function simpan() {
-    setSaving(true);
 
-    const { error } = await supabase.auth.updateUser({
-      data: {
-        full_name: nama,
-        nama_masjid: masjid,
-      },
-    });
+const [name,setName]=useState("");
 
-    setSaving(false);
+const [role,setRole]=useState("Takmir");
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+const [avatar,setAvatar]=useState("");
 
-    alert("Profil berhasil diperbarui.");
-  }
+const [file,setFile]=useState<File|null>(null);
 
-  if (loading) {
-    return (
-      <div className="p-8">
-        Memuat data...
-      </div>
-    );
-  }
+const [loading,setLoading]=useState(false);
 
-  return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-3xl shadow-lg p-8">
 
-        <h1 className="text-3xl font-bold mb-8">
-          Profil Akun
-        </h1>
 
-        <div className="space-y-6">
+useEffect(()=>{
 
-          <div>
-            <label className="block mb-2 font-semibold">
-              Email
-            </label>
+async function loadUser(){
 
-            <input
-              disabled
-              value={email}
-              className="w-full rounded-xl border bg-slate-100 p-3"
-            />
-          </div>
+const {
+data
+}=await supabase.auth.getUser();
 
-          <div>
-            <label className="block mb-2 font-semibold">
-              Nama Lengkap
-            </label>
 
-            <input
-              value={nama}
-              onChange={(e) => setNama(e.target.value)}
-              className="w-full rounded-xl border p-3"
-            />
-          </div>
+const user=data.user;
 
-          <div>
-            <label className="block mb-2 font-semibold">
-              Nama Masjid
-            </label>
 
-            <input
-              value={masjid}
-              onChange={(e) => setMasjid(e.target.value)}
-              className="w-full rounded-xl border p-3"
-            />
-          </div>
+if(user){
 
-          <button
-            onClick={simpan}
-            disabled={saving}
-            className="rounded-xl bg-emerald-600 px-6 py-3 text-white hover:bg-emerald-700"
-          >
-            {saving ? "Menyimpan..." : "Simpan Perubahan"}
-          </button>
+setName(
+user.user_metadata?.name || 
+user.email?.split("@")[0] ||
+"Admin"
+);
 
-        </div>
 
-      </div>
-    </div>
-  );
+setRole(
+user.user_metadata?.role ||
+"Takmir"
+);
+
+
+setAvatar(
+user.user_metadata?.avatar ||
+""
+);
+
+}
+
+}
+
+
+loadUser();
+
+
+},[]);
+
+
+
+
+
+async function uploadAvatar(){
+
+if(!file) return avatar;
+
+
+const filename =
+`${Date.now()}-${file.name}`;
+
+
+const {
+error
+}=await supabase.storage
+
+.from("avatars")
+
+.upload(
+filename,
+file
+);
+
+
+
+if(error){
+
+console.log(error);
+
+return avatar;
+
+}
+
+
+
+const {
+data
+}=supabase.storage
+
+.from("avatars")
+
+.getPublicUrl(filename);
+
+
+
+return data.publicUrl;
+
+
+}
+
+
+
+
+
+
+
+async function saveProfile(){
+
+setLoading(true);
+
+
+let avatarUrl=avatar;
+
+
+if(file){
+
+avatarUrl=await uploadAvatar();
+
+}
+
+
+
+const {
+error
+}=await supabase.auth.updateUser({
+
+data:{
+
+name,
+
+role,
+
+avatar:avatarUrl
+
+}
+
+});
+
+
+
+if(error){
+
+alert(error.message);
+
+setLoading(false);
+
+return;
+
+}
+
+
+
+setAvatar(avatarUrl);
+
+
+setLoading(false);
+
+
+alert(
+"Profil berhasil disimpan"
+);
+
+
+}
+
+
+
+
+
+
+async function logout(){
+
+await supabase.auth.signOut();
+
+router.push("/auth/login");
+
+router.refresh();
+
+}
+
+
+
+
+
+
+return (
+
+<div className="
+p-6
+lg:p-10
+space-y-8
+">
+
+
+<div>
+
+<h1 className="
+text-3xl
+font-black
+text-slate-800
+">
+
+Profil Pengguna
+
+</h1>
+
+
+<p className="
+text-slate-500
+mt-1
+">
+
+Kelola akun Smart Mosque
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div className="
+max-w-xl
+bg-white
+rounded-3xl
+shadow-xl
+border
+p-8
+space-y-6
+">
+
+
+
+
+
+<div className="
+flex
+items-center
+gap-5
+">
+
+
+<div className="
+relative
+">
+
+{
+
+avatar ?
+
+<img
+
+src={avatar}
+
+className="
+h-24
+w-24
+rounded-3xl
+object-cover
+"
+
+/>
+
+:
+
+<div
+
+className="
+h-24
+w-24
+rounded-3xl
+bg-emerald-600
+text-white
+flex
+items-center
+justify-center
+text-3xl
+font-bold
+"
+
+>
+
+{name.charAt(0).toUpperCase()}
+
+</div>
+
+}
+
+
+
+<label
+
+className="
+absolute
+right-0
+bottom-0
+bg-white
+shadow
+rounded-full
+p-2
+cursor-pointer
+"
+
+>
+
+<Camera size={18}/>
+
+
+<input
+
+type="file"
+
+hidden
+
+accept="image/*"
+
+onChange={
+e=>
+setFile(
+e.target.files?.[0] || null
+)
+}
+
+/>
+
+
+</label>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+
+<label className="
+text-sm
+font-bold
+"
+
+>
+
+Nama
+
+</label>
+
+
+<input
+
+value={name}
+
+onChange={
+e=>setName(e.target.value)
+}
+
+className="
+mt-2
+w-full
+rounded-2xl
+border
+p-4
+"
+
+/>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+
+<label className="
+text-sm
+font-bold
+"
+
+>
+
+Role
+
+</label>
+
+
+<input
+
+value={role}
+
+onChange={
+e=>setRole(e.target.value)
+}
+
+className="
+mt-2
+w-full
+rounded-2xl
+border
+p-4
+"
+
+/>
+
+
+</div>
+
+
+
+
+
+
+
+
+<button
+
+onClick={saveProfile}
+
+disabled={loading}
+
+className="
+w-full
+rounded-2xl
+bg-emerald-600
+hover:bg-emerald-700
+py-4
+text-white
+font-bold
+flex
+items-center
+justify-center
+gap-2
+"
+
+>
+
+
+<Save size={20}/>
+
+
+{
+
+loading
+?
+"Menyimpan..."
+:
+"Simpan Profil"
+
+}
+
+
+</button>
+
+
+
+
+
+
+
+
+<button
+
+onClick={logout}
+
+className="
+w-full
+rounded-2xl
+border
+py-4
+text-red-600
+font-bold
+flex
+items-center
+justify-center
+gap-2
+hover:bg-red-50
+"
+
+>
+
+<LogOut size={20}/>
+
+Logout
+
+</button>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+);
+
+
 }
