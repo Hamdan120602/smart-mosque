@@ -1,31 +1,35 @@
 "use client";
 
-import { useTheme } from "@/context/ThemeContext";
 import { themes, ThemeName } from "@/themes/themes";
+import { useTheme } from "@/context/ThemeContext";
+import { Check } from "lucide-react";
 
 
 interface Props {
-
   value:string;
-
   onChange:(value:string)=>void;
-
 }
 
 
-
 export default function ThemeSelector({
-
-value,
-
-onChange
-
+  value,
+  onChange
 }:Props){
 
 
 const {
-setTheme
+  setTheme
 }=useTheme();
+
+
+
+function changeTheme(key:ThemeName){
+
+  setTheme(key);
+
+  onChange(key);
+
+}
 
 
 
@@ -33,9 +37,9 @@ return (
 
 <div className="
 grid
-md:grid-cols-2
-xl:grid-cols-3
-gap-6
+grid-cols-2
+md:grid-cols-5
+gap-4
 ">
 
 
@@ -46,7 +50,6 @@ Object.entries(themes).map(([key,item])=>{
 const active=value===key;
 
 
-
 return (
 
 <button
@@ -55,51 +58,26 @@ key={key}
 
 type="button"
 
-onClick={()=>{
-
-setTheme(key as ThemeName);
-
-onChange(key);
-
-}}
-
+onClick={()=>changeTheme(key as ThemeName)}
 
 className={`
 relative
-overflow-hidden
-rounded-3xl
-p-5
-text-left
+group
+rounded-2xl
 border
+p-3
 transition-all
 duration-300
-shadow-lg
+text-left
 
-${
-
-active
-
+${active
 ?
-
-"ring-4 ring-emerald-400 scale-[1.03]"
-
+"ring-2 ring-offset-2 ring-emerald-500 shadow-lg"
 :
-
-"hover:-translate-y-2"
-
+"hover:-translate-y-1 hover:shadow-md"
 }
 
 `}
-
-
-style={{
-
-background:item.colors.card,
-
-borderColor:item.colors.accent
-
-}}
-
 
 >
 
@@ -107,155 +85,113 @@ borderColor:item.colors.accent
 <div
 
 className="
-h-28
-rounded-2xl
+h-14
+rounded-xl
+mb-3
 flex
 items-center
 justify-center
-mb-5
 "
 
 style={{
 
 background:
-
-`linear-gradient(
-135deg,
+`linear-gradient(135deg,
 ${item.colors.primary},
-${item.colors.secondary}
-)`
+${item.colors.accent})`
 
 }}
 
 >
 
+
+{
+active &&
 
 <div className="
-text-5xl
+bg-white
+rounded-full
+p-1
+shadow
 ">
 
-🕌
+<Check
+size={16}
+className="text-emerald-600"
+/>
+
+</div>
+
+}
+
 
 </div>
 
 
-</div>
 
-
-
-<h3
-
-className="
-text-xl
+<p className="
+text-xs
 font-bold
-"
-
-style={{
-
-color:item.colors.primary
-
-}}
-
->
+truncate
+">
 
 {item.name}
 
-</h3>
-
+</p>
 
 
 <div className="
 flex
-gap-3
-mt-4
+gap-1
+mt-2
 ">
 
-
-<div
+<span
 
 className="
-w-8
-h-8
+w-3
+h-3
 rounded-full
 "
 
 style={{
-
 background:item.colors.primary
-
 }}
 
 />
 
 
-<div
+<span
 
 className="
-w-8
-h-8
+w-3
+h-3
 rounded-full
 "
 
 style={{
-
 background:item.colors.secondary
-
 }}
 
 />
 
 
-<div
+<span
 
 className="
-w-8
-h-8
+w-3
+h-3
 rounded-full
 "
 
 style={{
-
 background:item.colors.accent
-
 }}
 
 />
 
 
 </div>
-
-
-
-{
-
-active &&
-
-(
-
-<div
-
-className="
-absolute
-top-4
-right-4
-px-3
-py-1
-rounded-full
-text-xs
-font-bold
-bg-emerald-600
-text-white
-"
-
->
-
-AKTIF
-
-</div>
-
-)
-
-}
 
 
 
@@ -272,6 +208,6 @@ AKTIF
 </div>
 
 
-);
+)
 
 }
