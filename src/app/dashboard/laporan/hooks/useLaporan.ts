@@ -1,53 +1,162 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
-const dataKas = [
-  {
-    id: 1,
-    title: "Donasi Jumat",
-    category: "INCOME",
-    amount: 500000
-  },
-  {
-    id: 2,
-    title: "Listrik Masjid",
-    category: "EXPENSE",
-    amount: 150000
-  },
-  {
-    id: 3,
-    title: "Kotak Amal",
-    category: "INCOME",
-    amount: 300000
-  }
-];
+
+export interface LaporanTransaction {
+
+  id:number;
+
+  title:string;
+
+  category:string;
+
+  type:"income"|"expense";
+
+  amount:number;
+
+  description?:string;
+
+  created_at:string;
+
+}
+
 
 
 export function useLaporan(){
 
-  const pemasukan = useMemo(() =>
-    dataKas
-      .filter(item => item.category === "INCOME")
-      .reduce((total,item)=> total + item.amount,0)
-  ,[]);
+const [dataKas,setDataKas]=useState<LaporanTransaction[]>([]);
+
+const [loading,setLoading]=useState(true);
 
 
-  const pengeluaran = useMemo(() =>
-    dataKas
-      .filter(item => item.category === "EXPENSE")
-      .reduce((total,item)=> total + item.amount,0)
-  ,[]);
+
+async function loadData(){
 
 
-  const saldo = pemasukan - pengeluaran;
+setLoading(true);
 
 
-  return {
-    dataKas,
-    pemasukan,
-    pengeluaran,
-    saldo
-  };
+const {data,error}=await supabase
+
+.from("transactions")
+
+.select("*")
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+if(error){
+
+console.error(
+"Error laporan:",
+error
+);
+
+return;
+
+}
+
+
+
+setDataKas(
+(data || []) as LaporanTransaction[]
+);
+
+
+setLoading(false);
+
+
+}
+
+
+
+
+useEffect(()=>{
+
+loadData();
+
+},[]);
+
+
+
+
+
+const pemasukan = useMemo(()=>{
+
+
+return dataKas
+
+.filter(
+item=>item.type==="income"
+)
+
+.reduce(
+(total,item)=>total+Number(item.amount),
+0
+);
+
+
+},[dataKas]);
+
+
+
+
+
+
+
+const pengeluaran = useMemo(()=>{
+
+
+return dataKas
+
+.filter(
+item=>item.type==="expense"
+)
+
+.reduce(
+(total,item)=>total+Number(item.amount),
+0
+);
+
+
+},[dataKas]);
+
+
+
+
+
+
+const saldo =
+pemasukan - pengeluaran;
+
+
+
+
+
+
+return {
+
+dataKas,
+
+pemasukan,
+
+pengeluaran,
+
+saldo,
+
+loading,
+
+refresh:loadData
+
+};
+
 
 }
