@@ -1,29 +1,33 @@
 "use client";
 
 import {
-CalendarRange,
-Filter,
-RotateCcw,
-FileSpreadsheet,
-FileText
+  CalendarRange,
+  Filter,
+  RotateCcw,
+  FileSpreadsheet,
+  Printer
 } from "lucide-react";
 
+import { exportExcel } from "@/lib/export/excel";
 
-interface Props{
 
-month:string;
+interface Props {
 
-type:string;
+  month:string;
 
-category:string;
+  type:string;
 
-setMonth:(value:string)=>void;
+  category:string;
 
-setType:(value:string)=>void;
+  setMonth:(value:string)=>void;
 
-setCategory:(value:string)=>void;
+  setType:(value:string)=>void;
 
-onReset?:()=>void;
+  setCategory:(value:string)=>void;
+
+  onReset?:()=>void;
+
+  data:any[];
 
 }
 
@@ -31,21 +35,31 @@ onReset?:()=>void;
 
 export default function FilterBar({
 
-month,
+  month,
 
-type,
+  type,
 
-category,
+  category,
 
-setMonth,
+  setMonth,
 
-setType,
+  setType,
 
-setCategory,
+  setCategory,
 
-onReset
+  onReset,
+
+  data
 
 }:Props){
+
+
+
+function printReport(){
+
+  window.print();
+
+}
 
 
 
@@ -55,6 +69,7 @@ return (
 
 
 <div className="grid gap-4 lg:grid-cols-6">
+
 
 
 <div className="lg:col-span-2">
@@ -84,9 +99,7 @@ type="month"
 
 value={month}
 
-onChange={(e)=>
-setMonth(e.target.value)
-}
+onChange={(e)=>setMonth(e.target.value)}
 
 className="w-full rounded-2xl border pl-11 pr-4 py-3"
 
@@ -103,6 +116,7 @@ className="w-full rounded-2xl border pl-11 pr-4 py-3"
 
 <div>
 
+
 <label className="mb-2 block text-sm font-semibold">
 
 Jenis
@@ -114,13 +128,12 @@ Jenis
 
 value={type}
 
-onChange={(e)=>
-setType(e.target.value)
-}
+onChange={(e)=>setType(e.target.value)}
 
 className="w-full rounded-2xl border p-3"
 
 >
+
 
 <option value="">
 
@@ -128,11 +141,13 @@ Semua
 
 </option>
 
+
 <option value="income">
 
 Pemasukan
 
 </option>
+
 
 <option value="expense">
 
@@ -152,6 +167,7 @@ Pengeluaran
 
 <div>
 
+
 <label className="mb-2 block text-sm font-semibold">
 
 Kategori
@@ -163,9 +179,7 @@ Kategori
 
 value={category}
 
-onChange={(e)=>
-setCategory(e.target.value)
-}
+onChange={(e)=>setCategory(e.target.value)}
 
 className="w-full rounded-2xl border p-3"
 
@@ -178,11 +192,6 @@ Semua
 
 </option>
 
-<option value="infaq">
-
-Infaq
-
-</option>
 
 <option value="donasi">
 
@@ -190,11 +199,20 @@ Donasi
 
 </option>
 
+
+<option value="infaq">
+
+Infaq
+
+</option>
+
+
 <option value="operasional">
 
 Operasional
 
 </option>
+
 
 <option value="listrik">
 
@@ -217,13 +235,23 @@ Listrik
 
 <button
 
-className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 py-3 text-white"
+className="
+flex
+w-full
+items-center
+justify-center
+gap-2
+rounded-2xl
+bg-slate-900
+py-3
+text-white
+"
 
 >
 
 <Filter size={18}/>
 
-Filter Aktif
+Filter
 
 </button>
 
@@ -241,7 +269,7 @@ Filter Aktif
 
 onClick={onReset}
 
-className="rounded-2xl border p-3"
+className="rounded-2xl border p-3 hover:bg-slate-100"
 
 title="Reset"
 
@@ -253,11 +281,14 @@ title="Reset"
 
 
 
+
 <button
 
-className="rounded-2xl border p-3"
+onClick={()=>exportExcel(data)}
 
-title="Excel"
+className="rounded-2xl border p-3 hover:bg-slate-100"
+
+title="Export Excel"
 
 >
 
@@ -268,28 +299,32 @@ title="Excel"
 
 
 
+
 <button
 
-className="rounded-2xl border p-3"
+onClick={printReport}
 
-title="PDF"
+className="rounded-2xl border p-3 hover:bg-slate-100"
+
+title="Print"
 
 >
 
-<FileText size={18}/>
+<Printer size={18}/>
 
 </button>
 
 
-</div>
-
-
 
 </div>
 
 
 </div>
 
-)
+
+</div>
+
+
+);
 
 }

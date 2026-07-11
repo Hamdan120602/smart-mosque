@@ -1,13 +1,18 @@
 import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 
 export function exportExcel(data:any[]){
 
 
-const worksheet =
-XLSX.utils.json_to_sheet(
+const rows=data.map(item=>({
 
-data.map(item=>({
+Tanggal:item.created_at
+?
+new Date(item.created_at)
+.toLocaleDateString("id-ID")
+:
+"-",
 
 Transaksi:item.title,
 
@@ -22,11 +27,14 @@ item.type==="income"
 
 Jumlah:item.amount,
 
-Tanggal:item.created_at
+Keterangan:item.description || ""
 
-}))
+}));
 
-);
+
+
+const worksheet =
+XLSX.utils.json_to_sheet(rows);
 
 
 
@@ -36,23 +44,40 @@ XLSX.utils.book_new();
 
 
 XLSX.utils.book_append_sheet(
-
 workbook,
-
 worksheet,
-
-"Laporan"
-
+"Laporan Kas"
 );
 
 
 
-XLSX.writeFile(
-
+const excelBuffer =
+XLSX.write(
 workbook,
+{
+bookType:"xlsx",
+type:"array"
+}
+);
 
-"laporan-keuangan-masjid.xlsx"
 
+
+const blob =
+new Blob(
+[
+excelBuffer
+],
+{
+type:
+"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}
+);
+
+
+
+saveAs(
+blob,
+"Laporan-Keuangan-Masjid.xlsx"
 );
 
 
