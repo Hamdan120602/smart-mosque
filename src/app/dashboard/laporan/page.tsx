@@ -264,6 +264,8 @@ setType={setType}
 
 setCategory={setCategory}
 
+data={filteredData}
+
 onReset={()=>{
 
 setMonth("");
