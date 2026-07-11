@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
- LayoutDashboard,
- WalletCards,
- Users,
- CalendarDays,
- FileText,
- Settings,
- ChevronLeft,
- ChevronRight,
- Landmark,
- X
+LayoutDashboard,
+WalletCards,
+Users,
+CalendarDays,
+FileText,
+Settings,
+ChevronLeft,
+ChevronRight,
+Landmark,
+X
 } from 'lucide-react';
 
 
@@ -89,16 +89,20 @@ return (
 className={`
 
 fixed
-left-0
 top-0
+left-0
 z-50
 h-screen
-border-r
-bg-white
+
 transition-all
 duration-300
 
-${collapsed?'w-[90px]':'w-[270px]'}
+${collapsed
+?
+'w-[88px]'
+:
+'w-[270px]'
+}
 
 ${mobileOpen
 ?
@@ -115,12 +119,50 @@ ${mobileOpen
 <div
 
 className="
+
+h-full
+
+m-3
+
+rounded-3xl
+
+border
+
+border-white/30
+
+bg-white/70
+
+backdrop-blur-xl
+
+shadow-[0_20px_60px_rgba(0,0,0,.08)]
+
+overflow-hidden
+
+"
+
+>
+
+
+{/* HEADER */}
+
+<div
+
+className="
+
+h-24
+
 flex
-h-20
+
 items-center
+
 justify-between
-border-b
+
 px-5
+
+border-b
+
+border-slate-200/50
+
 "
 
 >
@@ -132,36 +174,63 @@ px-5
 <div
 
 className="
-flex
+
 h-12
+
 w-12
-items-center
-justify-center
+
 rounded-2xl
-bg-emerald-600
+
+flex
+
+items-center
+
+justify-center
+
 text-white
+
+shadow-lg
+
 "
+
+style={{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}}
 
 >
 
-<Landmark/>
+
+<Landmark size={25}/>
+
 
 </div>
 
 
 
+
 {
-!collapsed&&
+
+!collapsed &&
 
 <div>
 
-<h2 className="font-bold">
+<h2 className="font-black text-lg">
+
 Smart Mosque
+
 </h2>
 
+
 <p className="text-xs text-slate-500">
+
 Management System
+
 </p>
+
 
 </div>
 
@@ -170,6 +239,8 @@ Management System
 
 
 </div>
+
+
 
 
 
@@ -178,24 +249,44 @@ Management System
 onClick={()=>setCollapsed(!collapsed)}
 
 className="
+
 hidden
+
+md:flex
+
+h-8
+
+w-8
+
+items-center
+
+justify-center
+
 rounded-xl
-p-2
+
 hover:bg-slate-100
-md:block
+
 "
 
 >
 
 {
+
 collapsed
+
 ?
-<ChevronRight/>
+
+<ChevronRight size={18}/>
+
 :
-<ChevronLeft/>
+
+<ChevronLeft size={18}/>
+
 }
 
+
 </button>
+
 
 
 
@@ -203,9 +294,7 @@ collapsed
 
 onClick={()=>setMobileOpen?.(false)}
 
-className="
-md:hidden
-"
+className="md:hidden"
 
 >
 
@@ -214,30 +303,45 @@ md:hidden
 </button>
 
 
+
 </div>
 
 
 
 
 
-<nav className="
-space-y-2
+
+
+
+<nav
+
+className="
+
 p-4
-">
+
+space-y-2
+
+"
+
+>
 
 
 {
+
 menus.map(item=>{
 
 
 const Icon=item.icon;
 
+
 const active=
+
 pathname===item.href;
 
 
 
 return (
+
 
 <Link
 
@@ -247,36 +351,104 @@ href={item.href}
 
 onClick={()=>setMobileOpen?.(false)}
 
+
 className={`
+
+group
+
+relative
+
 flex
+
 items-center
+
 gap-4
+
 rounded-2xl
+
 px-4
-py-3
-transition
+
+py-3.5
+
+transition-all
+
+duration-300
+
 
 ${active
+
 ?
-'bg-emerald-600 text-white'
+
+"text-white shadow-lg"
+
 :
-'text-slate-600 hover:bg-emerald-50'
+
+"text-slate-600 hover:bg-slate-100"
+
 }
 
+
 `}
+
+
+style={active?
+
+{
+
+background:
+
+"linear-gradient(135deg,var(--primary),var(--secondary))"
+
+}
+
+:
+
+{}
+
+}
+
 
 >
 
 
-<Icon size={22}/>
+<Icon
+
+size={21}
+
+className={
+
+active
+
+?
+
+"text-white"
+
+:
+
+"group-hover:text-[var(--primary)]"
+
+}
+
+/>
+
 
 
 {
-!collapsed&&
-<span>
+
+!collapsed &&
+
+<span
+
+className="font-semibold"
+
+>
+
 {item.name}
+
 </span>
+
 }
+
 
 
 </Link>
@@ -290,44 +462,102 @@ ${active
 }
 
 
-
 </nav>
 
 
 
 
-<div className="absolute bottom-0 w-full border-t p-4">
 
 
-<Link
 
-href="/dashboard/settings"
+
+
+
+{/* FOOTER */}
+
+<div
 
 className="
-flex
-items-center
-gap-4
-rounded-xl
-p-3
-hover:bg-slate-100
+
+absolute
+
+bottom-0
+
+left-0
+
+w-full
+
+p-4
+
+border-t
+
+border-slate-200/50
+
 "
 
 >
 
-<Settings/>
+
+<Link
+
+
+href="/dashboard/settings"
+
+
+className="
+
+flex
+
+items-center
+
+gap-4
+
+rounded-2xl
+
+px-4
+
+py-3
+
+text-slate-600
+
+hover:bg-slate-100
+
+transition
+
+"
+
+
+>
+
+
+<Settings size={21}/>
+
 
 {
-!collapsed&&
-<span>
+
+!collapsed &&
+
+<span className="font-semibold">
+
 Pengaturan
+
 </span>
+
 }
+
+
 
 </Link>
 
 
+
 </div>
 
+
+
+
+
+</div>
 
 
 </aside>
