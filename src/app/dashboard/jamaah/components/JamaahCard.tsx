@@ -148,7 +148,7 @@ text-sm
 text-gray-500
 ">
 
-{item.gender==="LAKI_LAKI"
+{item.gender==="LAKI-LAKI"
 ?
 "Laki-laki"
 :
@@ -407,7 +407,15 @@ Edit
 
 <button
 
-onClick={()=>onDelete(item.id)}
+onClick={()=>{
+
+if(item.id){
+
+onDelete(item.id);
+
+}
+
+}}
 
 className="
 flex
@@ -448,7 +456,15 @@ item.status==="AKTIF"
 
 <button
 
-onClick={()=>onStatus(item.id,"NONAKTIF")}
+onClick={()=>{
+
+if(item.id){
+
+onStatus(item.id,"NONAKTIF");
+
+}
+
+}}
 
 className="
 flex
@@ -479,7 +495,15 @@ Nonaktifkan
 
 <button
 
-onClick={()=>onStatus(item.id,"AKTIF")}
+onClick={()=>{
+
+if(item.id){
+
+onStatus(item.id,"AKTIF");
+
+}
+
+}}
 
 className="
 flex

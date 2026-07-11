@@ -1,53 +1,39 @@
+export type JamaahGender =
+  | "LAKI-LAKI"
+  | "PEREMPUAN";
+
+
 export type JamaahStatus =
   | "AKTIF"
   | "NONAKTIF";
 
 
-export type JamaahGender =
-  | "LAKI_LAKI"
-  | "PEREMPUAN";
-
-
 export interface Jamaah {
 
+  id?: number;
 
- id:number;
+  name:string;
 
+  nik:string;
 
- name:string;
+  gender:JamaahGender;
 
+  birthDate:string;
 
- nik:string;
+  phone:string;
 
+  address:string;
 
- gender:JamaahGender;
+  occupation:string;
 
+  group:string;
 
- birthDate:string;
+  status:JamaahStatus;
 
+  joinDate:string;
 
- phone:string;
+  notes:string;
 
-
- address:string;
-
-
- occupation:string;
-
-
- group:string;
-
-
- status:JamaahStatus;
-
-
- joinDate:string;
-
-
- notes:string;
-
-
- createdAt:string;
-
+  createdAt?:string;
 
 }

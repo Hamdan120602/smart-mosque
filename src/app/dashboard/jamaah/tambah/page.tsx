@@ -10,7 +10,7 @@ export default function TambahJamaahPage() {
   const [form, setForm] = useState({
     name: "",
     nik: "",
-    gender: "LAKI_LAKI",
+    gender: "LAKI-LAKI",
     birth_date: "",
     phone: "",
     address: "",
@@ -40,7 +40,7 @@ export default function TambahJamaahPage() {
       await createJamaah({
         ...form,
         gender:
-          form.gender as "LAKI_LAKI" | "PEREMPUAN",
+          form.gender as "LAKI-LAKI" | "PEREMPUAN",
         status:
           form.status as any
       });
@@ -110,7 +110,7 @@ onChange={change}
 className="w-full border rounded-lg p-3 mt-2"
 >
 
-<option value="LAKI_LAKI">
+<option value="LAKI-LAKI">
 Laki-laki
 </option>
 

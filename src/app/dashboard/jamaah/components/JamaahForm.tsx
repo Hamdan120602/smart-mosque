@@ -18,48 +18,44 @@ import {
 } from "../types";
 
 
-
 interface Props {
 
-open:boolean;
+  open:boolean;
 
-onClose:()=>void;
+  onClose:()=>void;
 
-onSubmit:(data:Omit<Jamaah,"id"|"createdAt">)=>void;
+  onSubmit:(data:Omit<Jamaah,"id"|"createdAt">)=>void;
 
-initialData?:Jamaah|null;
+  initialData?:Jamaah|null;
 
 }
 
 
-
 const initialForm = {
 
-name:"",
+  name:"",
 
-nik:"",
+  nik:"",
 
-gender:"LAKI_LAKI" as JamaahGender,
+  gender:"LAKI-LAKI" as JamaahGender,
 
-birthDate:"",
+  birthDate:"",
 
-phone:"",
+  phone:"",
 
-address:"",
+  address:"",
 
-occupation:"",
+  occupation:"",
 
-group:"",
+  group:"",
 
-status:"AKTIF" as JamaahStatus,
+  status:"AKTIF" as JamaahStatus,
 
-joinDate:"",
+  joinDate:"",
 
-notes:""
+  notes:""
 
 };
-
-
 
 
 
@@ -76,18 +72,13 @@ initialData
 }:Props){
 
 
-
 const [form,setForm]=useState(initialForm);
-
-
 
 
 
 useEffect(()=>{
 
-
 if(initialData){
-
 
 setForm({
 
@@ -113,31 +104,22 @@ joinDate:initialData.joinDate,
 
 notes:initialData.notes
 
-
 });
-
 
 }else{
 
-
 setForm(initialForm);
 
-
 }
-
 
 },[initialData,open]);
 
 
 
-
-
-
 function update(
-key:string,
-value:any
+key:keyof typeof form,
+value:string
 ){
-
 
 setForm(prev=>({
 
@@ -147,21 +129,13 @@ setForm(prev=>({
 
 }));
 
-
-
 }
-
-
 
 
 
 function submit(){
 
-
-if(
-!form.name ||
-!form.phone
-){
+if(!form.name || !form.phone){
 
 alert(
 "Nama dan nomor HP wajib diisi"
@@ -172,16 +146,25 @@ return;
 }
 
 
+// kirim sesuai constraint database
 
-onSubmit(form);
+onSubmit({
+
+...form,
+
+gender:
+form.gender==="LAKI-LAKI"
+?
+"LAKI-LAKI"
+:
+"PEREMPUAN"
+
+});
 
 
 onClose();
 
-
 }
-
-
 
 
 
@@ -190,12 +173,10 @@ return null;
 
 
 
-
-
-
 return (
 
-<div className="
+<div
+className="
 fixed
 inset-0
 z-50
@@ -205,77 +186,57 @@ justify-center
 bg-black/40
 backdrop-blur-sm
 p-4
+overflow-y-auto
 ">
 
 
-
-<div className="
+<div
+className="
 w-full
 max-w-4xl
 rounded-3xl
 bg-white
 shadow-2xl
+my-10
 overflow-hidden
 ">
 
 
-
-
-
-<div className="
+<div
+className="
 flex
-items-center
 justify-between
+items-center
 border-b
 p-6
 ">
 
-
 <div>
 
-<h2 className="
-text-2xl
-font-bold
-">
+<h2 className="text-2xl font-bold">
 
 {
-
 initialData
 ?
 "Edit Data Jamaah"
 :
 "Tambah Jamaah"
-
 }
 
 </h2>
 
-
-<p className="
-text-sm
-text-gray-500
-">
+<p className="text-sm text-gray-500">
 
 Lengkapi informasi jamaah masjid
 
 </p>
 
-
 </div>
 
 
-
-
 <button
-
 onClick={onClose}
-
-className="
-rounded-xl
-p-2
-hover:bg-gray-100
-"
-
+className="rounded-xl p-2 hover:bg-gray-100"
 >
 
 <X/>
@@ -287,18 +248,11 @@ hover:bg-gray-100
 
 
 
-
-
-
-
 <div className="
 grid
 gap-5
 p-6
 ">
-
-
-
 
 
 <div className="
@@ -308,16 +262,9 @@ gap-4
 ">
 
 
-
 <div>
 
-<label className="
-flex
-items-center
-gap-2
-text-sm
-font-semibold
-">
+<label className="flex gap-2 font-semibold">
 
 <User size={16}/>
 
@@ -327,6 +274,15 @@ Nama Lengkap
 
 
 <input
+
+value={form.name}
+
+onChange={
+e=>update(
+"name",
+e.target.value
+)
+}
 
 className="
 mt-2
@@ -338,30 +294,15 @@ p-3
 
 placeholder="Nama jamaah"
 
-value={form.name}
-
-onChange={
-e=>update(
-"name",
-e.target.value
-)
-}
-
 />
-
 
 </div>
 
 
 
-
-
 <div>
 
-<label className="
-text-sm
-font-semibold
-">
+<label className="font-semibold">
 
 NIK
 
@@ -369,16 +310,6 @@ NIK
 
 
 <input
-
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
-
-placeholder="Nomor NIK"
 
 value={form.nik}
 
@@ -389,18 +320,20 @@ e.target.value
 )
 }
 
+className="
+mt-2
+w-full
+rounded-xl
+border
+p-3
+"
+
 />
 
-
 </div>
 
 
-
 </div>
-
-
-
-
 
 
 
@@ -411,13 +344,9 @@ gap-4
 ">
 
 
-
 <div>
 
-<label className="
-text-sm
-font-semibold
-">
+<label className="font-semibold">
 
 Jenis Kelamin
 
@@ -425,14 +354,6 @@ Jenis Kelamin
 
 
 <select
-
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
 
 value={form.gender}
 
@@ -443,10 +364,18 @@ e.target.value
 )
 }
 
+className="
+mt-2
+w-full
+rounded-xl
+border
+p-3
+"
+
 >
 
 
-<option value="LAKI_LAKI">
+<option value="LAKI-LAKI">
 
 Laki-laki
 
@@ -467,14 +396,9 @@ Perempuan
 
 
 
-
-
 <div>
 
-<label className="
-text-sm
-font-semibold
-">
+<label className="font-semibold">
 
 Tanggal Lahir
 
@@ -485,14 +409,6 @@ Tanggal Lahir
 
 type="date"
 
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
-
 value={form.birthDate}
 
 onChange={
@@ -502,24 +418,23 @@ e.target.value
 )
 }
 
-/>
+className="
+mt-2
+w-full
+rounded-xl
+border
+p-3
+"
 
+/>
 
 </div>
 
 
 
-
-
 <div>
 
-<label className="
-flex
-items-center
-gap-2
-text-sm
-font-semibold
-">
+<label className="flex gap-2 font-semibold">
 
 <Phone size={16}/>
 
@@ -530,16 +445,6 @@ Nomor HP
 
 <input
 
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
-
-placeholder="08xxxx"
-
 value={form.phone}
 
 onChange={
@@ -549,20 +454,20 @@ e.target.value
 )
 }
 
+className="
+mt-2
+w-full
+rounded-xl
+border
+p-3
+"
+
 />
 
-
 </div>
 
 
-
-
 </div>
-
-
-
-
-
 
 
 
@@ -573,16 +478,9 @@ gap-4
 ">
 
 
-
 <div>
 
-<label className="
-flex
-items-center
-gap-2
-text-sm
-font-semibold
-">
+<label className="flex gap-2 font-semibold">
 
 <MapPin size={16}/>
 
@@ -593,15 +491,6 @@ Alamat
 
 <textarea
 
-className="
-mt-2
-h-28
-w-full
-rounded-xl
-border
-p-3
-"
-
 value={form.address}
 
 onChange={
@@ -611,26 +500,24 @@ e.target.value
 )
 }
 
-/>
+className="
+mt-2
+w-full
+h-28
+rounded-xl
+border
+p-3
+"
 
+/>
 
 </div>
 
 
 
-
-
-
 <div>
 
-
-<label className="
-flex
-items-center
-gap-2
-text-sm
-font-semibold
-">
+<label className="flex gap-2 font-semibold">
 
 <Briefcase size={16}/>
 
@@ -639,16 +526,7 @@ Pekerjaan
 </label>
 
 
-
 <input
-
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
 
 value={form.occupation}
 
@@ -659,29 +537,6 @@ e.target.value
 )
 }
 
-/>
-
-
-
-<label className="
-mt-4
-flex
-items-center
-gap-2
-text-sm
-font-semibold
-">
-
-<Users size={16}/>
-
-Kelompok Kajian
-
-</label>
-
-
-
-<input
-
 className="
 mt-2
 w-full
@@ -689,6 +544,20 @@ rounded-xl
 border
 p-3
 "
+
+/>
+
+
+<label className="flex gap-2 font-semibold mt-4">
+
+<Users size={16}/>
+
+Kelompok
+
+</label>
+
+
+<input
 
 value={form.group}
 
@@ -699,44 +568,6 @@ e.target.value
 )
 }
 
-/>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-<div className="
-grid
-md:grid-cols-3
-gap-4
-">
-
-
-
-<div>
-
-<label className="
-text-sm
-font-semibold
-">
-
-Status
-
-</label>
-
-
-<select
-
 className="
 mt-2
 w-full
@@ -745,96 +576,19 @@ border
 p-3
 "
 
-value={form.status}
-
-onChange={
-e=>update(
-"status",
-e.target.value
-)
-}
-
->
-
-
-<option value="AKTIF">
-
-Aktif
-
-</option>
-
-
-<option value="NONAKTIF">
-
-Tidak Aktif
-
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div>
-
-<label className="
-text-sm
-font-semibold
-">
-
-Tanggal Bergabung
-
-</label>
-
-
-<input
-
-type="date"
-
-className="
-mt-2
-w-full
-rounded-xl
-border
-p-3
-"
-
-value={form.joinDate}
-
-onChange={
-e=>update(
-"joinDate",
-e.target.value
-)
-}
-
 />
 
 
 </div>
 
 
-
-
 </div>
-
-
-
-
 
 
 
 <div>
 
-<label className="
-text-sm
-font-semibold
-">
+<label className="font-semibold">
 
 Catatan
 
@@ -842,15 +596,6 @@ Catatan
 
 
 <textarea
-
-className="
-mt-2
-h-24
-w-full
-rounded-xl
-border
-p-3
-"
 
 value={form.notes}
 
@@ -861,6 +606,15 @@ e.target.value
 )
 }
 
+className="
+mt-2
+w-full
+h-24
+rounded-xl
+border
+p-3
+"
+
 />
 
 
@@ -868,13 +622,7 @@ e.target.value
 
 
 
-
-
 </div>
-
-
-
-
 
 
 
@@ -885,7 +633,6 @@ gap-3
 border-t
 p-6
 ">
-
 
 
 <button
@@ -907,8 +654,6 @@ Batal
 
 
 
-
-
 <button
 
 onClick={submit}
@@ -921,8 +666,8 @@ rounded-xl
 bg-emerald-600
 px-6
 py-3
-font-semibold
 text-white
+font-semibold
 "
 
 >
@@ -934,19 +679,13 @@ Simpan Jamaah
 </button>
 
 
-
 </div>
-
-
-
-
 
 
 </div>
 
 
 </div>
-
 
 );
 

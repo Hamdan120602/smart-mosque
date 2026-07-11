@@ -31,7 +31,7 @@ name:"Ahmad Fauzi",
 
 nik:"3273010101010001",
 
-gender:"LAKI_LAKI",
+gender:"LAKI-LAKI",
 
 birthDate:"1990-01-01",
 
@@ -287,7 +287,7 @@ x=>x.status==="NONAKTIF"
 male:
 
 jamaah.filter(
-x=>x.gender==="LAKI_LAKI"
+x=>x.gender==="LAKI-LAKI"
 ).length,
 
 

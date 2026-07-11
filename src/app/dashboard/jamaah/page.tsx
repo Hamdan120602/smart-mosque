@@ -109,7 +109,7 @@ j=>j.status==="AKTIF"
 ).length;
 
 const laki=jamaah.filter(
-j=>j.gender==="LAKI_LAKI"
+j=>j.gender==="LAKI-LAKI"
 ).length;
 
 const perempuan=jamaah.filter(

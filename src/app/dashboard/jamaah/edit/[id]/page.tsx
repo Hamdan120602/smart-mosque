@@ -21,7 +21,7 @@ export default function EditJamaahPage(){
   const [form,setForm] = useState({
     name:"",
     nik:"",
-    gender:"LAKI_LAKI",
+    gender:"LAKI-LAKI",
     birth_date:"",
     phone:"",
     address:"",
@@ -87,7 +87,7 @@ export default function EditJamaahPage(){
       {
         ...form,
         gender:
-          form.gender as "LAKI_LAKI" | "PEREMPUAN",
+          form.gender as "LAKI-LAKI" | "PEREMPUAN",
         status:
           form.status as any
       }
@@ -148,7 +148,7 @@ onChange={handleChange}
 className="border p-3 rounded w-full"
 >
 
-<option value="LAKI_LAKI">
+<option value="LAKI-LAKI">
 Laki-laki
 </option>
 
