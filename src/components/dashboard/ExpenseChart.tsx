@@ -1,71 +1,114 @@
 "use client";
 
-import Card from "@/components/ui/Card";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+ CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import { useEffect, useState } from "react";
 
 export default function ExpenseChart() {
 
-  const data = [
-    { month: "Jan", value: 30 },
-    { month: "Feb", value: 42 },
-    { month: "Mar", value: 38 },
-    { month: "Apr", value: 55 },
-    { month: "Mei", value: 48 },
-    { month: "Jun", value: 60 },
-    { month: "Jul", value: 53 },
-  ];
+  const [data,setData]=useState<any[]>([]);
 
-  const max = Math.max(...data.map((d) => d.value));
+  useEffect(()=>{
+
+    async function load(){
+
+      const res=await fetch("/api/dashboard");
+
+      const json=await res.json();
+
+      const transaksi=json.transactions ?? [];
+
+      const bulan=[
+        "Jan","Feb","Mar","Apr","Mei","Jun",
+        "Jul","Agu","Sep","Okt","Nov","Des"
+      ];
+
+      const map=new Array(12).fill(0);
+
+      transaksi.forEach((t:any)=>{
+
+        if(t.type==="expense"){
+
+          const d=new Date(t.created_at);
+
+          map[d.getMonth()]+=Number(t.amount);
+
+        }
+
+      });
+
+      setData(
+
+        bulan.map((b,i)=>({
+
+          month:b,
+
+          value:map[i]
+
+        }))
+
+      );
+
+    }
+
+    load();
+
+  },[]);
 
   return (
-    <Card className="p-6">
 
-      <div className="mb-8 flex items-center justify-between">
+    <div className="premium-card p-6 h-[380px]">
 
-        <div>
+      <h2 className="text-xl font-bold mb-6">
 
-          <h2 className="text-lg font-semibold text-slate-900">
-            Grafik Pengeluaran
-          </h2>
+        Grafik Pengeluaran
 
-          <p className="mt-1 text-sm text-slate-500">
-            7 bulan terakhir
-          </p>
+      </h2>
 
-        </div>
+      <ResponsiveContainer width="100%" height="100%">
 
-        <span className="rounded-md bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-          +6%
-        </span>
+        <AreaChart data={data}>
 
-      </div>
+          <defs>
 
-      <div className="flex h-72 items-end gap-4">
+            <linearGradient id="expense" x1="0" y1="0" x2="0" y2="1">
 
-        {data.map((item) => (
+              <stop offset="5%" stopColor="#dc2626"/>
 
-          <div
-            key={item.month}
-            className="flex flex-1 flex-col items-center"
-          >
+              <stop offset="95%" stopColor="#dc2626" stopOpacity={0}/>
 
-            <div
-              className="w-full rounded-t-lg bg-red-500 transition-all duration-300 hover:bg-red-600"
-              style={{
-                height: `${(item.value / max) * 220}px`,
-              }}
-            />
+            </linearGradient>
 
-            <span className="mt-3 text-xs text-slate-500">
-              {item.month}
-            </span>
+          </defs>
 
-          </div>
+          <CartesianGrid strokeDasharray="3 3"/>
 
-        ))}
+          <XAxis dataKey="month"/>
 
-      </div>
+          <YAxis/>
 
-    </Card>
+          <Tooltip/>
+
+          <Area
+            dataKey="value"
+            stroke="#dc2626"
+            fill="url(#expense)"
+          />
+
+        </AreaChart>
+
+      </ResponsiveContainer>
+
+    </div>
+
   );
 
 }

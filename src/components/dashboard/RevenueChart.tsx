@@ -1,69 +1,85 @@
-'use client';
+"use client";
 
-import Card from '@/components/ui/Card';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import { useEffect, useState } from "react";
 
 export default function RevenueChart() {
-  const data = [
-    { month: 'Jan', value: 45 },
-    { month: 'Feb', value: 62 },
-    { month: 'Mar', value: 58 },
-    { month: 'Apr', value: 80 },
-    { month: 'Mei', value: 92 },
-    { month: 'Jun', value: 87 },
-    { month: 'Jul', value: 110 },
-  ];
+  const [data, setData] = useState<any[]>([]);
 
-  const max = Math.max(...data.map((d) => d.value));
+  useEffect(() => {
+    async function load() {
+      const res = await fetch("/api/dashboard");
+      const json = await res.json();
+
+      const transaksi = json.transactions ?? [];
+
+      const bulan = [
+        "Jan","Feb","Mar","Apr","Mei","Jun",
+        "Jul","Agu","Sep","Okt","Nov","Des"
+      ];
+
+      const map = new Array(12).fill(0);
+
+      transaksi.forEach((t:any)=>{
+        if(t.type==="income"){
+          const d = new Date(t.created_at);
+          map[d.getMonth()] += Number(t.amount);
+        }
+      });
+
+      setData(
+        bulan.map((b,i)=>({
+          month:b,
+          value:map[i]
+        }))
+      );
+    }
+
+    load();
+  }, []);
 
   return (
-    <Card className="p-6">
+    <div className="premium-card p-6 h-[380px]">
 
-      <div className="mb-8 flex items-center justify-between">
+      <h2 className="text-xl font-bold mb-6">
+        Grafik Pemasukan
+      </h2>
 
-        <div>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="income" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#16a34a"/>
+              <stop offset="95%" stopColor="#16a34a" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
 
-          <h2 className="text-lg font-semibold text-slate-900">
-            Grafik Pemasukan
-          </h2>
+          <CartesianGrid strokeDasharray="3 3"/>
 
-          <p className="mt-1 text-sm text-slate-500">
-            7 bulan terakhir
-          </p>
+          <XAxis dataKey="month"/>
 
-        </div>
+          <YAxis/>
 
-        <span className="rounded-md bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-          +18%
-        </span>
+          <Tooltip/>
 
-      </div>
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke="#16a34a"
+            fill="url(#income)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
 
-      <div className="flex h-72 items-end gap-4">
-
-        {data.map((item) => (
-
-          <div
-            key={item.month}
-            className="flex flex-1 flex-col items-center"
-          >
-
-            <div
-              className="w-full rounded-t-lg bg-emerald-500 transition-all duration-300 hover:bg-emerald-600"
-              style={{
-                height: `${(item.value / max) * 220}px`,
-              }}
-            />
-
-            <span className="mt-3 text-xs text-slate-500">
-              {item.month}
-            </span>
-
-          </div>
-
-        ))}
-
-      </div>
-
-    </Card>
+    </div>
   );
 }

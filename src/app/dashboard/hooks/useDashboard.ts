@@ -1,113 +1,51 @@
 "use client";
 
-import {
-useEffect,
-useState
-} from "react";
+import { useEffect, useState } from "react";
 
+interface DashboardData {
+  jamaah: number;
+  agenda: number;
+  saldo: number;
+  pemasukan: number;
+  pengeluaran: number;
+  transactions: any[];
+  agendaList: any[];
+}
 
-const initialData = {
-
-jamaah:0,
-
-agenda:0,
-
-saldo:0,
-
-pemasukan:0,
-
-pengeluaran:0
-
+const initialData: DashboardData = {
+  jamaah: 0,
+  agenda: 0,
+  saldo: 0,
+  pemasukan: 0,
+  pengeluaran: 0,
+  transactions: [],
+  agendaList: [],
 };
 
+export function useDashboard() {
+  const [data, setData] = useState<DashboardData>(initialData);
 
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/dashboard", {
+          cache: "no-store",
+        });
 
-export function useDashboard(){
+        const json = await res.json();
 
+        setData(json);
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-const [data,setData]=useState(initialData);
+    load();
 
+    const timer = setInterval(load, 10000);
 
+    return () => clearInterval(timer);
+  }, []);
 
-useEffect(()=>{
-
-
-async function load(){
-
-
-try{
-
-
-const res =
-await fetch("/api/dashboard");
-
-
-const result =
-await res.json();
-
-
-
-setData({
-
-jamaah:
-result.jamaah ?? 0,
-
-
-agenda:
-result.agenda ?? 0,
-
-
-saldo:
-result.saldo ?? 0,
-
-
-pemasukan:
-result.pemasukan ?? 0,
-
-
-pengeluaran:
-result.pengeluaran ?? 0
-
-
-});
-
-
-}
-catch(error){
-
-console.error(
-"Dashboard error",
-error
-);
-
-}
-
-
-}
-
-
-
-load();
-
-
-
-const timer =
-setInterval(
-load,
-10000
-);
-
-
-
-return()=>clearInterval(timer);
-
-
-
-},[]);
-
-
-
-return data;
-
-
+  return data;
 }
