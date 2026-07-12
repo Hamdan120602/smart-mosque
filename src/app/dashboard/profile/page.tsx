@@ -6,49 +6,30 @@ useState
 } from "react";
 
 import {
-supabase
-} from "@/lib/supabase";
-
+Camera,
+Mail,
+ShieldCheck
+} from "lucide-react";
 
 
 export default function ProfilePage(){
 
 
-const [user,setUser]=useState<any>(null);
-
 const [avatar,setAvatar]=useState("");
 
 const [file,setFile]=useState<File|null>(null);
 
-const [loading,setLoading]=useState(false);
-
-
 
 useEffect(()=>{
 
+const saved =
+localStorage.getItem("profile_avatar");
 
-async function load(){
+if(saved){
 
-const {
-data
-}=await supabase.auth.getUser();
-
-
-setUser(data.user);
-
-
-setAvatar(
-
-data.user?.user_metadata?.avatar || ""
-
-);
-
+setAvatar(saved);
 
 }
-
-
-load();
-
 
 },[]);
 
@@ -56,86 +37,49 @@ load();
 
 
 
-async function uploadAvatar(){
+function uploadPhoto(){
 
 
-if(!file || !user)
+if(!file)
 return;
 
 
-setLoading(true);
+
+const reader =
+new FileReader();
 
 
 
-const filename =
-
-`${Date.now()}-${file.name}`;
+reader.onload=()=>{
 
 
+const image =
+reader.result as string;
 
-const {
 
-error
-
-}=await supabase.storage
-
-.from("avatars")
-
-.upload(
-filename,
-file,
-{
-upsert:true
-}
+localStorage.setItem(
+"profile_avatar",
+image
 );
 
 
+setAvatar(image);
 
-if(error){
 
-alert(error.message);
+alert("Foto profil berhasil disimpan");
 
-setLoading(false);
 
-return;
+};
+
+
+
+reader.readAsDataURL(file);
+
+
 
 }
 
 
-
-const {
-
-data
-
-}=supabase.storage
-
-.from("avatars")
-
-.getPublicUrl(filename);
-
-
-
-
-await supabase.auth.updateUser({
-
-data:{
-avatar:data.publicUrl
-}
-
-});
-
-
-
-setAvatar(data.publicUrl);
-
-
-setLoading(false);
-
-
-alert("Foto profil berhasil diganti");
-
-
-}
 
 
 
@@ -145,23 +89,40 @@ return (
 
 
 <h1 className="
-text-3xl
+text-4xl
 font-black
 ">
 
-Profil Admin
+Profil Saya
 
 </h1>
 
 
 
-<div className="
-rounded-3xl
+<div
+
+className="
+max-w-2xl
+rounded-[40px]
 bg-white
-shadow-xl
-p-8
-max-w-xl
-">
+shadow-2xl
+overflow-hidden
+"
+
+>
+
+
+<div
+
+className="
+bg-gradient-to-br
+from-emerald-600
+to-teal-700
+p-10
+text-white
+"
+
+>
 
 
 <div className="flex items-center gap-6">
@@ -178,75 +139,161 @@ avatar
 src={avatar}
 
 className="
-h-28
-w-28
+h-32
+w-32
 rounded-full
 object-cover
-shadow
+border-4
+border-white
+shadow-xl
 "
 
 />
+
 
 :
 
 <div
 
 className="
-h-28
-w-28
+h-32
+w-32
 rounded-full
-bg-emerald-600
-text-white
+bg-white/20
 flex
 items-center
 justify-center
-text-4xl
+text-5xl
 font-black
 "
 
 >
 
-{
-
-user?.email
-?.charAt(0)
-.toUpperCase()
-
-}
+H
 
 </div>
 
 
 }
+
+
+<div>
+
+<h2 className="
+text-3xl
+font-black
+">
+
+Hamdan Mahmud
+
+</h2>
+
+
+<p>
+
+Administrator Smart Mosque
+
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="
+p-8
+space-y-6
+">
+
+
+<div className="
+flex
+gap-4
+items-center
+rounded-3xl
+bg-slate-50
+p-5
+">
+
+<Mail/>
+
+<div>
+
+<p className="text-sm opacity-60">
+
+Email
+
+</p>
+
+<p className="font-bold">
+
+admin@smartmosque.com
+
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="
+flex
+gap-4
+items-center
+rounded-3xl
+bg-slate-50
+p-5
+">
+
+<ShieldCheck/>
+
+<div>
+
+<p className="text-sm opacity-60">
+
+Role
+
+</p>
+
+
+<p className="font-bold">
+
+Takmir Masjid
+
+</p>
+
+</div>
+
+
+</div>
+
+
 
 
 
 <div>
 
-<h2 className="font-bold text-xl">
 
-{
-user?.email
-}
+<label className="
+font-bold
+block
+mb-3
+">
 
-</h2>
+Upload Foto Profil
 
-
-<p className="text-sm text-slate-500">
-
-Administrator Masjid
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-<div className="mt-8">
+</label>
 
 
 <input
@@ -264,50 +311,47 @@ e.target.files?.[0] || null
 }
 
 className="
-block
-w-full
 border
 rounded-2xl
 p-3
+w-full
 "
 
 />
 
 
 
+
 <button
 
-onClick={uploadAvatar}
-
-disabled={loading}
+onClick={uploadPhoto}
 
 className="
-mt-4
-rounded-2xl
+mt-5
+flex
+items-center
+gap-3
+rounded-3xl
 bg-emerald-600
 text-white
-px-6
-py-3
-font-bold
+px-8
+py-4
+font-black
+shadow-xl
 "
 
 >
 
-{
+<Camera size={20}/>
 
-loading
-
-?
-
-"Menyimpan..."
-
-:
-
-"Ganti Foto Profil"
-
-}
+Simpan Foto
 
 </button>
+
+
+
+</div>
+
 
 
 </div>

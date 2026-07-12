@@ -3,6 +3,7 @@
 import {
 Menu,
 Bell,
+Search,
 Sun,
 Moon,
 ChevronDown,
@@ -29,15 +30,20 @@ useTheme
 } from "@/context/ThemeContext";
 
 
-interface HeaderProps {
+interface HeaderProps{
 
 collapsed:boolean;
 
-setCollapsed:React.Dispatch<React.SetStateAction<boolean>>;
+setCollapsed:React.Dispatch<
+React.SetStateAction<boolean>
+>;
 
-setMobileOpen:React.Dispatch<React.SetStateAction<boolean>>;
+setMobileOpen:React.Dispatch<
+React.SetStateAction<boolean>
+>;
 
 }
+
 
 
 export default function Header({
@@ -53,6 +59,7 @@ setMobileOpen
 
 const router=useRouter();
 
+
 const {
 theme,
 setTheme
@@ -64,25 +71,171 @@ const [user,setUser]=useState<any>(null);
 
 const [open,setOpen]=useState(false);
 
+const [search,setSearch]=useState("");
+
 const [notify,setNotify]=useState(false);
+
+const [notifications,setNotifications]=useState<any[]>([]);
 
 
 
 useEffect(()=>{
 
+
 async function load(){
 
+
 const {
+
 data
+
 }=await supabase.auth.getUser();
+
 
 setUser(data.user);
 
+
+
+
+const agenda =
+await supabase
+
+.from("agenda")
+
+.select("*")
+
+.order("date",
+{
+ascending:false
+})
+
+.limit(3);
+
+
+
+const transaksi =
+await supabase
+
+.from("transactions")
+
+.select("*")
+
+.order("created_at",
+{
+ascending:false
+})
+
+.limit(3);
+
+
+
+const result=[
+
+...(agenda.data||[]).map((x:any)=>({
+
+title:"Agenda baru",
+
+text:x.title
+
+})),
+
+
+...(transaksi.data||[]).map((x:any)=>({
+
+title:"Transaksi",
+
+text:x.title
+
+}))
+
+];
+
+
+setNotifications(result);
+
+
 }
+
 
 load();
 
+
 },[]);
+
+
+
+
+
+function searchMenu(){
+
+
+const value=
+search.toLowerCase();
+
+
+
+const menus=[
+
+{
+name:"dashboard",
+url:"/dashboard"
+},
+
+{
+name:"jamaah",
+url:"/dashboard/jamaah"
+},
+
+{
+name:"kas",
+url:"/dashboard/kas"
+},
+
+{
+name:"agenda",
+url:"/dashboard/agenda"
+},
+
+{
+name:"laporan",
+url:"/dashboard/laporan"
+},
+
+{
+name:"profil",
+url:"/dashboard/profile"
+},
+
+{
+name:"pengaturan",
+url:"/dashboard/settings"
+}
+
+];
+
+
+
+const found =
+menus.find(x=>
+
+x.name.includes(value)
+
+);
+
+
+
+if(found){
+
+router.push(found.url);
+
+setSearch("");
+
+}
+
+
+}
+
+
 
 
 
@@ -92,36 +245,36 @@ await supabase.auth.signOut();
 
 router.push("/auth/login");
 
-router.refresh();
-
 }
 
 
 
-const name =
-user?.user_metadata?.name ||
-user?.email?.split("@")[0] ||
-"Admin Masjid";
 
 
-const avatar =
-user?.user_metadata?.avatar ||
-null;
+const name=
+
+user?.email
+?.split("@")[0]
+||
+"Admin";
 
 
 
-return (
+
+
+return(
+
 
 <header
 
 className="
 fixed
 top-0
-right-0
 left-0
-h-20
+right-0
 z-50
-bg-white/80
+h-20
+bg-white/90
 backdrop-blur-xl
 border-b
 flex
@@ -140,12 +293,7 @@ px-6
 
 onClick={()=>setMobileOpen(true)}
 
-className="
-md:hidden
-rounded-2xl
-p-3
-hover:bg-slate-100
-"
+className="md:hidden p-3 rounded-2xl"
 
 >
 
@@ -159,13 +307,7 @@ hover:bg-slate-100
 
 onClick={()=>setCollapsed(!collapsed)}
 
-className="
-hidden
-md:block
-rounded-2xl
-p-3
-hover:bg-slate-100
-"
+className="hidden md:block p-3 rounded-2xl"
 
 >
 
@@ -174,7 +316,7 @@ hover:bg-slate-100
 </button>
 
 
-<div>
+
 
 <h1 className="font-black text-xl">
 
@@ -182,36 +324,78 @@ hover:bg-slate-100
 
 </h1>
 
-<p className="text-xs text-slate-500">
-
-Management System
-
-</p>
 
 </div>
 
 
-</div>
 
 
 
 <div className="flex items-center gap-3">
 
 
+<div
+
+className="
+hidden
+md:flex
+items-center
+bg-slate-100
+rounded-2xl
+px-4
+"
+
+>
+
+
+<Search size={18}/>
+
+
+<input
+
+value={search}
+
+onChange={(e)=>setSearch(e.target.value)}
+
+onKeyDown={(e)=>{
+
+if(e.key==="Enter")
+searchMenu();
+
+}}
+
+placeholder="Cari menu..."
+
+className="
+bg-transparent
+outline-none
+p-3
+w-40
+"
+
+/>
+
+
+</div>
+
+
+
 
 <button
 
-onClick={()=>{
+onClick={()=>setTheme(
 
-setTheme(
 theme==="emerald"
-?
-"royal"
-:
-"emerald"
-)
 
-}}
+?
+
+"royal"
+
+:
+
+"emerald"
+
+)}
 
 className="
 rounded-2xl
@@ -227,16 +411,16 @@ theme==="emerald"
 
 ?
 
-<Moon size={20}/>
+<Moon/>
 
 :
 
-<Sun size={20}/>
+<Sun/>
 
 }
 
-
 </button>
+
 
 
 
@@ -250,8 +434,8 @@ onClick={()=>setNotify(!notify)}
 
 className="
 relative
-rounded-2xl
 p-3
+rounded-2xl
 hover:bg-slate-100
 "
 
@@ -259,22 +443,29 @@ hover:bg-slate-100
 
 <Bell/>
 
+{
+
+notifications.length>0 &&
+
 <span
 
 className="
 absolute
-right-2
 top-2
+right-2
+bg-red-500
 h-2
 w-2
 rounded-full
-bg-red-500
 "
 
 />
 
+}
 
 </button>
+
+
 
 
 {
@@ -287,9 +478,9 @@ className="
 absolute
 right-0
 mt-4
-w-72
-rounded-3xl
+w-80
 bg-white
+rounded-3xl
 shadow-2xl
 border
 p-5
@@ -297,18 +488,62 @@ p-5
 
 >
 
-<h3 className="font-black">
+
+<h3 className="font-black mb-4">
 
 Notifikasi
 
 </h3>
 
 
-<p className="text-sm text-slate-500 mt-2">
+{
 
-Tidak ada notifikasi baru
+notifications.length===0
+
+?
+
+<p className="text-sm opacity-60">
+
+Tidak ada aktivitas
 
 </p>
+
+
+:
+
+notifications.map((n,i)=>(
+
+<div
+
+key={i}
+
+className="
+border-b
+py-3
+"
+
+>
+
+<p className="font-bold text-sm">
+
+{n.title}
+
+</p>
+
+<p className="text-xs">
+
+{n.text}
+
+</p>
+
+</div>
+
+
+))
+
+
+}
+
 
 
 </div>
@@ -317,7 +552,9 @@ Tidak ada notifikasi baru
 }
 
 
+
 </div>
+
 
 
 
@@ -334,35 +571,12 @@ flex
 items-center
 gap-3
 rounded-3xl
-px-3
-py-2
+p-2
 hover:bg-slate-100
 "
 
 >
 
-
-{
-
-avatar
-
-?
-
-<img
-
-src={avatar}
-
-className="
-h-10
-w-10
-rounded-full
-object-cover
-"
-
-/>
-
-
-:
 
 <div
 
@@ -375,44 +589,20 @@ text-white
 flex
 items-center
 justify-center
-font-bold
+font-black
 "
 
 >
 
-{
-name.charAt(0)
-.toUpperCase()
-}
-
-</div>
-
-}
-
-
-
-<div className="hidden md:block text-left">
-
-<p className="font-bold text-sm">
-
-{name}
-
-</p>
-
-<p className="text-xs text-slate-500">
-
-Takmir
-
-</p>
+{name[0].toUpperCase()}
 
 </div>
 
 
-<ChevronDown size={16}/>
+<ChevronDown/>
 
 
 </button>
-
 
 
 {
@@ -426,79 +616,45 @@ absolute
 right-0
 mt-3
 w-64
-rounded-3xl
 bg-white
-shadow-2xl
+rounded-3xl
+shadow-xl
 border
 p-3
 "
 
 >
 
-
 <button
-
 onClick={()=>router.push("/dashboard/profile")}
-
-className="
-w-full
-flex
-gap-3
-p-3
-rounded-2xl
-hover:bg-slate-100
-"
-
+className="w-full flex gap-3 p-3 rounded-xl hover:bg-slate-100"
 >
 
-<User size={18}/>
+<User/>
 
 Profil
 
 </button>
 
 
-
 <button
-
 onClick={()=>router.push("/dashboard/settings")}
-
-className="
-w-full
-flex
-gap-3
-p-3
-rounded-2xl
-hover:bg-slate-100
-"
-
+className="w-full flex gap-3 p-3 rounded-xl hover:bg-slate-100"
 >
 
-<Settings size={18}/>
+<Settings/>
 
 Pengaturan
 
 </button>
 
 
-
 <button
-
 onClick={logout}
-
-className="
-w-full
-flex
-gap-3
-p-3
-rounded-2xl
-hover:bg-red-50
-text-red-600
-"
-
+className="w-full flex gap-3 p-3 rounded-xl text-red-600 hover:bg-red-50"
 >
 
-<LogOut size={18}/>
+<LogOut/>
 
 Keluar
 
@@ -507,17 +663,19 @@ Keluar
 
 </div>
 
-
 }
 
 
 </div>
 
 
+
 </div>
 
 
+
 </header>
+
 
 )
 
