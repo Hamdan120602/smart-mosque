@@ -1,98 +1,249 @@
-import Link from 'next/link';
+"use client";
 
-export default function LandingPage() {
+import {
+  Clock,
+  Moon,
+  Sun,
+  Wallet,
+  Users,
+  CalendarDays,
+  QrCode,
+  Sparkles
+} from "lucide-react";
+
+import { useEffect, useState } from "react";
+
+export default function HomePage(){
+
+  const [dark,setDark]=useState(false);
+  const [time,setTime]=useState("");
+
+  useEffect(()=>{
+
+    const timer=setInterval(()=>{
+
+      setTime(
+        new Date().toLocaleTimeString("id-ID")
+      );
+
+    },1000);
+
+    return()=>clearInterval(timer);
+
+  },[]);
+
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* NAVBAR */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-emerald-600">SmartMasjid</span>
-            <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-medium">SaaS</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 font-medium text-slate-600">
-            <a href="#fitur" className="hover:text-emerald-600 transition">Fitur</a>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/auth/login" className="px-4 py-2 text-emerald-600 hover:bg-emerald-50 rounded-lg font-medium transition">
-              Masuk
-            </Link>
-            <Link href="/auth/register" className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow-sm transition">
-              Daftar Takmir
-            </Link>
-          </div>
-        </div>
-      </nav>
 
-      {/* HERO SECTION */}
-      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center md:text-left md:flex items-center justify-between gap-12">
-        <div className="md:w-1/2 space-y-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-            Modernisasi Manajemen <span className="text-emerald-600">Masjid Anda</span> Secara Transparan
+    <main className={
+      dark
+      ?
+      "min-h-screen bg-slate-950 text-white"
+      :
+      "min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-50 text-slate-900"
+    }>
+
+
+      <header className="flex justify-between items-center px-8 py-6">
+
+        <div>
+
+          <h1 className="text-2xl font-black">
+            🕌 Smart Mosque
           </h1>
-          <p className="text-lg text-slate-600">
-            Platform SaaS terintegrasi untuk mengelola keuangan kas, jadwal kegiatan, waktu shalat otomatis, hingga donasi QRIS dalam satu dashboard terpadu.
+
+          <p className="text-sm opacity-60">
+            Management System
           </p>
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            <Link href="/auth/register" className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md transition">
-              Mulai Sekarang (Gratis)
-            </Link>
-            <a href="#fitur" className="px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl shadow-sm transition">
-              Pelajari Fitur
-            </a>
-          </div>
+
         </div>
-        <div className="md:w-1/2 mt-12 md:mt-0 flex justify-center">
-          <div className="w-80 h-80 md:w-96 md:h-96 bg-emerald-100 rounded-3xl flex items-center justify-center relative shadow-inner">
-            <span className="text-8xl">🕌</span>
-            <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-xl shadow-lg flex items-center gap-3">
-              <span className="text-2xl text-emerald-500">📈</span>
-              <div>
-                <p className="text-xs text-slate-400">Kas Masjid</p>
-                <p className="text-sm font-bold text-slate-800">100% Transparan</p>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
+        <button
+          onClick={()=>setDark(!dark)}
+          className="rounded-2xl p-3 bg-white/20 backdrop-blur shadow"
+        >
+
+          {
+            dark
+            ?
+            <Sun/>
+            :
+            <Moon/>
+          }
+
+        </button>
+
+
       </header>
 
-      {/* FEATURE SECTION */}
-      <section id="fitur" className="bg-white py-20 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-            <h2 className="text-3xl font-bold text-slate-900">Fitur Unggulan untuk Takmir & Jamaah</h2>
-            <p className="text-slate-600">Satu aplikasi dengan akses multi-tenant, dirancang khusus untuk memenuhi kebutuhan ekosistem masjid modern.</p>
+
+
+      <section className="px-8 py-16 grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+
+
+        <div>
+
+
+          <div className="inline-flex gap-2 items-center rounded-full bg-emerald-500/10 px-5 py-2 text-emerald-600">
+
+            <Sparkles size={18}/>
+
+            Sistem Masjid Digital
+
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-4">💰</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Kas Digital</h3>
-              <p className="text-slate-600 text-sm">Pencatatan keuangan masuk & keluar real-time yang langsung terintegrasi ke sistem cloud.</p>
+
+
+          <h2 className="mt-8 text-5xl font-black leading-tight">
+
+            Kelola Masjid
+
+            <span className="block text-emerald-500">
+
+              Lebih Modern
+
+            </span>
+
+          </h2>
+
+
+
+          <p className="mt-6 text-lg opacity-70">
+
+            Sistem informasi untuk mengelola kas,
+            jamaah, agenda dan laporan masjid
+            secara cepat dan profesional.
+
+          </p>
+
+
+
+
+          <div className="mt-10 flex gap-5">
+
+            <a
+            href="/auth/login"
+            className="rounded-2xl bg-emerald-500 px-8 py-4 text-white font-bold shadow-xl"
+            >
+              Masuk Dashboard
+            </a>
+
+
+            <div className="rounded-2xl px-6 py-4 bg-white/40 backdrop-blur">
+
+              <Clock className="inline mr-2"/>
+
+              {time}
+
             </div>
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-4">📅</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Jadwal & Agenda</h3>
-              <p className="text-slate-600 text-sm">Kelola informasi jadwal shalat Jumat, nama khatib/imam, serta agenda kajian berkala.</p>
-            </div>
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-4">⏰</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Jadwal Shalat API</h3>
-              <p className="text-slate-600 text-sm">Waktu shalat otomatis menyesuaikan koordinat/kota lokasi masjid secara real-time.</p>
-            </div>
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-md transition">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-4">📱</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Donasi QRIS</h3>
-              <p className="text-slate-600 text-sm">Kemudahan infak digital secara non-tunai langsung via scan gambar QRIS takmir.</p>
-            </div>
+
+
           </div>
+
+
         </div>
+
+
+
+
+        <div className="grid gap-6">
+
+
+          <div className="rounded-3xl p-8 bg-white/50 backdrop-blur-xl shadow-xl border">
+
+            <QrCode size={40} className="text-emerald-500"/>
+
+            <h3 className="text-2xl font-bold mt-4">
+              Donasi QRIS
+            </h3>
+
+            <p className="opacity-60 mt-2">
+              Mudahkan jamaah melakukan donasi digital.
+            </p>
+
+
+            <div className="mt-6 h-40 w-40 bg-white rounded-xl flex items-center justify-center border">
+
+              <QrCode size={100}/>
+
+            </div>
+
+
+          </div>
+
+
+
+
+          <div className="grid grid-cols-3 gap-4">
+
+
+            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
+
+              <Wallet/>
+
+              <p className="mt-3 font-bold">
+                Kas
+              </p>
+
+            </div>
+
+
+
+            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
+
+              <Users/>
+
+              <p className="mt-3 font-bold">
+                Jamaah
+              </p>
+
+            </div>
+
+
+
+            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
+
+              <CalendarDays/>
+
+              <p className="mt-3 font-bold">
+                Agenda
+              </p>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
-        <p>&copy; {new Date().getFullYear()} SmartMasjid SaaS. Tugas UAS Pemrograman Web.</p>
+
+
+
+      <footer className="text-center py-10 opacity-70">
+
+        <p>
+          Smart Mosque Management System
+        </p>
+
+        <p className="font-bold mt-2">
+          Created by Hamdan Mahmud
+        </p>
+
+        <p className="text-sm mt-2">
+          © 2026 All Rights Reserved
+        </p>
+
       </footer>
-    </div>
+
+
+    </main>
+
   );
+
 }
