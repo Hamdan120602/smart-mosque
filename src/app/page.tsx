@@ -7,22 +7,19 @@ import {
   Wallet,
   Users,
   CalendarDays,
-  Sparkles
+  Sparkles,
+  ShieldCheck,
+  BarChart3
 } from "lucide-react";
 
-import { QRCodeCanvas } from "qrcode.react";
-import { useEffect, useState } from "react";
-
-
-const QRIS =
-"00020101021126630013ID.CO.BRI.WWW01189360000201100062010215201000620102150303UME51440014ID.CO.QRIS.WWW0215ID10243176718900303UME5204731153033605802ID5915RM PADANG MURAH6013KOTA JAKARTA P61051034062070703A01";
+import Image from "next/image";
+import {useEffect,useState} from "react";
 
 
 export default function HomePage(){
 
 const [dark,setDark]=useState(false);
 const [time,setTime]=useState("");
-
 
 useEffect(()=>{
 
@@ -33,7 +30,6 @@ new Date().toLocaleTimeString("id-ID")
 );
 
 },1000);
-
 
 return()=>clearInterval(timer);
 
@@ -49,17 +45,27 @@ dark
 ?
 "min-h-screen bg-slate-950 text-white"
 :
-"min-h-screen bg-gradient-to-br from-emerald-100 via-white to-cyan-100 text-slate-900"
+"min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-100 text-slate-900"
 }
 >
 
 
-<header className="flex justify-between items-center px-8 py-6">
+<header className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+
+<div className="flex items-center gap-4">
+
+<Image
+src="/icon-192.png"
+width={55}
+height={55}
+alt="masjid"
+className="rounded-2xl shadow-lg"
+/>
 
 <div>
 
 <h1 className="text-3xl font-black">
-🕌 Smart Mosque
+Smart Mosque
 </h1>
 
 <p className="opacity-60">
@@ -68,10 +74,13 @@ Digital Mosque Management System
 
 </div>
 
+</div>
+
+
 
 <button
 onClick={()=>setDark(!dark)}
-className="p-3 rounded-2xl bg-white/40 shadow"
+className="p-4 rounded-2xl bg-white/30 backdrop-blur shadow-xl"
 >
 
 {
@@ -89,51 +98,63 @@ dark
 
 
 
-<section className="max-w-7xl mx-auto px-8 py-12 grid lg:grid-cols-2 gap-12">
+
+<section className="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-2 gap-16 items-center">
 
 
 <div>
 
 
-<div className="inline-flex gap-2 bg-emerald-500/10 text-emerald-600 px-5 py-2 rounded-full">
+<div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-600 px-5 py-3 rounded-full">
 
 <Sparkles size={18}/>
 
-Masjid Digital Modern
+Sistem Masjid Masa Depan
 
 </div>
 
 
 
-<h2 className="text-6xl font-black mt-8 leading-tight">
+<h2 className="mt-8 text-6xl font-black leading-tight">
 
 Kelola Masjid
 
 <span className="block text-emerald-500">
-
-Lebih Mudah
-
+Lebih Cerdas
 </span>
+
+Lebih Modern
 
 </h2>
 
 
 
-<p className="mt-6 text-lg opacity-70">
+<p className="mt-6 text-xl opacity-70 leading-relaxed">
 
-Kelola kas, jamaah, agenda dan laporan
-dalam satu aplikasi profesional.
+Platform digital untuk mengelola
+keuangan, jamaah, agenda dan laporan
+masjid dalam satu sistem profesional.
 
 </p>
 
 
 
-<div className="mt-10 flex gap-4 items-center">
+
+<div className="flex gap-5 mt-10">
 
 
 <a
 href="/auth/login"
-className="bg-emerald-500 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
+className="
+px-8 py-4
+rounded-2xl
+bg-emerald-600
+text-white
+font-bold
+shadow-2xl
+hover:scale-105
+transition
+"
 >
 
 Masuk Dashboard
@@ -141,9 +162,19 @@ Masuk Dashboard
 </a>
 
 
-<div className="px-5 py-4 rounded-2xl bg-white/50 shadow">
 
-<Clock className="inline mr-2"/>
+<div
+className="
+flex items-center gap-3
+px-6 py-4
+rounded-2xl
+bg-white/50
+backdrop-blur
+shadow
+"
+>
+
+<Clock/>
 
 {time}
 
@@ -153,77 +184,40 @@ Masuk Dashboard
 </div>
 
 
-</div>
 
 
+<div className="grid grid-cols-3 gap-4 mt-12">
 
 
-
-<div className="space-y-6">
-
-
-<div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl border">
-
-
-<h3 className="text-2xl font-black mb-5">
-
-Donasi QRIS Masjid
-
-</h3>
-
-
-<div className="bg-white p-5 rounded-3xl w-fit">
-
-<QRCodeCanvas
-value={QRIS}
-size={220}
-/>
-
-</div>
-
-
-<p className="mt-5 text-sm opacity-60">
-
-Scan QRIS untuk melakukan donasi digital.
-
-</p>
-
-
-</div>
-
-
-
-
-<div className="grid grid-cols-3 gap-4">
-
-
-<div className="bg-white/70 rounded-3xl p-5 shadow">
+<div className="rounded-3xl p-5 bg-white/60 shadow-xl">
 
 <Wallet/>
 
-<p className="font-bold mt-3">
-Kas
+<p className="mt-3 font-bold">
+Kas Digital
 </p>
 
 </div>
 
 
-<div className="bg-white/70 rounded-3xl p-5 shadow">
+
+<div className="rounded-3xl p-5 bg-white/60 shadow-xl">
 
 <Users/>
 
-<p className="font-bold mt-3">
-Jamaah
+<p className="mt-3 font-bold">
+Data Jamaah
 </p>
 
 </div>
 
 
-<div className="bg-white/70 rounded-3xl p-5 shadow">
+
+<div className="rounded-3xl p-5 bg-white/60 shadow-xl">
 
 <CalendarDays/>
 
-<p className="font-bold mt-3">
+<p className="mt-3 font-bold">
 Agenda
 </p>
 
@@ -236,24 +230,142 @@ Agenda
 </div>
 
 
+
+
+
+
+<div className="space-y-6">
+
+
+
+<div className="
+rounded-[40px]
+p-8
+bg-white/70
+backdrop-blur-xl
+shadow-2xl
+border
+">
+
+
+<h3 className="text-2xl font-black mb-5">
+
+QRIS Donasi Masjid
+
+</h3>
+
+
+<div className="flex justify-center">
+
+<Image
+
+src="/qris.png"
+
+width={300}
+
+height={300}
+
+alt="QRIS"
+
+className="
+rounded-3xl
+shadow-xl
+"
+
+ />
+
+</div>
+
+
+<p className="text-center mt-5 opacity-60">
+
+Scan untuk melakukan donasi digital
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div className="
+grid grid-cols-2 gap-5
+">
+
+
+<div className="
+rounded-3xl
+p-6
+bg-gradient-to-br from-emerald-500 to-green-400
+text-white
+shadow-xl
+">
+
+<ShieldCheck/>
+
+<h3 className="font-bold mt-3">
+Aman
+</h3>
+
+<p className="text-sm">
+Data tersimpan aman
+</p>
+
+</div>
+
+
+
+<div className="
+rounded-3xl
+p-6
+bg-gradient-to-br from-cyan-500 to-blue-500
+text-white
+shadow-xl
+">
+
+<BarChart3/>
+
+<h3 className="font-bold mt-3">
+Laporan
+</h3>
+
+<p className="text-sm">
+Monitoring cepat
+</p>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
 </section>
 
 
 
-<footer className="text-center py-10 opacity-70">
 
 
-<p>
+<footer className="text-center py-12 opacity-70">
+
+
+<h3 className="font-bold text-lg">
 Smart Mosque Management System
-</p>
+</h3>
 
 
-<p className="font-bold mt-2">
+<p className="mt-2">
 Created by Hamdan Mahmud
 </p>
 
 
-<p className="text-sm">
+<p className="text-sm mt-2">
 © 2026 All Rights Reserved
 </p>
 
@@ -261,8 +373,9 @@ Created by Hamdan Mahmud
 </footer>
 
 
+
 </main>
 
-);
+)
 
 }
