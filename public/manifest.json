@@ -1,7 +1,7 @@
 {
   "name": "Smart Mosque",
-  "short_name": "SmartMosque",
-  "description": "Smart Mosque Management System",
+  "short_name": "Smart Mosque",
+  "description": "Modern Mosque Management System",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
