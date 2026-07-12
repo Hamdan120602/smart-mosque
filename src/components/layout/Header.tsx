@@ -1,48 +1,43 @@
 "use client";
 
 import {
-  Menu,
-  Bell,
-  ChevronDown,
-  User,
-  LogOut,
-  Settings,
-  Moon,
-  Sun
+Menu,
+Bell,
+Sun,
+Moon,
+ChevronDown,
+User,
+Settings,
+LogOut
 } from "lucide-react";
 
 import {
-  useEffect,
-  useState
+useEffect,
+useState
 } from "react";
 
 import {
-  supabase
+useRouter
+} from "next/navigation";
+
+import {
+supabase
 } from "@/lib/supabase";
 
 import {
-  useRouter
-} from "next/navigation";
-
-
-import Image from "next/image";
-
+useTheme
+} from "@/context/ThemeContext";
 
 
 interface HeaderProps {
 
 collapsed:boolean;
 
-setCollapsed:React.Dispatch<
-React.SetStateAction<boolean>
->;
+setCollapsed:React.Dispatch<React.SetStateAction<boolean>>;
 
-setMobileOpen:React.Dispatch<
-React.SetStateAction<boolean>
->;
+setMobileOpen:React.Dispatch<React.SetStateAction<boolean>>;
 
 }
-
 
 
 export default function Header({
@@ -56,14 +51,19 @@ setMobileOpen
 }:HeaderProps){
 
 
-const router = useRouter();
+const router=useRouter();
+
+const {
+theme,
+setTheme
+}=useTheme();
+
 
 
 const [user,setUser]=useState<any>(null);
 
 const [open,setOpen]=useState(false);
 
-const [dark,setDark]=useState(false);
 const [notify,setNotify]=useState(false);
 
 
@@ -72,15 +72,15 @@ useEffect(()=>{
 
 async function load(){
 
-const {data}=await supabase.auth.getUser();
+const {
+data
+}=await supabase.auth.getUser();
 
 setUser(data.user);
 
 }
 
-
 load();
-
 
 },[]);
 
@@ -104,10 +104,9 @@ user?.email?.split("@")[0] ||
 "Admin Masjid";
 
 
-const role =
-user?.user_metadata?.role ||
-"Administrator Masjid";
-
+const avatar =
+user?.user_metadata?.avatar ||
+null;
 
 
 
@@ -116,37 +115,19 @@ return (
 <header
 
 className="
-
-sticky
-
-top-4
-
-z-40
-
-mx-4
-
-mb-4
-
+fixed
+top-0
+right-0
+left-0
 h-20
-
-rounded-3xl
-
-border
-
+z-50
 bg-white/80
-
 backdrop-blur-xl
-
-shadow-xl
-
+border-b
 flex
-
 items-center
-
 justify-between
-
 px-6
-
 "
 
 >
@@ -159,11 +140,16 @@ px-6
 
 onClick={()=>setMobileOpen(true)}
 
-className="md:hidden rounded-2xl p-3 hover:bg-slate-100"
+className="
+md:hidden
+rounded-2xl
+p-3
+hover:bg-slate-100
+"
 
 >
 
-<Menu size={22}/>
+<Menu/>
 
 </button>
 
@@ -173,49 +159,154 @@ className="md:hidden rounded-2xl p-3 hover:bg-slate-100"
 
 onClick={()=>setCollapsed(!collapsed)}
 
-className="hidden md:flex rounded-2xl p-3 hover:bg-slate-100"
+className="
+hidden
+md:block
+rounded-2xl
+p-3
+hover:bg-slate-100
+"
 
 >
 
-<Menu size={22}/>
+<Menu/>
 
 </button>
 
 
+<div>
+
+<h1 className="font-black text-xl">
+
+🕌 Smart Mosque
+
+</h1>
+
+<p className="text-xs text-slate-500">
+
+Management System
+
+</p>
+
+</div>
+
+
+</div>
 
 
 
 <div className="flex items-center gap-3">
 
 
-<Image
 
-src="/icon-192.png"
+<button
 
-width={45}
+onClick={()=>{
 
-height={45}
+setTheme(
+theme==="emerald"
+?
+"royal"
+:
+"emerald"
+)
 
-alt="Smart Mosque"
+}}
 
-className="rounded-2xl shadow"
+className="
+rounded-2xl
+p-3
+hover:bg-slate-100
+"
+
+>
+
+{
+
+theme==="emerald"
+
+?
+
+<Moon size={20}/>
+
+:
+
+<Sun size={20}/>
+
+}
+
+
+</button>
+
+
+
+
+<div className="relative">
+
+
+<button
+
+onClick={()=>setNotify(!notify)}
+
+className="
+relative
+rounded-2xl
+p-3
+hover:bg-slate-100
+"
+
+>
+
+<Bell/>
+
+<span
+
+className="
+absolute
+right-2
+top-2
+h-2
+w-2
+rounded-full
+bg-red-500
+"
 
 />
 
 
-
-<div>
-
-<h1 className="font-black text-lg">
-
-Smart Mosque
-
-</h1>
+</button>
 
 
-<p className="text-xs opacity-60">
+{
 
-Digital Management System
+notify &&
+
+<div
+
+className="
+absolute
+right-0
+mt-4
+w-72
+rounded-3xl
+bg-white
+shadow-2xl
+border
+p-5
+"
+
+>
+
+<h3 className="font-black">
+
+Notifikasi
+
+</h3>
+
+
+<p className="text-sm text-slate-500 mt-2">
+
+Tidak ada notifikasi baru
 
 </p>
 
@@ -223,111 +314,10 @@ Digital Management System
 </div>
 
 
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="flex items-center gap-3">
-
-
-
-
-
-<button
-
-className="
-
-relative
-
-rounded-2xl
-
-p-3
-
-hover:bg-slate-100
-
-transition
-
-"
-
->
-
-<Bell size={20}/>
-
-
-<span
-
-className="
-
-absolute
-
-right-2
-
-top-2
-
-h-2
-
-w-2
-
-rounded-full
-
-bg-red-500
-
-"
-
-/>
-
-
-</button>
-
-
-
-
-
-
-<button
-
-onClick={()=>setDark(!dark)}
-
-className="
-
-rounded-2xl
-
-p-3
-
-hover:bg-slate-100
-
-transition
-
-"
-
->
-
-{
-
-dark
-
-?
-
-<Sun size={20}/>
-
-:
-
-<Moon size={20}/>
-
 }
 
-</button>
 
-
-
-
+</div>
 
 
 
@@ -340,72 +330,68 @@ dark
 onClick={()=>setOpen(!open)}
 
 className="
-
 flex
-
 items-center
-
 gap-3
-
-rounded-2xl
-
+rounded-3xl
 px-3
-
 py-2
-
 hover:bg-slate-100
-
-transition
-
 "
 
 >
 
 
+{
+
+avatar
+
+?
+
+<img
+
+src={avatar}
+
+className="
+h-10
+w-10
+rounded-full
+object-cover
+"
+
+/>
+
+
+:
+
 <div
 
 className="
-
-h-11
-
-w-11
-
-rounded-2xl
-
-bg-gradient-to-br
-
-from-emerald-500
-
-to-teal-700
-
+h-10
+w-10
+rounded-full
+bg-emerald-600
 text-white
-
 flex
-
 items-center
-
 justify-center
-
-font-black
-
-shadow
-
+font-bold
 "
 
 >
 
 {
-
-name.charAt(0).toUpperCase()
-
+name.charAt(0)
+.toUpperCase()
 }
 
 </div>
 
+}
+
 
 
 <div className="hidden md:block text-left">
-
 
 <p className="font-bold text-sm">
 
@@ -413,26 +399,19 @@ name.charAt(0).toUpperCase()
 
 </p>
 
+<p className="text-xs text-slate-500">
 
-<p className="text-xs opacity-60">
-
-{role}
+Takmir
 
 </p>
 
-
 </div>
-
 
 
 <ChevronDown size={16}/>
 
 
-
 </button>
-
-
-
 
 
 
@@ -443,47 +422,18 @@ open &&
 <div
 
 className="
-
 absolute
-
 right-0
-
-mt-4
-
+mt-3
 w-64
-
 rounded-3xl
-
 bg-white
-
-border
-
 shadow-2xl
-
+border
 p-3
-
 "
 
 >
-
-
-<div className="p-4 border-b">
-
-<p className="font-bold">
-
-{name}
-
-</p>
-
-
-<p className="text-xs opacity-60">
-
-{user?.email}
-
-</p>
-
-</div>
-
 
 
 <button
@@ -491,21 +441,12 @@ p-3
 onClick={()=>router.push("/dashboard/profile")}
 
 className="
-
 w-full
-
 flex
-
 gap-3
-
-items-center
-
 p-3
-
 rounded-2xl
-
 hover:bg-slate-100
-
 "
 
 >
@@ -518,27 +459,17 @@ Profil
 
 
 
-
 <button
 
 onClick={()=>router.push("/dashboard/settings")}
 
 className="
-
 w-full
-
 flex
-
 gap-3
-
-items-center
-
 p-3
-
 rounded-2xl
-
 hover:bg-slate-100
-
 "
 
 >
@@ -551,29 +482,18 @@ Pengaturan
 
 
 
-
 <button
 
 onClick={logout}
 
 className="
-
 w-full
-
 flex
-
 gap-3
-
-items-center
-
 p-3
-
 rounded-2xl
-
 hover:bg-red-50
-
 text-red-600
-
 "
 
 >
@@ -585,11 +505,10 @@ Keluar
 </button>
 
 
-
 </div>
 
-}
 
+}
 
 
 </div>
@@ -599,7 +518,6 @@ Keluar
 
 
 </header>
-
 
 )
 

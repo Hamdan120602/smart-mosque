@@ -1,112 +1,124 @@
 "use client";
 
 import {
-  Moon,
-  Sun,
-  WalletCards,
-  Users,
-  CalendarDays,
-  FileText,
-  ShieldCheck,
-  Clock,
-  ArrowRight
+Clock,
+Moon,
+Sun,
+Wallet,
+Users,
+CalendarDays,
+Sparkles,
+ShieldCheck
 } from "lucide-react";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import {
+useEffect,
+useState
+} from "react";
 
 
 export default function HomePage(){
 
-  const [dark,setDark]=useState(false);
-  const [time,setTime]=useState("");
 
-  useEffect(()=>{
+const [dark,setDark]=useState(false);
 
-    const timer=setInterval(()=>{
-
-      setTime(
-        new Date().toLocaleTimeString("id-ID")
-      );
-
-    },1000);
-
-
-    return()=>clearInterval(timer);
-
-  },[]);
+const [time,setTime]=useState("");
 
 
 
-  const features=[
+useEffect(()=>{
 
-    {
-      icon:WalletCards,
-      title:"Manajemen Kas",
-      desc:"Catat pemasukan dan pengeluaran masjid secara transparan."
-    },
+const timer=setInterval(()=>{
 
-    {
-      icon:Users,
-      title:"Data Jamaah",
-      desc:"Kelola database jamaah secara cepat dan terstruktur."
-    },
+setTime(
+new Date().toLocaleTimeString("id-ID")
+);
 
-    {
-      icon:CalendarDays,
-      title:"Agenda Masjid",
-      desc:"Atur kegiatan, kajian dan acara masjid."
-    },
-
-    {
-      icon:FileText,
-      title:"Laporan Digital",
-      desc:"Buat laporan keuangan dengan mudah."
-    }
-
-  ];
+},1000);
 
 
-return(
+return()=>clearInterval(timer);
+
+
+},[]);
+
+
+
+return (
 
 <main
+
 className={
+
 dark
+
 ?
-"min-h-screen bg-[#07130f] text-white"
+
+"min-h-screen bg-slate-950 text-white"
+
 :
-"min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-50 text-slate-900"
+
+"min-h-screen bg-gradient-to-br from-emerald-100 via-white to-cyan-100 text-slate-900"
+
 }
+
 >
 
 
-<header className="
-max-w-7xl mx-auto
-flex justify-between items-center
-px-8 py-6
-">
+<header
+
+className="
+max-w-7xl
+mx-auto
+flex
+items-center
+justify-between
+px-8
+py-8
+"
+
+>
 
 
 <div className="flex items-center gap-4">
 
-<Image
-src="/icon-192.png"
-width={55}
-height={55}
-alt="Smart Mosque"
-className="rounded-2xl shadow-xl"
+
+<img
+
+src="/icon-512.png"
+
+className="
+h-14
+w-14
+rounded-3xl
+shadow-xl
+object-cover
+"
+
 />
 
 
 <div>
 
-<h1 className="text-2xl font-black">
+<h1 className="
+font-black
+text-2xl
+">
+
 Smart Mosque
+
 </h1>
 
-<p className="text-sm opacity-60">
+
+<p className="
+text-sm
+opacity-60
+">
+
 Digital Mosque Management
+
 </p>
+
 
 </div>
 
@@ -120,21 +132,27 @@ Digital Mosque Management
 onClick={()=>setDark(!dark)}
 
 className="
-p-3
-rounded-2xl
+rounded-3xl
+p-4
+bg-white/40
 backdrop-blur
-bg-white/30
 shadow-lg
 "
 
 >
 
 {
+
 dark
+
 ?
+
 <Sun/>
+
 :
+
 <Moon/>
+
 }
 
 </button>
@@ -147,16 +165,18 @@ dark
 
 
 <section
+
 className="
 max-w-7xl
 mx-auto
 px-8
-py-20
+py-10
 grid
 lg:grid-cols-2
 gap-16
 items-center
 "
+
 >
 
 
@@ -164,22 +184,24 @@ items-center
 
 
 <div
+
 className="
 inline-flex
 items-center
 gap-2
-px-5
-py-2
 rounded-full
 bg-emerald-500/10
+px-5
+py-3
 text-emerald-600
-font-semibold
+font-bold
 "
+
 >
 
-<ShieldCheck size={18}/>
+<Sparkles size={18}/>
 
-Sistem Masjid Modern
+Sistem Masjid Digital
 
 </div>
 
@@ -187,23 +209,26 @@ Sistem Masjid Modern
 
 
 <h2
+
 className="
 mt-8
-text-6xl
+text-5xl
+lg:text-7xl
 font-black
 leading-tight
 "
+
 >
 
 Kelola Masjid
 
-<span
-className="
+<span className="
 block
 text-emerald-500
-"
->
-Dengan Teknologi Digital
+">
+
+Lebih Modern
+
 </span>
 
 
@@ -211,27 +236,36 @@ Dengan Teknologi Digital
 
 
 
-
 <p
+
 className="
 mt-6
 text-lg
 opacity-70
 max-w-xl
-leading-relaxed
 "
+
 >
 
 Platform manajemen masjid untuk mengelola
-keuangan, jamaah, agenda dan laporan
-dalam satu sistem yang cepat, aman dan profesional.
+keuangan, jamaah, agenda, dan laporan
+secara cepat, aman, dan profesional.
 
 </p>
 
 
 
 
-<div className="mt-10 flex gap-5 flex-wrap">
+<div
+
+className="
+mt-10
+flex
+gap-4
+flex-wrap
+"
+
+>
 
 
 <a
@@ -239,15 +273,12 @@ dalam satu sistem yang cepat, aman dan profesional.
 href="/auth/login"
 
 className="
-flex
-items-center
-gap-3
-rounded-2xl
-bg-emerald-500
+rounded-3xl
+bg-emerald-600
 px-8
 py-4
 text-white
-font-bold
+font-black
 shadow-xl
 hover:scale-105
 transition
@@ -257,8 +288,6 @@ transition
 
 Masuk Dashboard
 
-<ArrowRight size={18}/>
-
 </a>
 
 
@@ -267,15 +296,15 @@ Masuk Dashboard
 <div
 
 className="
+rounded-3xl
+bg-white/60
+backdrop-blur
+px-6
+py-4
+shadow
 flex
 items-center
 gap-3
-rounded-2xl
-px-6
-py-4
-bg-white/50
-backdrop-blur
-shadow
 "
 
 >
@@ -290,6 +319,7 @@ shadow
 </div>
 
 
+
 </div>
 
 
@@ -300,7 +330,7 @@ shadow
 <div
 
 className="
-relative
+space-y-6
 "
 
 >
@@ -310,70 +340,94 @@ relative
 
 className="
 rounded-[40px]
-p-10
-bg-white/40
+bg-white/70
 backdrop-blur-xl
-border
 shadow-2xl
+p-8
+border
 "
 
 >
+
+
+<div className="
+flex
+items-center
+gap-3
+"
+
+>
+
+<ShieldCheck
+className="text-emerald-600"
+/>
+
+<h3 className="
+text-2xl
+font-black
+">
+
+Aman & Profesional
+
+</h3>
+
+</div>
+
+
+<p className="
+mt-4
+opacity-60
+">
+
+Sistem digital untuk membantu
+pengurus masjid bekerja lebih efektif.
+
+</p>
+
+
+</div>
+
+
 
 
 <div
+
 className="
-flex
-justify-center
-mb-8
+grid
+grid-cols-3
+gap-4
 "
+
 >
 
-<Image
 
-src="/icon-512.png"
+<Card
 
-width={180}
+icon={<Wallet/>}
 
-height={180}
-
-alt="Masjid"
-
-className="
-rounded-[40px]
-shadow-2xl
-"
+title="Kas"
 
 />
 
-</div>
+
+<Card
+
+icon={<Users/>}
+
+title="Jamaah"
+
+/>
 
 
 
-<h3
-className="
-text-3xl
-font-black
-text-center
-"
->
+<Card
 
-Smart Mosque
+icon={<CalendarDays/>}
 
-</h3>
+title="Agenda"
 
+/>
 
-
-<p
-className="
-text-center
-opacity-60
-mt-3
-"
->
-
-Solusi digital untuk pengurus masjid masa kini
-
-</p>
 
 
 </div>
@@ -381,110 +435,6 @@ Solusi digital untuk pengurus masjid masa kini
 
 
 </div>
-
-
-</section>
-
-
-
-
-
-
-<section
-
-className="
-max-w-7xl
-mx-auto
-px-8
-pb-20
-grid
-md:grid-cols-2
-xl:grid-cols-4
-gap-6
-"
-
->
-
-
-{
-features.map((item,index)=>{
-
-const Icon=item.icon;
-
-
-return(
-
-<div
-
-key={index}
-
-className="
-rounded-3xl
-p-7
-bg-white/60
-backdrop-blur
-border
-shadow-lg
-hover:-translate-y-2
-transition
-"
-
->
-
-
-<div
-className="
-h-14
-w-14
-rounded-2xl
-bg-emerald-500
-text-white
-flex
-items-center
-justify-center
-mb-5
-"
->
-
-<Icon/>
-
-</div>
-
-
-
-<h3
-className="
-font-black
-text-xl
-"
->
-
-{item.title}
-
-</h3>
-
-
-
-<p
-className="
-mt-3
-opacity-60
-text-sm
-leading-relaxed
-"
->
-
-{item.desc}
-
-</p>
-
-
-</div>
-
-)
-
-})
-}
 
 
 </section>
@@ -497,19 +447,17 @@ leading-relaxed
 
 className="
 text-center
-py-10
-border-t
+py-12
 opacity-70
 "
 
 >
 
-
-<h3 className="font-bold">
+<p className="font-bold">
 
 Smart Mosque Management System
 
-</h3>
+</p>
 
 
 <p className="mt-2">
@@ -532,6 +480,66 @@ Created by Hamdan Mahmud
 
 </main>
 
+
+)
+
+}
+
+
+
+
+function Card({
+
+icon,
+
+title
+
+}:{
+
+icon:React.ReactNode;
+
+title:string;
+
+}){
+
+
+return (
+
+<div
+
+className="
+rounded-3xl
+bg-white/70
+backdrop-blur
+shadow-xl
+p-5
+text-center
+"
+
+>
+
+<div className="
+flex
+justify-center
+text-emerald-600
+">
+
+{icon}
+
+</div>
+
+
+<p className="
+mt-3
+font-black
+">
+
+{title}
+
+</p>
+
+
+</div>
 
 )
 
