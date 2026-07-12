@@ -1,16 +1,20 @@
 "use client";
 
 import {
-  Clock,
   Moon,
   Sun,
-  Wallet,
+  WalletCards,
   Users,
   CalendarDays,
-  Sparkles
+  FileText,
+  ShieldCheck,
+  Clock,
+  ArrowRight
 } from "lucide-react";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
 
 export default function HomePage(){
 
@@ -27,207 +31,508 @@ export default function HomePage(){
 
     },1000);
 
+
     return()=>clearInterval(timer);
 
   },[]);
 
 
-  return (
 
-    <main className={
-      dark
-      ?
-      "min-h-screen bg-slate-950 text-white"
-      :
-      "min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-50 text-slate-900"
-    }>
+  const features=[
 
+    {
+      icon:WalletCards,
+      title:"Manajemen Kas",
+      desc:"Catat pemasukan dan pengeluaran masjid secara transparan."
+    },
 
-      <header className="flex justify-between items-center px-8 py-6">
+    {
+      icon:Users,
+      title:"Data Jamaah",
+      desc:"Kelola database jamaah secara cepat dan terstruktur."
+    },
 
-        <div>
+    {
+      icon:CalendarDays,
+      title:"Agenda Masjid",
+      desc:"Atur kegiatan, kajian dan acara masjid."
+    },
 
-          <h1 className="text-2xl font-black">
-            🕌 Smart Mosque
-          </h1>
+    {
+      icon:FileText,
+      title:"Laporan Digital",
+      desc:"Buat laporan keuangan dengan mudah."
+    }
 
-          <p className="text-sm opacity-60">
-            Management System
-          </p>
+  ];
 
-        </div>
 
+return(
 
-        <button
-          onClick={()=>setDark(!dark)}
-          className="rounded-2xl p-3 bg-white/30 backdrop-blur shadow"
-        >
+<main
+className={
+dark
+?
+"min-h-screen bg-[#07130f] text-white"
+:
+"min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-50 text-slate-900"
+}
+>
 
-          {
-            dark
-            ?
-            <Sun/>
-            :
-            <Moon/>
-          }
 
-        </button>
+<header className="
+max-w-7xl mx-auto
+flex justify-between items-center
+px-8 py-6
+">
 
-      </header>
 
+<div className="flex items-center gap-4">
 
+<Image
+src="/icon-192.png"
+width={55}
+height={55}
+alt="Smart Mosque"
+className="rounded-2xl shadow-xl"
+/>
 
-      <section className="px-8 py-16 grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
 
+<div>
 
-        <div>
+<h1 className="text-2xl font-black">
+Smart Mosque
+</h1>
 
+<p className="text-sm opacity-60">
+Digital Mosque Management
+</p>
 
-          <div className="inline-flex gap-2 items-center rounded-full bg-emerald-500/10 px-5 py-2 text-emerald-600">
+</div>
 
-            <Sparkles size={18}/>
 
-            Sistem Masjid Digital
+</div>
 
-          </div>
 
 
+<button
 
-          <h2 className="mt-8 text-5xl font-black leading-tight">
+onClick={()=>setDark(!dark)}
 
-            Kelola Masjid
+className="
+p-3
+rounded-2xl
+backdrop-blur
+bg-white/30
+shadow-lg
+"
 
-            <span className="block text-emerald-500">
-              Lebih Modern
-            </span>
+>
 
-          </h2>
+{
+dark
+?
+<Sun/>
+:
+<Moon/>
+}
 
+</button>
 
 
-          <p className="mt-6 text-lg opacity-70">
+</header>
 
-            Sistem informasi untuk mengelola kas,
-            jamaah, agenda dan laporan masjid
-            secara cepat dan profesional.
 
-          </p>
 
 
 
-          <div className="mt-10 flex gap-5">
+<section
+className="
+max-w-7xl
+mx-auto
+px-8
+py-20
+grid
+lg:grid-cols-2
+gap-16
+items-center
+"
+>
 
-            <a
-              href="/auth/login"
-              className="rounded-2xl bg-emerald-500 px-8 py-4 text-white font-bold shadow-xl"
-            >
-              Masuk Dashboard
-            </a>
 
+<div>
 
-            <div className="rounded-2xl px-6 py-4 bg-white/40 backdrop-blur">
 
-              <Clock className="inline mr-2"/>
+<div
+className="
+inline-flex
+items-center
+gap-2
+px-5
+py-2
+rounded-full
+bg-emerald-500/10
+text-emerald-600
+font-semibold
+"
+>
 
-              {time}
+<ShieldCheck size={18}/>
 
-            </div>
+Sistem Masjid Modern
 
+</div>
 
-          </div>
 
 
-        </div>
 
+<h2
+className="
+mt-8
+text-6xl
+font-black
+leading-tight
+"
+>
 
+Kelola Masjid
 
+<span
+className="
+block
+text-emerald-500
+"
+>
+Dengan Teknologi Digital
+</span>
 
-        <div className="grid gap-6">
 
+</h2>
 
-          <div className="rounded-3xl p-8 bg-white/50 backdrop-blur-xl shadow-xl border">
 
-            <h3 className="text-2xl font-bold">
-              Sistem Manajemen Masjid
-            </h3>
 
-            <p className="opacity-60 mt-3">
-              Kelola seluruh aktivitas masjid dalam satu aplikasi digital.
-            </p>
 
+<p
+className="
+mt-6
+text-lg
+opacity-70
+max-w-xl
+leading-relaxed
+"
+>
 
-            <div className="mt-8 grid grid-cols-3 gap-4">
+Platform manajemen masjid untuk mengelola
+keuangan, jamaah, agenda dan laporan
+dalam satu sistem yang cepat, aman dan profesional.
 
+</p>
 
-              <div className="rounded-3xl p-5 bg-white/70 shadow">
 
-                <Wallet/>
 
-                <p className="mt-3 font-bold">
-                  Kas
-                </p>
 
-              </div>
+<div className="mt-10 flex gap-5 flex-wrap">
 
 
+<a
 
-              <div className="rounded-3xl p-5 bg-white/70 shadow">
+href="/auth/login"
 
-                <Users/>
+className="
+flex
+items-center
+gap-3
+rounded-2xl
+bg-emerald-500
+px-8
+py-4
+text-white
+font-bold
+shadow-xl
+hover:scale-105
+transition
+"
 
-                <p className="mt-3 font-bold">
-                  Jamaah
-                </p>
+>
 
-              </div>
+Masuk Dashboard
 
+<ArrowRight size={18}/>
 
+</a>
 
-              <div className="rounded-3xl p-5 bg-white/70 shadow">
 
-                <CalendarDays/>
 
-                <p className="mt-3 font-bold">
-                  Agenda
-                </p>
 
-              </div>
+<div
 
+className="
+flex
+items-center
+gap-3
+rounded-2xl
+px-6
+py-4
+bg-white/50
+backdrop-blur
+shadow
+"
 
-            </div>
+>
 
+<Clock/>
 
-          </div>
+{time}
 
+</div>
 
-        </div>
 
+</div>
 
 
-      </section>
+</div>
 
 
 
 
-      <footer className="text-center py-10 opacity-70">
 
-        <p>
-          Smart Mosque Management System
-        </p>
 
-        <p className="font-bold mt-2">
-          Created by Hamdan Mahmud
-        </p>
+<div
 
-        <p className="text-sm mt-2">
-          © 2026 All Rights Reserved
-        </p>
+className="
+relative
+"
 
-      </footer>
+>
 
 
-    </main>
+<div
 
-  );
+className="
+rounded-[40px]
+p-10
+bg-white/40
+backdrop-blur-xl
+border
+shadow-2xl
+"
+
+>
+
+
+<div
+className="
+flex
+justify-center
+mb-8
+"
+>
+
+<Image
+
+src="/icon-512.png"
+
+width={180}
+
+height={180}
+
+alt="Masjid"
+
+className="
+rounded-[40px]
+shadow-2xl
+"
+
+/>
+
+</div>
+
+
+
+<h3
+className="
+text-3xl
+font-black
+text-center
+"
+>
+
+Smart Mosque
+
+</h3>
+
+
+
+<p
+className="
+text-center
+opacity-60
+mt-3
+"
+>
+
+Solusi digital untuk pengurus masjid masa kini
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section
+
+className="
+max-w-7xl
+mx-auto
+px-8
+pb-20
+grid
+md:grid-cols-2
+xl:grid-cols-4
+gap-6
+"
+
+>
+
+
+{
+features.map((item,index)=>{
+
+const Icon=item.icon;
+
+
+return(
+
+<div
+
+key={index}
+
+className="
+rounded-3xl
+p-7
+bg-white/60
+backdrop-blur
+border
+shadow-lg
+hover:-translate-y-2
+transition
+"
+
+>
+
+
+<div
+className="
+h-14
+w-14
+rounded-2xl
+bg-emerald-500
+text-white
+flex
+items-center
+justify-center
+mb-5
+"
+>
+
+<Icon/>
+
+</div>
+
+
+
+<h3
+className="
+font-black
+text-xl
+"
+>
+
+{item.title}
+
+</h3>
+
+
+
+<p
+className="
+mt-3
+opacity-60
+text-sm
+leading-relaxed
+"
+>
+
+{item.desc}
+
+</p>
+
+
+</div>
+
+)
+
+})
+}
+
+
+</section>
+
+
+
+
+
+<footer
+
+className="
+text-center
+py-10
+border-t
+opacity-70
+"
+
+>
+
+
+<h3 className="font-bold">
+
+Smart Mosque Management System
+
+</h3>
+
+
+<p className="mt-2">
+
+Created by Hamdan Mahmud
+
+</p>
+
+
+<p className="text-sm mt-2">
+
+© 2026 All Rights Reserved
+
+</p>
+
+
+</footer>
+
+
+
+</main>
+
+
+)
 
 }
