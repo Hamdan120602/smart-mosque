@@ -10,11 +10,11 @@ import {
   Sparkles
 } from "lucide-react";
 
-import { QRCodeSVG } from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import { useEffect, useState } from "react";
 
 
-const QRIS_DATA =
+const QRIS =
 "00020101021126630013ID.CO.BRI.WWW01189360000201100062010215201000620102150303UME51440014ID.CO.QRIS.WWW0215ID10243176718900303UME5204731153033605802ID5915RM PADANG MURAH6013KOTA JAKARTA P61051034062070703A01";
 
 
@@ -63,7 +63,7 @@ dark
 </h1>
 
 <p className="opacity-60">
-Management System
+Digital Mosque Management System
 </p>
 
 </div>
@@ -71,7 +71,7 @@ Management System
 
 <button
 onClick={()=>setDark(!dark)}
-className="p-3 rounded-2xl bg-white/30 shadow"
+className="p-3 rounded-2xl bg-white/40 shadow"
 >
 
 {
@@ -89,8 +89,7 @@ dark
 
 
 
-
-<section className="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-2 gap-12">
+<section className="max-w-7xl mx-auto px-8 py-12 grid lg:grid-cols-2 gap-12">
 
 
 <div>
@@ -100,48 +99,51 @@ dark
 
 <Sparkles size={18}/>
 
-Sistem Masjid Digital
+Masjid Digital Modern
 
 </div>
 
 
 
-<h2 className="mt-8 text-6xl font-black leading-tight">
+<h2 className="text-6xl font-black mt-8 leading-tight">
 
 Kelola Masjid
 
 <span className="block text-emerald-500">
-Lebih Modern
+
+Lebih Mudah
+
 </span>
 
 </h2>
 
 
 
-<p className="mt-6 text-xl opacity-70">
+<p className="mt-6 text-lg opacity-70">
 
 Kelola kas, jamaah, agenda dan laporan
-masjid dalam satu sistem profesional.
+dalam satu aplikasi profesional.
 
 </p>
 
 
 
-<div className="mt-10 flex gap-5 items-center">
+<div className="mt-10 flex gap-4 items-center">
 
 
 <a
 href="/auth/login"
-className="px-8 py-4 rounded-2xl bg-emerald-500 text-white font-bold shadow-xl"
+className="bg-emerald-500 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
 >
+
 Masuk Dashboard
+
 </a>
 
 
+<div className="px-5 py-4 rounded-2xl bg-white/50 shadow">
 
-<div className="px-5 py-4 rounded-2xl bg-white/50 shadow flex gap-2">
-
-<Clock/>
+<Clock className="inline mr-2"/>
 
 {time}
 
@@ -160,26 +162,30 @@ Masuk Dashboard
 <div className="space-y-6">
 
 
-<div className="rounded-[32px] p-8 bg-white/70 shadow-xl border backdrop-blur">
+<div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl border">
 
 
 <h3 className="text-2xl font-black mb-5">
-QRIS Donasi Masjid
+
+Donasi QRIS Masjid
+
 </h3>
 
 
-<div className="bg-white p-5 rounded-3xl w-fit mx-auto">
+<div className="bg-white p-5 rounded-3xl w-fit">
 
-<QRCodeSVG
-value={QRIS_DATA}
+<QRCodeCanvas
+value={QRIS}
 size={220}
 />
 
 </div>
 
 
-<p className="text-center mt-5 opacity-60">
-Scan QR untuk donasi digital
+<p className="mt-5 text-sm opacity-60">
+
+Scan QRIS untuk melakukan donasi digital.
+
 </p>
 
 
@@ -191,7 +197,7 @@ Scan QR untuk donasi digital
 <div className="grid grid-cols-3 gap-4">
 
 
-<div className="rounded-3xl p-5 bg-white/70 shadow">
+<div className="bg-white/70 rounded-3xl p-5 shadow">
 
 <Wallet/>
 
@@ -202,8 +208,7 @@ Kas
 </div>
 
 
-
-<div className="rounded-3xl p-5 bg-white/70 shadow">
+<div className="bg-white/70 rounded-3xl p-5 shadow">
 
 <Users/>
 
@@ -214,9 +219,7 @@ Jamaah
 </div>
 
 
-
-
-<div className="rounded-3xl p-5 bg-white/70 shadow">
+<div className="bg-white/70 rounded-3xl p-5 shadow">
 
 <CalendarDays/>
 
@@ -233,22 +236,22 @@ Agenda
 </div>
 
 
-
 </section>
-
-
 
 
 
 <footer className="text-center py-10 opacity-70">
 
+
 <p>
 Smart Mosque Management System
 </p>
 
+
 <p className="font-bold mt-2">
 Created by Hamdan Mahmud
 </p>
+
 
 <p className="text-sm">
 © 2026 All Rights Reserved
@@ -258,9 +261,8 @@ Created by Hamdan Mahmud
 </footer>
 
 
-
 </main>
 
-)
+);
 
 }
