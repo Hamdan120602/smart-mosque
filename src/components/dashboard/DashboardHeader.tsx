@@ -2,8 +2,6 @@
 
 
 import {
-Bell,
-Search,
 Sparkles
 } from "lucide-react";
 
@@ -20,15 +18,19 @@ className="
 
 flex
 
-flex-col
+items-center
 
-gap-5
+justify-between
 
-lg:flex-row
+rounded-3xl
 
-lg:items-center
+bg-white
 
-lg:justify-between
+border
+
+shadow-sm
+
+p-6
 
 "
 
@@ -46,7 +48,7 @@ flex
 
 items-center
 
-gap-3
+gap-4
 
 "
 
@@ -57,9 +59,9 @@ gap-3
 
 className="
 
-h-12
+h-14
 
-w-12
+w-14
 
 rounded-2xl
 
@@ -85,7 +87,7 @@ background:
 
 >
 
-<Sparkles size={22}/>
+<Sparkles size={26}/>
 
 </div>
 
@@ -114,6 +116,7 @@ Dashboard
 </h1>
 
 
+
 <p
 
 className="
@@ -140,144 +143,7 @@ Pusat kontrol Smart Mosque Management System
 </div>
 
 
-
 </div>
-
-
-
-
-
-
-
-<div
-
-className="
-
-flex
-
-items-center
-
-gap-3
-
-"
-
->
-
-
-
-<div
-
-className="
-
-relative
-
-"
-
->
-
-
-<Search
-
-className="
-
-absolute
-
-left-4
-
-top-1/2
-
--translate-y-1/2
-
-opacity-40
-
-"
-
-size={18}
-
-/>
-
-
-<input
-
-placeholder="Cari data..."
-
-className="
-
-h-12
-
-w-full
-
-lg:w-72
-
-rounded-2xl
-
-border
-
-bg-white/50
-
-pl-11
-
-pr-4
-
-outline-none
-
-focus:ring-2
-
-"
-
-style={{
-
-borderColor:"var(--primary)"
-
-}}
-
-/>
-
-
-</div>
-
-
-
-
-<button
-
-className="
-
-h-12
-
-w-12
-
-rounded-2xl
-
-border
-
-flex
-
-items-center
-
-justify-center
-
-bg-white/50
-
-hover:shadow-lg
-
-transition
-
-"
-
->
-
-
-<Bell size={20}/>
-
-
-</button>
-
-
-
-</div>
-
-
 
 
 </div>
