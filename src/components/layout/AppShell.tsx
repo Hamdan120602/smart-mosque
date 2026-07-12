@@ -9,7 +9,6 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 
-
 export default function AppShell({
 children
 }:{
@@ -50,9 +49,9 @@ duration-300
 
 ${collapsed
 ?
-'md:pl-[90px]'
+"md:pl-[90px]"
 :
-'md:pl-[270px]'
+"md:pl-[270px]"
 }
 
 `}
@@ -72,10 +71,15 @@ setMobileOpen={setMobileOpen}
 
 
 
-<main className="
+<main
+
+className="
+pt-24
 p-6
 lg:p-8
-">
+"
+
+>
 
 {children}
 

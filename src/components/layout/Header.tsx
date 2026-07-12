@@ -4,8 +4,8 @@ import {
 Menu,
 Bell,
 Search,
-Sun,
 Moon,
+Sun,
 ChevronDown,
 User,
 Settings,
@@ -13,8 +13,8 @@ LogOut
 } from "lucide-react";
 
 import {
-useEffect,
-useState
+useState,
+useEffect
 } from "react";
 
 import {
@@ -30,7 +30,8 @@ useTheme
 } from "@/context/ThemeContext";
 
 
-interface HeaderProps{
+
+interface HeaderProps {
 
 collapsed:boolean;
 
@@ -69,11 +70,12 @@ setTheme
 
 const [user,setUser]=useState<any>(null);
 
-const [open,setOpen]=useState(false);
-
 const [search,setSearch]=useState("");
 
 const [notify,setNotify]=useState(false);
+
+const [open,setOpen]=useState(false);
+
 
 const [notifications,setNotifications]=useState<any[]>([]);
 
@@ -84,11 +86,8 @@ useEffect(()=>{
 
 async function load(){
 
-
 const {
-
 data
-
 }=await supabase.auth.getUser();
 
 
@@ -96,62 +95,48 @@ setUser(data.user);
 
 
 
+const old=
+localStorage.getItem(
+"notifications"
+);
 
-const agenda =
-await supabase
 
-.from("agenda")
 
-.select("*")
+if(old){
 
-.order("date",
+setNotifications(
+JSON.parse(old)
+);
+
+}
+
+else{
+
+const data=[
+
 {
-ascending:false
-})
+title:"Selamat Datang",
+text:"Smart Mosque siap digunakan"
+},
 
-.limit(3);
-
-
-
-const transaksi =
-await supabase
-
-.from("transactions")
-
-.select("*")
-
-.order("created_at",
 {
-ascending:false
-})
-
-.limit(3);
-
-
-
-const result=[
-
-...(agenda.data||[]).map((x:any)=>({
-
-title:"Agenda baru",
-
-text:x.title
-
-})),
-
-
-...(transaksi.data||[]).map((x:any)=>({
-
-title:"Transaksi",
-
-text:x.title
-
-}))
+title:"Informasi",
+text:"Lengkapi data jamaah"
+}
 
 ];
 
 
-setNotifications(result);
+setNotifications(data);
+
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(data)
+);
+
+
+}
 
 
 }
@@ -177,37 +162,37 @@ search.toLowerCase();
 const menus=[
 
 {
-name:"dashboard",
+key:"dashboard",
 url:"/dashboard"
 },
 
 {
-name:"jamaah",
+key:"jamaah",
 url:"/dashboard/jamaah"
 },
 
 {
-name:"kas",
+key:"kas",
 url:"/dashboard/kas"
 },
 
 {
-name:"agenda",
+key:"agenda",
 url:"/dashboard/agenda"
 },
 
 {
-name:"laporan",
+key:"laporan",
 url:"/dashboard/laporan"
 },
 
 {
-name:"profil",
+key:"profil",
 url:"/dashboard/profile"
 },
 
 {
-name:"pengaturan",
+key:"pengaturan",
 url:"/dashboard/settings"
 }
 
@@ -216,9 +201,11 @@ url:"/dashboard/settings"
 
 
 const found =
-menus.find(x=>
+menus.find(
 
-x.name.includes(value)
+item=>
+
+item.key.includes(value)
 
 );
 
@@ -229,6 +216,12 @@ if(found){
 router.push(found.url);
 
 setSearch("");
+
+}
+
+else{
+
+alert("Menu tidak ditemukan");
 
 }
 
@@ -250,18 +243,6 @@ router.push("/auth/login");
 
 
 
-
-const name=
-
-user?.email
-?.split("@")[0]
-||
-"Admin";
-
-
-
-
-
 return(
 
 
@@ -270,17 +251,18 @@ return(
 className="
 fixed
 top-0
-left-0
 right-0
-z-50
+z-40
 h-20
-bg-white/90
-backdrop-blur-xl
+bg-white
 border-b
 flex
 items-center
 justify-between
 px-6
+
+md:left-[270px]
+
 "
 
 >
@@ -293,7 +275,7 @@ px-6
 
 onClick={()=>setMobileOpen(true)}
 
-className="md:hidden p-3 rounded-2xl"
+className="md:hidden p-2 rounded-xl"
 
 >
 
@@ -307,15 +289,13 @@ className="md:hidden p-3 rounded-2xl"
 
 onClick={()=>setCollapsed(!collapsed)}
 
-className="hidden md:block p-3 rounded-2xl"
+className="hidden md:block p-2 rounded-xl"
 
 >
 
 <Menu/>
 
 </button>
-
-
 
 
 <h1 className="font-black text-xl">
@@ -330,22 +310,18 @@ className="hidden md:block p-3 rounded-2xl"
 
 
 
-
 <div className="flex items-center gap-3">
 
 
-<div
 
-className="
+<div className="
 hidden
 md:flex
-items-center
 bg-slate-100
 rounded-2xl
 px-4
-"
-
->
+items-center
+">
 
 
 <Search size={18}/>
@@ -355,7 +331,9 @@ px-4
 
 value={search}
 
-onChange={(e)=>setSearch(e.target.value)}
+onChange={(e)=>
+setSearch(e.target.value)
+}
 
 onKeyDown={(e)=>{
 
@@ -370,7 +348,7 @@ className="
 bg-transparent
 outline-none
 p-3
-w-40
+w-44
 "
 
 />
@@ -381,9 +359,12 @@ w-40
 
 
 
+
 <button
 
-onClick={()=>setTheme(
+onClick={()=>{
+
+setTheme(
 
 theme==="emerald"
 
@@ -395,11 +376,13 @@ theme==="emerald"
 
 "emerald"
 
-)}
+)
+
+}}
 
 className="
-rounded-2xl
 p-3
+rounded-2xl
 hover:bg-slate-100
 "
 
@@ -424,7 +407,6 @@ theme==="emerald"
 
 
 
-
 <div className="relative">
 
 
@@ -433,15 +415,16 @@ theme==="emerald"
 onClick={()=>setNotify(!notify)}
 
 className="
-relative
 p-3
 rounded-2xl
 hover:bg-slate-100
+relative
 "
 
 >
 
 <Bell/>
+
 
 {
 
@@ -454,8 +437,8 @@ absolute
 top-2
 right-2
 bg-red-500
-h-2
 w-2
+h-2
 rounded-full
 "
 
@@ -463,8 +446,8 @@ rounded-full
 
 }
 
-</button>
 
+</button>
 
 
 
@@ -477,19 +460,18 @@ notify &&
 className="
 absolute
 right-0
-mt-4
-w-80
+mt-3
+w-72
 bg-white
 rounded-3xl
-shadow-2xl
+shadow-xl
 border
-p-5
+p-4
 "
 
 >
 
-
-<h3 className="font-black mb-4">
+<h3 className="font-black mb-3">
 
 Notifikasi
 
@@ -498,19 +480,6 @@ Notifikasi
 
 {
 
-notifications.length===0
-
-?
-
-<p className="text-sm opacity-60">
-
-Tidak ada aktivitas
-
-</p>
-
-
-:
-
 notifications.map((n,i)=>(
 
 <div
@@ -518,8 +487,8 @@ notifications.map((n,i)=>(
 key={i}
 
 className="
-border-b
 py-3
+border-b
 "
 
 >
@@ -536,8 +505,8 @@ py-3
 
 </p>
 
-</div>
 
+</div>
 
 ))
 
@@ -545,15 +514,14 @@ py-3
 }
 
 
-
 </div>
 
 
 }
 
 
-
 </div>
+
 
 
 
@@ -571,8 +539,8 @@ flex
 items-center
 gap-3
 rounded-3xl
-p-2
 hover:bg-slate-100
+p-2
 "
 
 >
@@ -581,8 +549,8 @@ hover:bg-slate-100
 <div
 
 className="
-h-10
 w-10
+h-10
 rounded-full
 bg-emerald-600
 text-white
@@ -594,7 +562,12 @@ font-black
 
 >
 
-{name[0].toUpperCase()}
+{
+
+(user?.email?.[0]||"A")
+.toUpperCase()
+
+}
 
 </div>
 
@@ -603,6 +576,7 @@ font-black
 
 
 </button>
+
 
 
 {
@@ -625,9 +599,20 @@ p-3
 
 >
 
+
 <button
+
 onClick={()=>router.push("/dashboard/profile")}
-className="w-full flex gap-3 p-3 rounded-xl hover:bg-slate-100"
+
+className="
+w-full
+flex
+gap-3
+p-3
+rounded-xl
+hover:bg-slate-100
+"
+
 >
 
 <User/>
@@ -637,9 +622,20 @@ Profil
 </button>
 
 
+
 <button
+
 onClick={()=>router.push("/dashboard/settings")}
-className="w-full flex gap-3 p-3 rounded-xl hover:bg-slate-100"
+
+className="
+w-full
+flex
+gap-3
+p-3
+rounded-xl
+hover:bg-slate-100
+"
+
 >
 
 <Settings/>
@@ -649,9 +645,21 @@ Pengaturan
 </button>
 
 
+
 <button
+
 onClick={logout}
-className="w-full flex gap-3 p-3 rounded-xl text-red-600 hover:bg-red-50"
+
+className="
+w-full
+flex
+gap-3
+p-3
+rounded-xl
+text-red-600
+hover:bg-red-50
+"
+
 >
 
 <LogOut/>
@@ -663,15 +671,16 @@ Keluar
 
 </div>
 
+
 }
 
 
-</div>
-
-
 
 </div>
 
+
+
+</div>
 
 
 </header>
