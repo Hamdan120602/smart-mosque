@@ -9,6 +9,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 
+
 export default function AppShell({
 children
 }:{
@@ -44,6 +45,7 @@ setMobileOpen={setMobileOpen}
 <div
 
 className={`
+
 transition-all
 duration-300
 
@@ -74,7 +76,6 @@ setMobileOpen={setMobileOpen}
 <main
 
 className="
-pt-24
 p-6
 lg:p-8
 "

@@ -249,20 +249,21 @@ return(
 <header
 
 className="
-fixed
-top-0
-right-0
+relative
 z-40
 h-20
-bg-white
-border-b
+mx-4
+mt-4
+bg-white/90
+backdrop-blur-xl
+border
+border-slate-200
+rounded-3xl
+shadow-lg
 flex
 items-center
 justify-between
 px-6
-
-md:left-[270px]
-
 "
 
 >
