@@ -7,243 +7,260 @@ import {
   Wallet,
   Users,
   CalendarDays,
-  QrCode,
   Sparkles
 } from "lucide-react";
 
+import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
+
+
+const QRIS_DATA =
+"00020101021126630013ID.CO.BRI.WWW01189360000201100062010215201000620102150303UME51440014ID.CO.QRIS.WWW0215ID10243176718900303UME5204731153033605802ID5915RM PADANG MURAH6013KOTA JAKARTA P61051034062070703A01";
+
 
 export default function HomePage(){
 
-  const [dark,setDark]=useState(false);
-  const [time,setTime]=useState("");
+const [dark,setDark]=useState(false);
+const [time,setTime]=useState("");
 
-  useEffect(()=>{
 
-    const timer=setInterval(()=>{
+useEffect(()=>{
 
-      setTime(
-        new Date().toLocaleTimeString("id-ID")
-      );
+const timer=setInterval(()=>{
 
-    },1000);
+setTime(
+new Date().toLocaleTimeString("id-ID")
+);
 
-    return()=>clearInterval(timer);
+},1000);
 
-  },[]);
 
+return()=>clearInterval(timer);
 
-  return (
+},[]);
 
-    <main className={
-      dark
-      ?
-      "min-h-screen bg-slate-950 text-white"
-      :
-      "min-h-screen bg-gradient-to-br from-emerald-50 via-white to-cyan-50 text-slate-900"
-    }>
 
 
-      <header className="flex justify-between items-center px-8 py-6">
+return (
 
-        <div>
+<main
+className={
+dark
+?
+"min-h-screen bg-slate-950 text-white"
+:
+"min-h-screen bg-gradient-to-br from-emerald-100 via-white to-cyan-100 text-slate-900"
+}
+>
 
-          <h1 className="text-2xl font-black">
-            🕌 Smart Mosque
-          </h1>
 
-          <p className="text-sm opacity-60">
-            Management System
-          </p>
+<header className="flex justify-between items-center px-8 py-6">
 
-        </div>
+<div>
 
+<h1 className="text-3xl font-black">
+🕌 Smart Mosque
+</h1>
 
-        <button
-          onClick={()=>setDark(!dark)}
-          className="rounded-2xl p-3 bg-white/20 backdrop-blur shadow"
-        >
+<p className="opacity-60">
+Management System
+</p>
 
-          {
-            dark
-            ?
-            <Sun/>
-            :
-            <Moon/>
-          }
+</div>
 
-        </button>
 
+<button
+onClick={()=>setDark(!dark)}
+className="p-3 rounded-2xl bg-white/30 shadow"
+>
 
-      </header>
+{
+dark
+?
+<Sun/>
+:
+<Moon/>
+}
 
+</button>
 
 
-      <section className="px-8 py-16 grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+</header>
 
 
-        <div>
 
 
-          <div className="inline-flex gap-2 items-center rounded-full bg-emerald-500/10 px-5 py-2 text-emerald-600">
+<section className="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-2 gap-12">
 
-            <Sparkles size={18}/>
 
-            Sistem Masjid Digital
+<div>
 
-          </div>
 
+<div className="inline-flex gap-2 bg-emerald-500/10 text-emerald-600 px-5 py-2 rounded-full">
 
+<Sparkles size={18}/>
 
-          <h2 className="mt-8 text-5xl font-black leading-tight">
+Sistem Masjid Digital
 
-            Kelola Masjid
+</div>
 
-            <span className="block text-emerald-500">
 
-              Lebih Modern
 
-            </span>
+<h2 className="mt-8 text-6xl font-black leading-tight">
 
-          </h2>
+Kelola Masjid
 
+<span className="block text-emerald-500">
+Lebih Modern
+</span>
 
+</h2>
 
-          <p className="mt-6 text-lg opacity-70">
 
-            Sistem informasi untuk mengelola kas,
-            jamaah, agenda dan laporan masjid
-            secara cepat dan profesional.
 
-          </p>
+<p className="mt-6 text-xl opacity-70">
 
+Kelola kas, jamaah, agenda dan laporan
+masjid dalam satu sistem profesional.
 
+</p>
 
 
-          <div className="mt-10 flex gap-5">
 
-            <a
-            href="/auth/login"
-            className="rounded-2xl bg-emerald-500 px-8 py-4 text-white font-bold shadow-xl"
-            >
-              Masuk Dashboard
-            </a>
+<div className="mt-10 flex gap-5 items-center">
 
 
-            <div className="rounded-2xl px-6 py-4 bg-white/40 backdrop-blur">
+<a
+href="/auth/login"
+className="px-8 py-4 rounded-2xl bg-emerald-500 text-white font-bold shadow-xl"
+>
+Masuk Dashboard
+</a>
 
-              <Clock className="inline mr-2"/>
 
-              {time}
 
-            </div>
+<div className="px-5 py-4 rounded-2xl bg-white/50 shadow flex gap-2">
 
+<Clock/>
 
-          </div>
+{time}
 
+</div>
 
-        </div>
 
+</div>
 
 
+</div>
 
-        <div className="grid gap-6">
 
 
-          <div className="rounded-3xl p-8 bg-white/50 backdrop-blur-xl shadow-xl border">
 
-            <QrCode size={40} className="text-emerald-500"/>
 
-            <h3 className="text-2xl font-bold mt-4">
-              Donasi QRIS
-            </h3>
+<div className="space-y-6">
 
-            <p className="opacity-60 mt-2">
-              Mudahkan jamaah melakukan donasi digital.
-            </p>
 
+<div className="rounded-[32px] p-8 bg-white/70 shadow-xl border backdrop-blur">
 
-            <div className="mt-6 h-40 w-40 bg-white rounded-xl flex items-center justify-center border">
 
-              <QrCode size={100}/>
+<h3 className="text-2xl font-black mb-5">
+QRIS Donasi Masjid
+</h3>
 
-            </div>
 
+<div className="bg-white p-5 rounded-3xl w-fit mx-auto">
 
-          </div>
+<QRCodeSVG
+value={QRIS_DATA}
+size={220}
+/>
 
+</div>
 
 
+<p className="text-center mt-5 opacity-60">
+Scan QR untuk donasi digital
+</p>
 
-          <div className="grid grid-cols-3 gap-4">
 
+</div>
 
-            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
 
-              <Wallet/>
 
-              <p className="mt-3 font-bold">
-                Kas
-              </p>
 
-            </div>
+<div className="grid grid-cols-3 gap-4">
 
 
+<div className="rounded-3xl p-5 bg-white/70 shadow">
 
-            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
+<Wallet/>
 
-              <Users/>
+<p className="font-bold mt-3">
+Kas
+</p>
 
-              <p className="mt-3 font-bold">
-                Jamaah
-              </p>
+</div>
 
-            </div>
 
 
+<div className="rounded-3xl p-5 bg-white/70 shadow">
 
-            <div className="rounded-3xl p-5 bg-white/50 backdrop-blur shadow">
+<Users/>
 
-              <CalendarDays/>
+<p className="font-bold mt-3">
+Jamaah
+</p>
 
-              <p className="mt-3 font-bold">
-                Agenda
-              </p>
+</div>
 
-            </div>
 
 
-          </div>
 
+<div className="rounded-3xl p-5 bg-white/70 shadow">
 
-        </div>
+<CalendarDays/>
 
+<p className="font-bold mt-3">
+Agenda
+</p>
 
+</div>
 
-      </section>
 
+</div>
 
 
+</div>
 
-      <footer className="text-center py-10 opacity-70">
 
-        <p>
-          Smart Mosque Management System
-        </p>
 
-        <p className="font-bold mt-2">
-          Created by Hamdan Mahmud
-        </p>
+</section>
 
-        <p className="text-sm mt-2">
-          © 2026 All Rights Reserved
-        </p>
 
-      </footer>
 
 
-    </main>
 
-  );
+<footer className="text-center py-10 opacity-70">
+
+<p>
+Smart Mosque Management System
+</p>
+
+<p className="font-bold mt-2">
+Created by Hamdan Mahmud
+</p>
+
+<p className="text-sm">
+© 2026 All Rights Reserved
+</p>
+
+
+</footer>
+
+
+
+</main>
+
+)
 
 }
