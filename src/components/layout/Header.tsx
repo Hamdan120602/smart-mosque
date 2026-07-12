@@ -1,32 +1,31 @@
 "use client";
 
-
 import {
-Menu,
-Bell,
-ChevronDown,
-User,
-LogOut,
-Settings
+  Menu,
+  Bell,
+  ChevronDown,
+  User,
+  LogOut,
+  Settings,
+  Moon,
+  Sun
 } from "lucide-react";
 
-
 import {
-useEffect,
-useState
+  useEffect,
+  useState
 } from "react";
 
-
 import {
-supabase
+  supabase
 } from "@/lib/supabase";
 
-
 import {
-useRouter
+  useRouter
 } from "next/navigation";
 
 
+import Image from "next/image";
 
 
 
@@ -46,7 +45,6 @@ React.SetStateAction<boolean>
 
 
 
-
 export default function Header({
 
 collapsed,
@@ -58,95 +56,57 @@ setMobileOpen
 }:HeaderProps){
 
 
-
 const router = useRouter();
-
 
 
 const [user,setUser]=useState<any>(null);
 
 const [open,setOpen]=useState(false);
 
-
+const [dark,setDark]=useState(false);
+const [notify,setNotify]=useState(false);
 
 
 
 useEffect(()=>{
 
+async function load(){
 
-async function getUser(){
-
-
-const {
-
-data
-
-}=await supabase.auth.getUser();
-
-
+const {data}=await supabase.auth.getUser();
 
 setUser(data.user);
-
 
 }
 
 
-
-getUser();
+load();
 
 
 },[]);
 
 
 
-
-
-
-
 async function logout(){
 
-
 await supabase.auth.signOut();
-
 
 router.push("/auth/login");
 
 router.refresh();
 
-
 }
 
 
 
-
-
-
 const name =
-
 user?.user_metadata?.name ||
-
 user?.email?.split("@")[0] ||
-
 "Admin Masjid";
 
 
-
 const role =
-
 user?.user_metadata?.role ||
-
-"Takmir";
-
-
-
-const avatar =
-
-user?.user_metadata?.avatar ||
-
-null;
-
-
-
+"Administrator Masjid";
 
 
 
@@ -156,22 +116,40 @@ return (
 <header
 
 className="
-h-20
-bg-white
-border-b
-flex
-items-center
-justify-between
-px-6
+
 sticky
-top-0
+
+top-4
+
 z-40
+
+mx-4
+
+mb-4
+
+h-20
+
+rounded-3xl
+
+border
+
+bg-white/80
+
+backdrop-blur-xl
+
+shadow-xl
+
+flex
+
+items-center
+
+justify-between
+
+px-6
+
 "
 
 >
-
-
-
 
 
 <div className="flex items-center gap-4">
@@ -181,21 +159,13 @@ z-40
 
 onClick={()=>setMobileOpen(true)}
 
-className="
-md:hidden
-p-2
-rounded-xl
-hover:bg-slate-100
-"
+className="md:hidden rounded-2xl p-3 hover:bg-slate-100"
 
 >
 
 <Menu size={22}/>
 
 </button>
-
-
-
 
 
 
@@ -203,13 +173,7 @@ hover:bg-slate-100
 
 onClick={()=>setCollapsed(!collapsed)}
 
-className="
-hidden
-md:block
-p-2
-rounded-xl
-hover:bg-slate-100
-"
+className="hidden md:flex rounded-2xl p-3 hover:bg-slate-100"
 
 >
 
@@ -221,35 +185,37 @@ hover:bg-slate-100
 
 
 
+<div className="flex items-center gap-3">
+
+
+<Image
+
+src="/icon-192.png"
+
+width={45}
+
+height={45}
+
+alt="Smart Mosque"
+
+className="rounded-2xl shadow"
+
+/>
 
 
 
 <div>
 
-
-<h1
-
-className="
-font-black
-text-xl
-text-slate-800
-"
-
->
+<h1 className="font-black text-lg">
 
 Smart Mosque
 
 </h1>
 
 
-<p className="
-text-xs
-text-slate-500
-"
+<p className="text-xs opacity-60">
 
->
-
-Management System
+Digital Management System
 
 </p>
 
@@ -260,6 +226,7 @@ Management System
 </div>
 
 
+</div>
 
 
 
@@ -267,7 +234,7 @@ Management System
 
 
 
-<div className="flex items-center gap-4">
+<div className="flex items-center gap-3">
 
 
 
@@ -276,10 +243,17 @@ Management System
 <button
 
 className="
+
 relative
+
+rounded-2xl
+
 p-3
-rounded-xl
+
 hover:bg-slate-100
+
+transition
+
 "
 
 >
@@ -290,17 +264,64 @@ hover:bg-slate-100
 <span
 
 className="
+
 absolute
-top-2
+
 right-2
+
+top-2
+
 h-2
+
 w-2
+
 rounded-full
+
 bg-red-500
+
 "
 
 />
 
+
+</button>
+
+
+
+
+
+
+<button
+
+onClick={()=>setDark(!dark)}
+
+className="
+
+rounded-2xl
+
+p-3
+
+hover:bg-slate-100
+
+transition
+
+"
+
+>
+
+{
+
+dark
+
+?
+
+<Sun size={20}/>
+
+:
+
+<Moon size={20}/>
+
+}
 
 </button>
 
@@ -319,131 +340,96 @@ bg-red-500
 onClick={()=>setOpen(!open)}
 
 className="
+
 flex
+
 items-center
+
 gap-3
+
 rounded-2xl
+
 px-3
+
 py-2
+
 hover:bg-slate-100
+
+transition
+
 "
 
 >
 
-
-
-
-
-{
-
-avatar
-
-?
-
-<img
-
-src={avatar}
-
-className="
-h-10
-w-10
-rounded-xl
-object-cover
-"
-
-/>
-
-:
 
 <div
 
 className="
-h-10
-w-10
-rounded-xl
-bg-emerald-600
+
+h-11
+
+w-11
+
+rounded-2xl
+
+bg-gradient-to-br
+
+from-emerald-500
+
+to-teal-700
+
 text-white
+
 flex
+
 items-center
+
 justify-center
-font-bold
+
+font-black
+
+shadow
+
 "
 
 >
 
 {
 
-name
-.charAt(0)
-.toUpperCase()
+name.charAt(0).toUpperCase()
 
 }
 
 </div>
 
 
-}
+
+<div className="hidden md:block text-left">
 
 
-
-
-
-
-
-
-<div
-
-className="
-hidden
-md:block
-text-left
-"
-
->
-
-
-<p
-
-className="
-font-bold
-text-sm
-text-slate-800
-"
-
->
+<p className="font-bold text-sm">
 
 {name}
 
 </p>
 
 
-
-<p
-
-className="
-text-xs
-text-slate-500
-"
-
->
+<p className="text-xs opacity-60">
 
 {role}
 
 </p>
 
 
-
 </div>
-
-
 
 
 
 <ChevronDown size={16}/>
 
 
-</button>
 
+</button>
 
 
 
@@ -454,82 +440,75 @@ text-slate-500
 
 open &&
 
-
 <div
 
 className="
+
 absolute
+
 right-0
-mt-3
+
+mt-4
+
 w-64
-rounded-2xl
+
+rounded-3xl
+
 bg-white
-shadow-xl
+
 border
+
+shadow-2xl
+
 p-3
+
 "
 
 >
 
 
-<div
+<div className="p-4 border-b">
 
-className="
-px-3
-py-3
-border-b
-"
-
->
-
-
-<p className="
-font-bold
-"
-
->
+<p className="font-bold">
 
 {name}
 
 </p>
 
 
-<p className="
-text-xs
-text-slate-500
-"
-
->
+<p className="text-xs opacity-60">
 
 {user?.email}
 
 </p>
 
-
 </div>
-
-
-
-
-
 
 
 
 <button
 
+onClick={()=>router.push("/dashboard/profile")}
+
 className="
+
 w-full
+
 flex
-items-center
+
 gap-3
-px-3
-py-3
-rounded-xl
+
+items-center
+
+p-3
+
+rounded-2xl
+
 hover:bg-slate-100
+
 "
 
 >
-
 
 <User size={18}/>
 
@@ -540,24 +519,29 @@ Profil
 
 
 
-
-
-
 <button
 
+onClick={()=>router.push("/dashboard/settings")}
+
 className="
+
 w-full
+
 flex
-items-center
+
 gap-3
-px-3
-py-3
-rounded-xl
+
+items-center
+
+p-3
+
+rounded-2xl
+
 hover:bg-slate-100
+
 "
 
 >
-
 
 <Settings size={18}/>
 
@@ -568,27 +552,31 @@ Pengaturan
 
 
 
-
-
-
 <button
 
 onClick={logout}
 
 className="
+
 w-full
+
 flex
-items-center
+
 gap-3
-px-3
-py-3
-rounded-xl
+
+items-center
+
+p-3
+
+rounded-2xl
+
 hover:bg-red-50
+
 text-red-600
+
 "
 
 >
-
 
 <LogOut size={18}/>
 
@@ -598,9 +586,7 @@ Keluar
 
 
 
-
 </div>
-
 
 }
 
@@ -609,19 +595,12 @@ Keluar
 </div>
 
 
-
-
-
-
 </div>
-
-
-
 
 
 </header>
 
-);
 
+)
 
 }
